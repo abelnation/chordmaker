@@ -200,10 +200,10 @@ Chord = function(_config, _element) {
     self.width = self.config.num_strings*self.config.string_gap + 20 + 30;
     self.height = self.config.grid_y + self.config.num_frets*self.config.fret_gap + 10;
 
-    if (_.isString(element)) {
-      r = Raphael(document.getElementById(element), self.width, self.height);
+    if (_.isString(_element)) {
+      r = Raphael(document.getElementById(_element), self.width, self.height);
     } else {
-      r = Raphael(element, self.width, self.height);
+      r = Raphael(_element, self.width, self.height);
     }
 
     self.elems = r.set();

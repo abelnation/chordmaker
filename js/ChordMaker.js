@@ -165,39 +165,7 @@ var ChordMaker = (function() {
 
   return {
     makeChord: function(element, config) {
-
-      // Create config dict
-      if (!config) { config = {}; }
-      _.defaults(config, self.viz_config_defaults)
-      _.defaults(config, self.data_config_defaults);
-      self.config = config;
-
-      if (self.config.scale != 1) {
-        self.scaleSize();
-      }
-
-      self.width = self.config.num_strings*self.config.string_gap + 20 + 30;
-      self.height = self.config.grid_y + self.config.num_frets*self.config.fret_gap + 10;
-
-      if (_.isString(element)) {
-        self.r = Raphael(document.getElementById(element), self.width, self.height);
-      } else {
-        self.r = Raphael(element, self.width, self.height);
-      }
-
-      self.elems = self.r.set().transform("S"+self.scale+","+self.scale);
-      self.notes = self.r.set();
-      self.annotations = self.r.set();
-      self.elems.push(self.notes, self.annotations);
-      self.render();
-
-      var result = self.r;
-
-      // Clean up
-      self.r = null;
-      self.config = null;
-
-      return result;
+      return Chord(config, element);
     },
 
     // Ex. "2,T|4,4|4,3|3,2|2,1|2,1"
