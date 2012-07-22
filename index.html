@@ -5,8 +5,12 @@
   <title>Chord Maker</title>
 
   <link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  <link rel="stylesheet" href="prettify/prettify.css" type="text/css" media="screen" title="no title" charset="utf-8">
+  <!-- <link rel="stylesheet" href="prettify/sons-of-obsidian.css" type="text/css" media="screen" title="no title" charset="utf-8"> -->
+
 
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script type="text/javascript" src="prettify/prettify.js"></script>
   <script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
   <script type="text/javascript" src="js/lib/raphael-min.js"></script>
   <script type="text/javascript" src="js/lib/underscore-min.js"></script>
@@ -16,9 +20,12 @@
 
   <script type="text/javascript">
     $(function() {
-      ChordMaker.makeChord("chord-ui", {
+      prettyPrint();
+
+      ChordMaker.makeChord("chord-ex1", {
         label: "F#M",
         base_fret: 0,
+        scale: 1,
         notes: [
           { 'string': 0, 'finger': "T", 'fret': 2, 'tonic': true },
           { 'string': 1, 'open': true },
@@ -88,8 +95,14 @@
       ChordMaker.parseChordsInPage();
     });
 
-
   </script>
+
+  <style type="text/css">
+    .example {
+      text-align: center;
+    }
+    pre.prettyprint { padding: 8.5px; }
+  </style>
 
 </head>
 <body>
@@ -107,13 +120,43 @@
   </div>
 
   <div class="container" style="padding-top: 60px;">
+
     <h1 style="margin-bottom: 20px;">Chord Maker</h1>
+
+    <section id="API">
+      <div class="page-header">
+        <h2>Chord Maker API</h2>
+      </div>
+      <div class="row">
+        <div class="span4">
+          <div id="chord-ex1" class="example"></div>
+        </div>
+        <div class="span8">
+          <pre class="prettyprint lang-js">
+  ChordMaker.makeChord("chord-ex1", {
+    label: "F#M",
+    base_fret: 0,
+    scale: 1,
+    notes: [
+      { 'string': 0, 'finger': "T", 'fret': 2, 'tonic': true },
+      { 'string': 1, 'open': true },
+      { 'string': 2, 'finger': "2", 'fret': 4 },
+      { 'string': 3, 'finger': "3", 'fret': 2 },
+      { 'string': 4, 'muted': true },
+      { 'string': 5, 'finger': "2", 'fret': 2 }
+    ]}
+  );
+          </pre>
+        </div>
+      </div>
+    </section>
+
     <div class="row">
       <div class="span12">
-        <h2>Dictionary API</h2>
         <div id="chord-ui"></div>
       </div>
     </div>
+
     <div class="row">
       <div class="span12">
         <h2>Create With String</h2>
@@ -124,6 +167,9 @@
       <div class="span12">
         <h2>Auto Parse Divs</h2>
         <div class="chord">2,T,T|4,2|7,1|2,1,T</div>
+        <div class="chord">2,T,T|4,2|3,2|3,2|3,1|2,1,T</div>
+        <div class="chord">2,T,T|4,2|3,2|3,2|3,1|2,1,T</div>
+        <div class="chord">2,T,T|4,2|3,2|3,2|3,1|2,1,T</div>
         <div class="chord">2,T,T|4,2|3,2|3,2|3,1|2,1,T</div>
         <div class="chord">2,T,T|4,2|3,2|3,2|3,1|2,1,T</div>
         <div class="chord">2,T,T|4,2|3,2|3,2|3,1|2,1,T</div>
