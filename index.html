@@ -1,0 +1,135 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chord Maker</title>
+
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css" media="screen" title="no title" charset="utf-8">
+
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
+  <script type="text/javascript" src="raphael-min.js"></script>
+  <script type="text/javascript" src="underscore-min.js"></script>
+
+  <script type="text/javascript" src="chord2.js"></script>
+
+  <script type="text/javascript">
+    $(function() {
+      ChordMaker.makeChord("chord-ui", {
+        label: "F#M",
+        base_fret: 0,
+        notes: [
+          { 'string': 0, 'finger': "T", 'fret': 2, 'tonic': true },
+          { 'string': 1, 'open': true },
+          { 'string': 2, 'finger': "2", 'fret': 4 },
+          { 'string': 3, 'finger': "3", 'fret': 2 },
+          { 'string': 4, 'muted': true },
+          { 'string': 5, 'finger': "2", 'fret': 2 }
+        ]}
+      );
+
+      ChordMaker.makeChord("chord-ui", {
+        label: "GbM",
+        base_fret: 2,
+        notes: [
+          { 'string': 0, 'finger': "T", 'fret': 1, 'tonic': true },
+          { 'string': 1, 'finger': "3", 'fret': 3 },
+          { 'string': 2, 'finger': "4", 'fret': 3 },
+          { 'string': 3, 'finger': "2", 'fret': 2 },
+          { 'string': 4, 'finger': "1", 'fret': 1 },
+          { 'string': 5, 'finger': "1", 'fret': 1, 'tonic': true }
+        ]}
+      );
+
+      ChordMaker.makeChord("chord-ui", {
+        label: "C*7",
+        base_fret: 2,
+        notes: [
+          { 'string': 0, 'muted': true },
+          { 'string': 1, 'finger': "2", 'fret': 2 },
+          { 'string': 2, 'finger': "3", 'fret': 3 },
+          { 'string': 3, 'finger': "1", 'fret': 1 },
+          { 'string': 4, 'finger': "4", 'fret': 3 },
+          { 'string': 5, 'muted': true }
+        ]}
+      );
+
+      ChordMaker.makeChord("chord-ui", {
+        label: "F#M",
+        base_fret: 0,
+        notes: [
+          { 'string': 0, 'finger': "T", 'fret': 2, 'tonic': true },
+          { 'string': 1, 'open': true },
+          { 'string': 2, 'finger': "2", 'fret': 4 },
+          { 'string': 3, 'finger': "3", 'fret': 2 },
+          { 'string': 4, 'muted': true },
+          { 'string': 5, 'finger': "2", 'fret': 2 }
+        ]}
+      );
+
+      ChordMaker.makeChord("chord-ui", {
+        label: "F#M",
+        base_fret: 0,
+        notes: [
+          { 'string': 0, 'finger': "T", 'fret': 2, 'tonic': true },
+          { 'string': 1, 'open': true },
+          { 'string': 2, 'finger': "2", 'fret': 4 },
+          { 'string': 3, 'finger': "3", 'fret': 2 },
+          { 'string': 4, 'muted': true },
+          { 'string': 5, 'finger': "2", 'fret': 2 }
+        ]}
+      );
+
+      ChordMaker.makeChordFromString("chord-ui2", "2,T,T|4,4|4,3|3,2|2,1|2,1,T", 0.5);
+      ChordMaker.makeChordFromString("chord-ui2", "2,T,T|4,2|2,1|2,1,T", 0.5);
+      ChordMaker.makeChordFromString("chord-ui2", "2,T,T|4,2|7,1|2,1,T", 0.5);
+
+      ChordMaker.parseChordsInPage();
+    });
+
+
+  </script>
+
+</head>
+<body>
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a href="#" class="brand">ChordMaker</a>
+        <ui class="nav">
+          <li class="active"><a href="#" class="">Home</a></li>
+          <li><a href="#">Examples</a></li>
+          <li><a href="#">Download</a></li>
+        </ui>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <h1>Chord Maker</h1>
+    <div class="row">
+      <div class="span12">
+        <h2>Dictionary API</h2>
+        <div id="chord-ui"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="span12">
+        <h2>Create With String</h2>
+        <div id="chord-ui2"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="span12">
+        <h2>Auto Parse Divs</h2>
+        <div class="chord">2,T,T|4,2|7,1|2,1,T</div>
+        <div class="chord">2,T,T|4,2|3,2|3,2|3,1|2,1,T</div>
+        <div class="chord">2,T,T|4,2|3,2|3,2|3,1|2,1,T</div>
+        <div class="chord">2,T,T|4,2|3,2|3,2|3,1|2,1,T</div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
