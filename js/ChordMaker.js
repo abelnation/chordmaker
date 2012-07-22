@@ -165,7 +165,7 @@ var ChordMaker = (function() {
 
   return {
     makeChord: function(element, config) {
-      return Chord(config, element);
+      return Chord(element, config);
     },
 
     // Ex. "2,T|4,4|4,3|3,2|2,1|2,1"

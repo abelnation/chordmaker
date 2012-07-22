@@ -22,33 +22,57 @@
     $(function() {
       prettyPrint();
 
-      ChordMaker.makeChord("chord-ex1", {
+      // Example 1
+      var chord1 = Chord("chord-ex1", {
         label: "F#M",
         base_fret: 0,
         scale: 1,
         notes: [
-          { 'string': 0, 'finger': "T", 'fret': 2, 'tonic': true },
+          { 'string': 0, 'finger': "T", 'fret': 2, 'tonic': true, 'class': "group1" },
           { 'string': 1, 'open': true },
-          { 'string': 2, 'finger': "2", 'fret': 4 },
+          { 'string': 2, 'finger': "2", 'fret': 4, 'class': "group1" },
           { 'string': 3, 'finger': "3", 'fret': 2 },
           { 'string': 4, 'muted': true },
-          { 'string': 5, 'finger': "2", 'fret': 2 }
+          { 'string': 5, 'finger': "2", 'fret': 2, 'class': "group1" }
         ]}
       );
 
-      ChordMaker.makeChord("chord-ui", {
+      // Example 2
+      var chord2 = Chord("chord-ex2", {
         label: "GbM",
         base_fret: 2,
+        scale: 1,
         notes: [
-          { 'string': 0, 'finger': "T", 'fret': 1, 'tonic': true },
+          { 'string': 0, 'finger': "T", 'fret': 1 },
           { 'string': 1, 'finger': "3", 'fret': 3 },
           { 'string': 2, 'finger': "4", 'fret': 3 },
           { 'string': 3, 'finger': "2", 'fret': 2 },
           { 'string': 4, 'finger': "1", 'fret': 1 },
-          { 'string': 5, 'finger': "1", 'fret': 1, 'tonic': true }
+          { 'string': 5, 'finger': "1", 'fret': 1 }
+        ]}
+      );
+      $("#chord-ex2 .chord-note").hover(
+        function(e) { $(this).attr("fill", "red"); },
+        function(e) { $(this).attr("fill", "black"); }
+      );
+
+      // Example 3 - LongNeck
+      var chord2 = Chord("chord-ex3", {
+        label: "GMaj7",
+        num_frets: 17,
+        fret_gap: 40,
+        scale: 1,
+        notes: [
+          { 'string': 0, 'frets': [2,3,7,10,14] },
+          { 'string': 1, 'frets': [2,5,9,10,14] },
+          { 'string': 2, 'frets': [4,5,9,12] },
+          { 'string': 3, 'frets': [4,7,11,12] },
+          { 'string': 4, 'frets': [3,7,8,12] },
+          { 'string': 5, 'frets': [2,3,7,10,14,15] }
         ]}
       );
 
+      // Other Examples
       ChordMaker.makeChord("chord-ui", {
         label: "C*7",
         base_fret: 2,
@@ -127,6 +151,7 @@
       <div class="page-header">
         <h2>Chord Maker API</h2>
       </div>
+
       <div class="row">
         <div class="span4">
           <div id="chord-ex1" class="example"></div>
@@ -144,6 +169,60 @@
       { 'string': 3, 'finger': "3", 'fret': 2 },
       { 'string': 4, 'muted': true },
       { 'string': 5, 'finger': "2", 'fret': 2 }
+    ]}
+  );
+          </pre>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="span4">
+          <div id="chord-ex2" class="example"></div>
+        </div>
+        <div class="span8">
+          <pre class="prettyprint lang-js">
+  // Use jQuery to grab certain elements from the graphic and
+  // assign events
+  ChordMaker.makeChord("chord-ex2", {
+    label: "GbM",
+    base_fret: 2,
+    scale: 1,
+    notes: [
+      { 'string': 0, 'finger': "T", 'fret': 1 },
+      { 'string': 1, 'finger': "3", 'fret': 3 },
+      { 'string': 2, 'finger': "4", 'fret': 3 },
+      { 'string': 3, 'finger': "2", 'fret': 2 },
+      { 'string': 4, 'finger': "1", 'fret': 1 },
+      { 'string': 5, 'finger': "1", 'fret': 1 }
+    ]}
+  );
+  $("#chord-ex2 .chord-note").hover(
+    function(e) { $(this).attr("fill", "red"); },
+    function(e) { $(this).attr("fill", "black"); }
+  );
+          </pre>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="span4">
+          <div id="chord-ex3" class="example"></div>
+        </div>
+        <div class="span8">
+          <pre class="prettyprint lang-js">
+  // Example 3 - LongNeck
+  var chord2 = Chord("chord-ex3", {
+    label: "GMaj7",
+    num_frets: 17,
+    fret_gap: 40,
+    scale: 1,
+    notes: [
+      { 'string': 0, 'frets': [2,3,7,10,14] },
+      { 'string': 1, 'frets': [2,5,9,10,14] },
+      { 'string': 2, 'frets': [4,5,9,12] },
+      { 'string': 3, 'frets': [4,7,11,12] },
+      { 'string': 4, 'frets': [3,7,8,12] },
+      { 'string': 5, 'frets': [2,3,7,10,14,15] }
     ]}
   );
           </pre>

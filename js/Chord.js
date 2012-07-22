@@ -1,10 +1,13 @@
 
-Chord = function(_config, _element) {
+Chord = function(_element, _config) {
 
   var self = {};
 
   var width;
   var height;
+
+  var grid_width;
+  var grid_height;
 
   var data_config_defaults = {
     // DATA DEFAULTS
@@ -34,8 +37,11 @@ Chord = function(_config, _element) {
     grid_y: 60,
     grid_stroke_width: 1.5,
 
-    label_font_size: 24,
+    label_font_size: 36,
     label_y_offset: 20,
+
+    base_fret_font_size: 26,
+    base_fret_offset: 14
   };
 
   var r = null; // raphael object
@@ -53,9 +59,12 @@ Chord = function(_config, _element) {
   }
 
   var render = function() {
+    grid_width = (self.config.num_strings-1)*self.config.string_gap;
+    grid_height = self.config.num_frets*self.config.fret_gap;
+
     drawGrid(
       self.config.grid_x, self.config.grid_y,
-      (self.config.num_strings-1)*self.config.string_gap, self.config.num_frets*self.config.fret_gap,
+      grid_width, grid_height,
       self.config.num_strings-1, self.config.num_frets, "#000");
     drawNotes();
 
@@ -66,6 +75,15 @@ Chord = function(_config, _element) {
     }
 
     drawLabel();
+
+    // Rotate Horizontally
+    var transform_str = "r-90,"+self.config.grid_x+","+self.config.grid_y+"t-"+grid_height+",0";
+    console.log(transform_str);
+    //self.neck.transform(transform_str);
+    self.notes.forEach(function(e) {
+      //e.transform(transform_str);
+    })
+
   };
 
   var drawGrid = function(x, y, w, h, wv, hv, color) {
@@ -79,44 +97,64 @@ Chord = function(_config, _element) {
     for (i = 1; i < wv; i++) {
         path = path.concat(["M", Math.round(x + i * columnWidth) + .5, Math.round(y) + .5, "V", Math.round(y + h) + .5]);
     }
-    self.elems.push(
-      self.grid = r.path(path.join(",")).attr({stroke: color, 'stroke-width': self.config.grid_stroke_width})
+    self.grid = r.path(path.join(",")).attr({stroke: color, 'stroke-width': self.config.grid_stroke_width})
+    self.neck.push(
+      self.grid
     );
   };
 
   var drawNotes = function() {
 
-    var notes = self.config.notes;
-    for(var i=0; i<notes.length; i++) {
-      if(notes[i].muted) {
-        drawMuteStringAnnotatation(notes[i].string);
-      } else if (notes[i].open) {
-        drawOpenStringAnnotatation(notes[i].string);
+    var theNotes = self.config.notes;
+    for(var i=0; i<theNotes.length; i++) {
+      if(theNotes[i].muted) {
+        drawMuteStringAnnotatation(theNotes[i].string);
+      } else if (theNotes[i].open) {
+        drawOpenStringAnnotatation(theNotes[i].string);
       } else {
-        drawNote(notes[i].string, notes[i].fret, notes[i].tonic);
-        drawFingerAnnotation(notes[i].string, notes[i].finger);
+        if(theNotes[i].frets) {
+          drawNoteGroup(theNotes[i]);
+        } else {
+          drawNote(theNotes[i]);
+        }
+        if (theNotes[i].finger) {
+          drawFingerAnnotation(theNotes[i].string, theNotes[i].finger);
+        }
       }
     }
   };
 
-  var drawNote = function(string, fret, tonic) {
-    if(!fret || fret == 0) { return; }
+  var drawNoteGroup = function(note_group) {
+    var note = {}
+    for(var i=0; i<note_group.frets.length; i++) {
+     note.string = note_group.string;
+     note.fret = note_group.frets[i];
+     drawNote(note);
+    }
+  };
 
-    var x = self.config.grid_x + (string * self.config.string_gap);
-    var y = self.config.grid_y + (fret * self.config.fret_gap) - (self.config.fret_gap / 2);
+  var drawNote = function(note) {
+    if(!note.fret || note.fret == 0) { return; }
+
+    var x = self.config.grid_x + (note.string * self.config.string_gap);
+    var y = self.config.grid_y + (note.fret * self.config.fret_gap) - (self.config.fret_gap / 2);
     var note_style = {
-      fill: "black"
+      fill: "90-#eee:5-#fff:95"
     };
-    if (tonic) {
-      note_style['fill']         = "white";
+    if (note.tonic) {
+      note_style['fill']         = "90-#000:5-#555:95";
       note_style['stroke-width'] = self.config.note_stroke_width;
       note_style['stroke']      = "black";
     }
-    self.notes.push(
-      r.circle(x,y,self.config.note_radius)
-        .attr(note_style)
-        .node.setAttribute("class", "chord-note")
-    );
+
+    var class_str = "chord-note";
+    if (note.class) { class_str = class_str + " " + note.class; }
+
+    var glyph = r.circle(x,y,self.config.note_radius)
+      .attr(note_style)
+      .node.setAttribute("class", class_str);
+
+    self.notes.push(glyph);
   };
 
   var drawMuteStringAnnotatation = function(string) {
@@ -147,29 +185,26 @@ Chord = function(_config, _element) {
   };
 
   var drawNut = function() {
-    self.elems.push(
+    self.neck.push(
       r.rect(self.config.grid_x,self.config.grid_y, (self.config.num_strings-1)*self.config.string_gap, self.config.nut_height).attr({ fill: "black"})
     );
   };
 
   var drawBaseFret = function(base_fret) {
-    var x = self.config.num_strings*self.config.string_gap + 20;
+    var x = self.config.grid_x + grid_width + self.config.base_fret_offset;
     var y = self.config.grid_y + self.config.fret_gap/2;
-    self.elems.push(
-      r.text(x,y, ""+base_fret+"fr.").attr({ 'font-size': self.config.anno_font_size })
-    );
+
+    r.text(x,y, ""+base_fret+"fr.").attr({ 'text-anchor': 'start', 'font-size': self.config.base_fret_font_size })
   };
 
   var drawLabel = function() {
-    var x = 0;
+    var x = self.config.grid_x + (grid_width / 2);
     var y = self.config.label_y_offset;
     var fancy_label = self.config.label
       .replace(/b/g, "♭")
       .replace(/\#/g, "♯")
       .replace(/\*/g, "￮");
-    self.elems.push(
-      r.text(x,y,fancy_label).attr({ "text-anchor": "start", "font-size": self.config.label_font_size })
-    );
+    r.text(x,y,fancy_label).attr({ "text-anchor": "middle", "font-size": self.config.label_font_size });
   }
 
   // var getString = function() {
@@ -186,7 +221,7 @@ Chord = function(_config, _element) {
   // };
   // self.removeNote = removeNote;
 
-  var init = function(_config, _element) {
+  var init = function(_element, _config) {
     // Create config dict
     if (!_config) { _config = {}; }
     _.defaults(_config, viz_config_defaults)
@@ -197,7 +232,7 @@ Chord = function(_config, _element) {
       scaleSize();
     }
 
-    self.width = self.config.num_strings*self.config.string_gap + 20 + 30;
+    self.width = self.config.num_strings*self.config.string_gap + 20 + 20;
     self.height = self.config.grid_y + self.config.num_frets*self.config.fret_gap + 10;
 
     if (_.isString(_element)) {
@@ -206,13 +241,20 @@ Chord = function(_config, _element) {
       r = Raphael(_element, self.width, self.height);
     }
 
-    self.elems = r.set();
     self.notes = r.set();
+    self.neck = r.set();
     self.annotations = r.set();
-    self.elems.push(self.notes, self.annotations);
+    // self.elems.onHover(
+    //       function() { alert("hover in"); },
+    //       function() { alert("hover out"); },
+    //       self,
+    //       self
+    //     );
     render();
+
+
   };
 
-  init(_config, _element);
+  init(_element, _config);
   return self;
 };
