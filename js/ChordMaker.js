@@ -13,12 +13,17 @@ var ChordMaker = (function() {
   self.viz_config_defaults = {
     // RENDER PARAMERTES
     scale: 0.5,
+
     string_gap: 30,
     fret_gap: 30,
+
     finger_anno_y: 10,
     anno_font_size: 18,
-    note_radius: 10,
     open_note_radius: 6,
+
+    note_radius: 10,
+    note_stroke_width: 1.5,
+
     nut_height: 5,
     grid_x: 20,
     grid_y: 60,
@@ -95,11 +100,13 @@ var ChordMaker = (function() {
     };
     if (tonic) {
       note_style['fill']         = "white";
-      note_style['stroke-width'] = 2;
+      note_style['stroke-width'] = self.config.note_stroke_width;
       note_style['stroke']      = "black";
     }
     self.notes.push(
-      self.r.circle(x,y,self.config.note_radius).attr(note_style)
+      self.r.circle(x,y,self.config.note_radius)
+        .attr(note_style)
+        .node.setAttribute("class", "chord-note")
     );
   };
 
@@ -184,9 +191,13 @@ var ChordMaker = (function() {
       self.elems.push(self.notes, self.annotations);
       self.render();
 
+      var result = self.r;
+
       // Clean up
       self.r = null;
       self.config = null;
+
+      return result;
     },
 
     // Ex. "2,T|4,4|4,3|3,2|2,1|2,1"
@@ -243,6 +254,7 @@ var ChordMaker = (function() {
         var chord_str = $(this).html();
         var elem = $(this)[0];
         $(this).html("");
+        $(this).append('<p class="chord-str" style="display: none;">'+chord_str+'</p>');
         $(this).css("display","inline-block");
         ChordMaker.makeChordFromString(elem, chord_str, 0.5);
       });
