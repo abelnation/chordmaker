@@ -53,7 +53,7 @@ Chord = function(_element, _config) {
     tonic_color: 'black',
 
     neck_marker_radius: 8,
-    neck_marker_color: "#ddd",
+    neck_marker_color: "#bbb",
 
     nut_height: 5,
     grid_x: 20,
@@ -297,8 +297,11 @@ Chord = function(_element, _config) {
   var drawFretMarker = function(note) {
     if(_.isUndefined(note.fret) || note.fret == 0) { return; }
 
+    if (note.fret < self.config.base_fret ||
+        note.fret > self.config.base_fret + self.config.num_frets) { return; }
+
     var x = self.config.grid_x + (note.string * self.config.string_gap);
-    var y = self.config.grid_y + (note.fret * self.config.fret_gap) - (self.config.fret_gap / 2);
+    var y = self.config.grid_y + ((note.fret-self.config.base_fret+1) * self.config.fret_gap) - (self.config.fret_gap / 2);
     var note_style = {
       fill: note_colors[self.config.note_color]
     };
