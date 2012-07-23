@@ -15,6 +15,13 @@ Chord = function(_element, _config) {
     width: 0,
     height: 0
   };
+  var note_colors = {
+    'black': '90-#000:5-#555:95',
+    'white': '90-#eee:5-#fff:95',
+    'blue' : '90-#22f:5-#55f:95',
+    'red'  : '90-#f22:5-#f55:95',
+    'green': '90-#0f0:5-#0f0:95'
+  }
 
   // raphael object
   var r = null;
@@ -42,6 +49,8 @@ Chord = function(_element, _config) {
 
     note_radius: 10,
     note_stroke_width: 1.5,
+    note_color: 'white',
+    tonic_color: 'black',
 
     neck_marker_radius: 8,
     neck_marker_color: "#ddd",
@@ -61,7 +70,7 @@ Chord = function(_element, _config) {
 
   var scaleSize = function() {
     _.each(viz_config_defaults, function(num, key) {
-      if (key != "scale") {
+      if (key != "scale" && _.isNumber(self.config[key])) {
         self.config[key] = self.config[key] * self.config.scale;
       }
     })
@@ -94,7 +103,12 @@ Chord = function(_element, _config) {
   var setOrientation = function(orientation) {
     if (!_.include([NUT_TOP, NUT_LEFT], orientation)) { return; }
 
+    // TODO: Deal correctly with chord label
+
     if (orientation == NUT_TOP) {
+
+      // TODO: not all things are correct for setOrientation(NUT_TOP);
+
       _.each(neck.glyphs, function(glyph) {
         glyph.transform("");
       });
@@ -141,12 +155,6 @@ Chord = function(_element, _config) {
       self.height = self.config.grid_y + neck.width + 10 + self.config.grid_bottom_padding;
       r.setSize(self.width, self.height);
 
-
-      // START HERE:
-      // Need to deal with re-calculating width and height of the widget
-      // Need to figure out how to handle positioning of elements for diff layouts
-      //
-
     }
   }
 
@@ -165,11 +173,6 @@ Chord = function(_element, _config) {
     neck.glyphs['grid_back'] = r.rect(self.config.grid_x, self.config.grid_y, neck.width, neck.height).attr("fill", "white");
     drawNeckMarkers();
     neck.glyphs['grid'] = r.path(path.join(",")).attr({stroke: color, 'stroke-width': self.config.grid_stroke_width});
-
-    // self.neck.push(
-    //       self.grid,
-    //       self.grid_back
-    //     );
 
     // TODO: Start Here
     //       Hacky code to do a cursor and to add notes.
@@ -297,10 +300,13 @@ Chord = function(_element, _config) {
     var x = self.config.grid_x + (note.string * self.config.string_gap);
     var y = self.config.grid_y + (note.fret * self.config.fret_gap) - (self.config.fret_gap / 2);
     var note_style = {
-      fill: "90-#eee:5-#fff:95"
+      fill: note_colors[self.config.note_color]
     };
+    if (note.color) {
+      note_style['fill'] = note_colors[note.color];
+    }
     if (note.tonic) {
-      note_style['fill']         = "90-#000:5-#555:95";
+      note_style['fill']         = note_colors[self.config.tonic_color];
       note_style['stroke-width'] = self.config.note_stroke_width;
       note_style['stroke']      = "black";
     }
@@ -381,12 +387,13 @@ Chord = function(_element, _config) {
   //   };
   //   self.getString = getString;
 
-  var addNote = function(note) {
+  var addNote = function(note, color) {
     if (_.isUndefined(note)) { return; }
 
     if (_.isString(note)) {}
     else if (_.isObject(note)) {
 
+      if (color) { note.color = color; }
       if (note.frets) {
         var groupNote = {}
         for(var i=0; i<note.frets.length; i++) {
@@ -408,9 +415,11 @@ Chord = function(_element, _config) {
   };
   self.addNote = addNote;
 
-  var addNotes = function(notes) {
+  var addNotes = function(notes, color) {
     if (_.isArray(notes)) {
-      _.each(notes, _.bind(addNote, self));
+      for (var i=0; i<notes.length; i++) {
+        addNote(notes[i], color);
+      }
     }
   }
   self.addNotes = addNotes;
