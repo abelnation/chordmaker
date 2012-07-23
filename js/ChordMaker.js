@@ -223,7 +223,7 @@ var ChordMaker = (function() {
         var elem = $(this)[0];
         $(this).html("");
         $(this).append('<p class="chord-str" style="display: none;">'+chord_str+'</p>');
-        $(this).css("display","inline-block");
+        //$(this).css("display","inline-block");
         ChordMaker.makeChordFromString(elem, chord_str, 0.5);
       });
     }

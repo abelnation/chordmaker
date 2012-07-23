@@ -9,11 +9,15 @@
   <!-- <link rel="stylesheet" href="prettify/sons-of-obsidian.css" type="text/css" media="screen" title="no title" charset="utf-8"> -->
 
 
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-  <script type="text/javascript" src="prettify/prettify.js"></script>
-  <script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
+  <!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script> -->
+
+  <script type="text/javascript" src="js/lib/jquery-1.7.2.min.js"></script>
   <script type="text/javascript" src="js/lib/raphael-min.js"></script>
   <script type="text/javascript" src="js/lib/underscore-min.js"></script>
+
+  <script type="text/javascript" src="prettify/prettify.js"></script>
+  <script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
+
 
   <script type="text/javascript" src="js/Chord.js"></script>
   <script type="text/javascript" src="js/ChordMaker.js"></script>
@@ -25,8 +29,8 @@
       // Example 1
       var chord1 = Chord("chord-ex1", {
         label: "F#M",
-        base_fret: 0,
         scale: 1,
+        orientation: 'left',
         notes: [
           { 'string': 0, 'finger': "T", 'fret': 2, 'tonic': true, 'class': "group1" },
           { 'string': 1, 'open': true },
@@ -59,9 +63,10 @@
       // Example 3 - LongNeck
       var chord2 = Chord("chord-ex3", {
         label: "GMaj7",
-        num_frets: 17,
+        num_frets: 19,
         fret_gap: 40,
         scale: 1,
+        orientation: "left",
         notes: [
           { 'string': 0, 'frets': [2,3,7,10,14] },
           { 'string': 1, 'frets': [2,5,9,10,14] },
@@ -88,7 +93,6 @@
 
       ChordMaker.makeChord("chord-ui", {
         label: "F#M",
-        base_fret: 0,
         notes: [
           { 'string': 0, 'finger': "T", 'fret': 2, 'tonic': true },
           { 'string': 1, 'open': true },
@@ -101,7 +105,6 @@
 
       ChordMaker.makeChord("chord-ui", {
         label: "F#M",
-        base_fret: 0,
         notes: [
           { 'string': 0, 'finger': "T", 'fret': 2, 'tonic': true },
           { 'string': 1, 'open': true },
@@ -112,9 +115,9 @@
         ]}
       );
 
-      ChordMaker.makeChordFromString("chord-ui2", "2,T,T|4,4|4,3|3,2|2,1|2,1,T", 0.5);
-      ChordMaker.makeChordFromString("chord-ui2", "2,T,T|4,2|2,1|2,1,T", 0.5);
-      ChordMaker.makeChordFromString("chord-ui2", "2,T,T|4,2|7,1|2,1,T", 0.5);
+      ChordMaker.makeChordFromString("chord-ex2.1", "2,T,T|4,4|4,3|3,2|2,1|2,1,T", 0.5);
+      ChordMaker.makeChordFromString("chord-ex2.2", "2,T,T|4,2|2,1|2,1,T", 0.5);
+      ChordMaker.makeChordFromString("chord-ex2.3", "2,T,T|4,2|7,1|2,1,T", 0.5);
 
       ChordMaker.parseChordsInPage();
     });
@@ -158,17 +161,18 @@
         </div>
         <div class="span8">
           <pre class="prettyprint lang-js">
-  ChordMaker.makeChord("chord-ex1", {
+  // Example 1
+  var chord1 = Chord("chord-ex1", {
     label: "F#M",
     base_fret: 0,
     scale: 1,
     notes: [
-      { 'string': 0, 'finger': "T", 'fret': 2, 'tonic': true },
+      { 'string': 0, 'finger': "T", 'fret': 2, 'tonic': true, 'class': "group1" },
       { 'string': 1, 'open': true },
-      { 'string': 2, 'finger': "2", 'fret': 4 },
+      { 'string': 2, 'finger': "2", 'fret': 4, 'class': "group1" },
       { 'string': 3, 'finger': "3", 'fret': 2 },
       { 'string': 4, 'muted': true },
-      { 'string': 5, 'finger': "2", 'fret': 2 }
+      { 'string': 5, 'finger': "2", 'fret': 2, 'class': "group1" }
     ]}
   );
           </pre>
@@ -183,7 +187,8 @@
           <pre class="prettyprint lang-js">
   // Use jQuery to grab certain elements from the graphic and
   // assign events
-  ChordMaker.makeChord("chord-ex2", {
+  // Example 2
+  var chord2 = Chord("chord-ex2", {
     label: "GbM",
     base_fret: 2,
     scale: 1,
@@ -205,10 +210,12 @@
       </div>
 
       <div class="row">
-        <div class="span4">
+        <div class="span12">
           <div id="chord-ex3" class="example"></div>
         </div>
-        <div class="span8">
+      </div>
+      <div class="row">
+        <div class="span12">
           <pre class="prettyprint lang-js">
   // Example 3 - LongNeck
   var chord2 = Chord("chord-ex3", {
@@ -236,25 +243,93 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="span12">
-        <h2>Create With String</h2>
-        <div id="chord-ui2"></div>
+    <section id="with-string">
+      <div class="page-header">
+        <h2>Make Chords with a String</h2>
       </div>
-    </div>
-    <div class="row">
-      <div class="span12">
-        <h2>Auto Parse Divs</h2>
-        <div class="chord">2,T,T|4,2|7,1|2,1,T</div>
-        <div class="chord">2,T,T|4,2|3,2|3,2|3,1|2,1,T</div>
-        <div class="chord">2,T,T|4,2|3,2|3,2|3,1|2,1,T</div>
-        <div class="chord">2,T,T|4,2|3,2|3,2|3,1|2,1,T</div>
-        <div class="chord">2,T,T|4,2|3,2|3,2|3,1|2,1,T</div>
-        <div class="chord">2,T,T|4,2|3,2|3,2|3,1|2,1,T</div>
-        <div class="chord">2,T,T|4,2|3,2|3,2|3,1|2,1,T</div>
-      </div>
-    </div>
 
+      <div class="row">
+        <div class="span4">
+          <div id="chord-ex2.1" class="example"></div>
+        </div>
+        <div class="span8">
+          <pre class="prettyprint lang-js">
+  // javscript
+  ChordMaker.makeChordFromString("chord-ex2.1", "2,T,T|4,4|4,3|3,2|2,1|2,1,T", 0.5);
+
+  // html
+  &lt;div id="chord-ex2.1"&gt;&lt;/div&gt;
+          </pre>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="span4">
+          <div id="chord-ex2.2" class="example"></div>
+        </div>
+        <div class="span8">
+          <pre class="prettyprint lang-js">
+  // javscript
+  ChordMaker.makeChordFromString("chord-ex2.2", "2,T,T|4,2|2,1|2,1,T", 0.5);
+
+  // html
+  &lt;div id="chord-ex2.2"&gt;&lt;/div&gt;
+          </pre>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="span4">
+          <div id="chord-ex2.3" class="example"></div>
+        </div>
+        <div class="span8">
+          <pre class="prettyprint lang-js">
+  // javscript
+  ChordMaker.makeChordFromString("chord-ex2.3", "2,T,T|4,2|7,1|2,1,T", 0.5);
+
+  // html
+  &lt;div id="chord-ex2.3"&gt;&lt;/div&gt;
+          </pre>
+        </div>
+      </div>
+    </section>
+
+    <section id="auto-parse">
+      <div class="page-header">
+        <h2>Auto-Parse Div Content</h2>
+      </div>
+
+      <div class="row">
+        <div class="span4">
+          <div class="chord example">2,T,T|4,2|7,1|2,1,T</div>
+        </div>
+        <div class="span8">
+          <pre class="prettyprint lang-js">
+  // javscript
+  ChordMaker.parseChordsInPage();
+
+  // html
+  &lt;div class="chord"&gt;2,T,T|4,2|7,1|2,1,T&lt;/div&gt;
+          </pre>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="span4">
+          <div class="chord example">2,T,T|4,2|3,2|3,2|3,1|2,1,T</div>
+        </div>
+        <div class="span8">
+          <pre class="prettyprint lang-js">
+  // javscript
+  ChordMaker.parseChordsInPage();
+
+  // html
+  &lt;div class="chord"&gt;2,T,T|4,2|3,2|3,2|3,1|2,1,T&lt;/div&gt;
+          </pre>
+        </div>
+      </div>
+
+    </section>
   </div>
 
 </body>
