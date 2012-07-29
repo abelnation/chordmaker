@@ -26,18 +26,20 @@
     $(function() {
       ChordMaker.parseChordsInPage();
 
-      toggleArpeggio("gmaj7");
-      toggleArpeggio("g6");
-      toggleArpeggio("gmaj9");
+      toggleArpeggio("gmaj");
+      // toggleArpeggio("g6");
+      //       toggleArpeggio("gmaj9");
 
-      toggleArpeggio("gmin-maj7");
-      toggleArpeggio("gm7");
-      toggleArpeggio("gm6");
-      toggleArpeggio("gm69");
-      toggleArpeggio("gm7b5");
+      toggleArpeggio("gmin");
+      // toggleArpeggio("gmin-maj7");
+      //       toggleArpeggio("gm7");
+      //       toggleArpeggio("gm6");
+      //       toggleArpeggio("gm69");
+      //       toggleArpeggio("gm7b5");
 
-      toggleArpeggio("g9");
-      toggleArpeggio("g7b9");
+      toggleArpeggio("g7");
+      // toggleArpeggio("g9");
+      // toggleArpeggio("g7b9");
 
       toggleArpeggio("gdim7");
     });
@@ -53,8 +55,13 @@
       var class_selector = ".row."+chord;
       var button_selector = ".show-button-"+chord;
       var is_hidden = $(class_selector).hasClass("hide");
-      $(class_selector).toggleClass("hide",!is_hidden);
-      $(button_selector).toggleClass("active", is_hidden);
+      if (is_hidden) {
+        $(class_selector).siblings(".toggle-chord-actions").find(".btn").removeClass("active");
+        $(class_selector).siblings(".row").toggleClass("hide", true);
+
+        $(class_selector).toggleClass("hide",!is_hidden);
+        $(button_selector).toggleClass("active", is_hidden);
+      }
     }
 
   </script>
@@ -573,7 +580,7 @@
         <a href="javascript:void(0);" class="btn show-button-gmaj9" onclick="toggleArpeggio('gmaj9','full');">GMaj9</a>
       </div>
 
-      <div class="row gmaj">
+      <div class="row hide gmaj">
         <div class="span2">
           <h3>GMaj</h3>
           <div class="chord-actions">
@@ -643,7 +650,7 @@
         </div>
       </div>
 
-      <div class="row gmaj7">
+      <div class="row hide gmaj7">
         <div class="span2">
           <h3>GMaj7</h3>
           <div class="chord-actions">
@@ -713,7 +720,7 @@
         </div>
       </div>
 
-      <div class="row g6">
+      <div class="row hide g6">
         <div class="span2">
           <h3>GMaj6</h3>
           <div class="chord-actions">
@@ -774,7 +781,7 @@
         </div>
       </div>
 
-      <div class="row gmaj9">
+      <div class="row hide gmaj9">
         <div class="span2">
           <h3>GMaj9</h3>
           <div class="chord-actions">
@@ -859,7 +866,7 @@
         <a href="javascript:void(0);" class="btn show-button-gm7b5" onclick="toggleArpeggio('gm7b5','full');">Gm7b5</a>
       </div>
 
-      <div class="row gmin">
+      <div class="row hide gmin">
         <div class="span2">
           <h3>Gmin</h3>
           <div class="chord-actions">
@@ -868,7 +875,7 @@
             <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmin','closed2');">Closed Position 2</a>
             <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmin','closed3');">Closed Position 3</a>
             <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmin','open1');">Open Position 1</a>
-            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmin','open2');">Open Position 1</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmin','open2');">Open Position 2</a>
           </div>
         </div>
         <div class="span10">
@@ -879,7 +886,7 @@
             2: 5(color: black;), 8, 12
             3: 3, 7, 12(color: black;)
             4: 3, 8(color: black;), 11
-            5: 3, 6, 10, 15(color: black;)
+            5: 3(color: black;), 6, 10, 15(color: black;)
           </div>
           <div id="arpeggio-gmin-closed1" class="chord gmin hide">
             [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
@@ -929,7 +936,7 @@
         </div>
       </div>
 
-      <div class="row gmin-maj7">
+      <div class="row hide gmin-maj7">
         <div class="span2">
           <h3>Gm(maj7)</h3>
           <div class="chord-actions">
@@ -938,7 +945,7 @@
             <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmin-maj7','closed2');">Closed Position 2</a>
             <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmin-maj7','closed3');">Closed Position 3</a>
             <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmin-maj7','open1');">Open Position 1</a>
-            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmin-maj7','open2');">Open Position 1</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmin-maj7','open2');">Open Position 2</a>
           </div>
         </div>
         <div class="span10">
@@ -999,7 +1006,7 @@
         </div>
       </div>
 
-      <div class="row gm7">
+      <div class="row hide gm7">
         <div class="span2">
           <h3>Gm7</h3>
           <div class="chord-actions">
@@ -1008,7 +1015,7 @@
             <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gm7','closed2');">Closed Position 2</a>
             <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gm7','closed3');">Closed Position 3</a>
             <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gm7','open1');">Open Position 1</a>
-            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gm7','open2');">Open Position 1</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gm7','open2');">Open Position 2</a>
           </div>
         </div>
         <div class="span10">
@@ -1069,7 +1076,7 @@
         </div>
       </div>
 
-      <div class="row gm6">
+      <div class="row hide gm6">
         <div class="span2">
           <h3>Gm6</h3>
           <div class="chord-actions">
@@ -1078,7 +1085,7 @@
             <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gm6','closed2');">Closed Position 2</a>
             <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gm6','closed3');">Closed Position 3</a>
             <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gm6','open1');">Open Position 1</a>
-            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gm6','open2');">Open Position 1</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gm6','open2');">Open Position 2</a>
           </div>
         </div>
         <div class="span10">
@@ -1139,7 +1146,7 @@
         </div>
       </div>
 
-      <div class="row gm69">
+      <div class="row hide gm69">
         <div class="span2">
           <h3>Gm6/9</h3>
           <div class="chord-actions">
@@ -1148,7 +1155,7 @@
             <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gm69','closed2');">Closed Position 2</a>
             <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gm69','closed3');">Closed Position 3</a>
             <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gm69','open1');">Open Position 1</a>
-            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gm69','open2');">Open Position 1</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gm69','open2');">Open Position 2</a>
           </div>
         </div>
         <div class="span10">
@@ -1209,7 +1216,7 @@
         </div>
       </div>
 
-      <div class="row gm7b5">
+      <div class="row hide gm7b5">
         <div class="span2">
           <h3>Gm7b5</h3>
           <div class="chord-actions">
@@ -1293,7 +1300,7 @@
         <a href="javascript:void(0);" class="btn show-button-g7b9" onclick="toggleArpeggio('g7b9','full');">G7b9</a>
       </div>
 
-      <div class="row g7">
+      <div class="row hide g7">
         <div class="span2">
           <h3>G7</h3>
           <div class="chord-actions">
@@ -1363,7 +1370,7 @@
         </div>
       </div>
 
-      <div class="row g9">
+      <div class="row hide g9">
         <div class="span2">
           <h3>G9</h3>
           <div class="chord-actions">
@@ -1433,7 +1440,7 @@
         </div>
       </div>
 
-      <div class="row g7b9">
+      <div class="row hide g7b9">
         <div class="span2">
           <h3>G7b9</h3>
           <div class="chord-actions">
@@ -1513,7 +1520,7 @@
         <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gdim7','full');">Gdim7</a>
       </div>
 
-      <div class="row gdim7">
+      <div class="row hide gdim7">
         <div class="span2">
           <h3>Gdim7</h3>
           <div class="chord-actions">

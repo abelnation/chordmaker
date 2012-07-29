@@ -55,7 +55,7 @@ Chord = function(_element, _config) {
     tonic_color: 'black',
 
     neck_marker_radius: 8,
-    neck_marker_color: "#bbb",
+    neck_marker_color: "#999",
 
     nut_height: 5,
     grid_x: 20,
@@ -133,7 +133,7 @@ Chord = function(_element, _config) {
       var translate_y = (self.height - self.width) / 2;
       transform_str = "r-90,"+ rotate_o_x +","+ rotate_o_y +"t"+translate_x+"," + translate_y;
 
-      console.log(transform_str);
+      //console.log(transform_str);
 
       self.width = self.config.grid_x + neck.height + 20 + 20;
       self.height = self.config.grid_y + neck.width + 10 + self.config.grid_bottom_padding;
@@ -229,7 +229,7 @@ Chord = function(_element, _config) {
 
     var y = self.config.grid_y + ((neck_marker[0]-(self.config.base_fret-1)) * self.config.fret_gap) - (self.config.fret_gap/2);
     var marker_style = {
-      fill: "90-#ddd:5-#eee:95",
+      fill: "90-#bbb:5-#ccc:95",
       stroke: "none"
     };
 
