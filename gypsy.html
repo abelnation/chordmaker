@@ -25,14 +25,48 @@
   <script type="text/javascript">
     $(function() {
       ChordMaker.parseChordsInPage();
+
+      toggleArpeggio("gmaj7");
+      toggleArpeggio("g6");
+      toggleArpeggio("gmaj9");
+
+      toggleArpeggio("gmin-maj7");
+      toggleArpeggio("gm6");
+      toggleArpeggio("gm69");
+      toggleArpeggio("gm7b5");
+
+      toggleArpeggio("g9");
+      toggleArpeggio("g7b9");
+
+      toggleArpeggio("gdim7");
     });
+
+    function showArpeggioPosition(chord, position) {
+      var id = "#arpeggio-"+chord+"-"+position;
+      var class_selector = ".chord."+chord;
+      $(class_selector).toggleClass("hide", true);
+      $(id).removeClass("hide");
+    }
+
+    function toggleArpeggio(chord) {
+      var class_selector = ".row."+chord;
+      var button_selector = ".show-button-"+chord;
+      var is_hidden = $(class_selector).hasClass("hide");
+      $(class_selector).toggleClass("hide",!is_hidden);
+      $(button_selector).toggleClass("active", is_hidden);
+    }
 
   </script>
 
   <style type="text/css">
+    /* apply a natural box layout model to all elements */
+    * { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+
     .example {
       text-align: center;
     }
+    .chord-actions { margin-bottom: 20px; }
+    .chord-actions .btn { width: 100%; margin: 4px 0;}
     pre.prettyprint { padding: 8.5px; }
   </style>
 
@@ -43,9 +77,11 @@
       <div class="container">
         <a href="#" class="brand">ChordMaker</a>
         <ui class="nav">
-          <li class="active"><a href="index.html" class="">Home</a></li>
-          <li><a href="gypsy.html">Gypsy</a></li>
-          <li><a href="#">Download</a></li>
+          <li class="active"><a href="#Major" class="">Major</a></li>
+          <li><a href="#Dominant7">Dominant 7</a></li>
+          <li><a href="#Minor">Minor</a></li>
+          <li><a href="#Diminished7">Diminished 7</a></li>
+          <li><a href="#Minor7">Minor 7</a></li>
         </ui>
       </div>
     </div>
@@ -64,39 +100,39 @@
         <div class="span12">
           <div class="chord">
             [base_fret=3,label=CM/G]
-            0,3,1 (color=white)
-            1,3,1 (color=black)
-            2,5,3 (color=white)
-            3,5,3
-            4,5,3
-            5,m,m
+            0:{3 1}
+            1:{3 1} (color: black;)
+            2:{5 3}
+            3:{5 3}
+            4:{5 3}
+            5:{m m}
           </div>
           <div class="chord">
             [base_fret=8,label=CM]
-            0,8,T (color=black)
-            1,10,3 (color=white)
-            2,10,4
-            3,9,2
-            4,8,1
-            5,8,1 (color=black)
+            0:{8 T} (color: black;)
+            1:{10 3}
+            2:{10 4}
+            3:{9 2}
+            4:{8 1}
+            5:{8 1} (color: black;)
           </div>
           <div class="chord">
             [base_fret=10,label=CM/E]
-            0,12,T (color=white)
-            1,x,3
-            2,10,4 (color=black)
-            3,12,2 (color=white)
-            4,13,1
-            5,x,1
+            0:{12 2}
+            1:{x 3}
+            2:{10 1} (color: black;)
+            3:{12 3}
+            4:{13 4}
+            5:{x 1}
           </div>
           <div class="chord">
             [base_fret=12,label=CM/E]
-            0,12,T (color=white)
-            1,x,3
-            2,14,4
-            3,12,2
-            4,13,1 (color=black)
-            5,x,1
+            0:{12 T}
+            1:{x 3}
+            2:{14 3}
+            3:{12 1}
+            4:{13 2} (color: black;)
+            5:{x 1}
           </div>
         </div>
       </div>
@@ -105,39 +141,39 @@
         <div class="span12">
           <div class="chord">
             [base_fret=3,label=CM6/G]
-            0,3,1 (color=white)
-            1,3,1 (color=black)
-            2,5,3 (color=white)
-            3,5,3
-            4,5,3
-            5,5,3
+            0:{3 1}
+            1:{3 1} (color: black;)
+            2:{5 3}
+            3:{5 3}
+            4:{5 3}
+            5:{5 3}
           </div>
           <div class="chord">
             [base_fret=8,label=CM6]
-            0,8,1 (color=black)
-            1,10,1 (color=white)
-            2,10,3
-            3,9,3
-            4,10,3
-            5,x,3
+            0:{8 T}
+            1:{8 T} (color: black;)
+            2:{10 2}
+            3:{10 2}
+            4:{9 1}
+            5:{10 3}
           </div>
           <div class="chord">
             [base_fret=5,label=CM6]
-            0,8,1 (color=black)
-            1,7,1 (color=white)
-            2,5,3
-            3,5,3 (color=black)
-            4,5,3 (color=white)
-            5,5,3
+            0:{8 4} (color: black;)
+            1:{7 3}
+            2:{5 1}
+            3:{5 1} (color: black;)
+            4:{5 1}
+            5:{5 1}
           </div>
           <div class="chord">
             [base_fret=8,label=CM6]
-            0,8,1 (color=black)
-            1,x,1 (color=white)
-            2,10,3
-            3,9,3
-            4,10,3
-            5,8,3
+            0:{8 T} (color: black;)
+            1:{x 1}
+            2:{10 3}
+            3:{9 2}
+            4:{10 4}
+            5:{8 1}
           </div>
         </div>
       </div>
@@ -146,30 +182,137 @@
         <div class="span12">
           <div class="chord">
             [base_fret=2,label=CM6/9/G]
-            0,3,2 (color=white)
-            1,3,2 (color=black)
-            2,2,1 (color=white)
-            3,2,1
-            4,3,3
-            5,3,4
+            0:{3 2}
+            1:{3 2} (color: black;)
+            2:{2 1}
+            3:{2 1}
+            4:{3 3}
+            5:{3 4}
           </div>
           <div class="chord">
             [base_fret=7,label=CM6/9]
-            0,8,2 (color=black)
-            1,7,2 (color=white)
-            2,7,1
-            3,7,1
-            4,8,3
-            5,8,4 (color=black)
+            0:{8 2} (color: black;)
+            1:{7 2}
+            2:{7 1}
+            3:{7 1}
+            4:{8 3}
+            5:{8 4} (color: black;)
           </div>
           <div class="chord">
-            [base_fret=8,label=CM6]
-            0,8,1 (color=black)
-            1,10,1 (color=white)
-            2,10,3
-            3,9,3
-            4,10,3
-            5,10,3
+            [base_fret=8,label=CM6/9]
+            0:{8 T} (color: black;)
+            1:{10 2}
+            2:{10 2}
+            3:{9 1}
+            4:{10 3}
+            5:{10 3}
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <section id="Dominant7">
+      <div class="page-header">
+        <h2>Dominant 7</h2>
+      </div>
+
+      <div class="row">
+        <div class="span12">
+          <div class="chord">
+            [base_fret=3,label=C7]
+            0:{3 1}
+            1:{3 1} (color: black;)
+            2:{5 3}
+            3:{3 1}
+            4:{5 4}
+            5:{3 1}
+          </div>
+          <div class="chord">
+            [base_fret=8,label=C7]
+            0:{8 T} (color: black;)
+            1:{x x}
+            2:{8 1}
+            3:{9 3}
+            4:{8 2}
+            5:{x x}
+          </div>
+          <div class="chord">
+            [base_fret=8,label=C7]
+            0:{8 1} (color: black;)
+            1:{10 3}
+            2:{8 1}
+            3:{9 2}
+            4:{8 1}
+            5:{8 1}
+          </div>
+          <div class="chord">
+            [label=C7/G]
+            0:{3 3}
+            1:{3 3} (color: black;)
+            2:{2 2}
+            3:{3 4}
+            4:{1 1}
+            5:{x x}
+          </div>
+          <div class="chord">
+            [base_fret=8,label=C7]
+            0:{8 T} (color: black;)
+            1:{10 2}
+            2:{10 2}
+            3:{9 1}
+            4:{11 4}
+            5:{x x}
+          </div>
+          <div class="chord">
+            [base_fret=5,label=C7/Bb]
+            0:{6 2}
+            1:{x x}
+            2:{5 1}
+            3:{5 1} (color: black;)
+            4:{5 1}
+            5:{x x}
+          </div>
+          <div class="chord">
+            [base_fret=3,label=C7/G]
+            0:{3 1}
+            1:{3 1} (color: black;)
+            2:{5 2}
+            3:{3 1}
+            4:{5 3}
+            5:{6 4}
+          </div>
+          <div class="chord">
+            [base_fret=8,label=C7]
+            0:{8 T} (color: black;)
+            1:{x x}
+            2:{8 1}
+            3:{9 4}
+            4:{8 2}
+            5:{8 3}
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="span12">
+          <div class="chord">
+            [base_fret=2,label=C7(b9)/G]
+            0:{3 2}
+            1:{3 2} (color: black;)
+            2:{2 1}
+            3:{3 3}
+            4:{2 1}
+            5:{x x}
+          </div>
+          <div class="chord">
+            [base_fret=12,label=C7(b9)/E]
+            0:{12 T}
+            1:{x x}
+            2:{14 2}
+            3:{12 1}
+            4:{14 3}
+            5:{x x}
           </div>
         </div>
       </div>
@@ -185,21 +328,39 @@
         <div class="span12">
           <div class="chord">
             [base_fret=3,label=Cm/G]
-            0,3,1 (color=white)
-            1,3,1 (color=black)
-            2,5,3 (color=white)
-            3,5,4
-            4,4,2
-            5,3,1
+            0:{3 1}
+            1:{3 1} (color: black;)
+            2:{5 3}
+            3:{5 4}
+            4:{4 2}
+            5:{3 1}
           </div>
           <div class="chord">
             [base_fret=8,label=Cm]
-            0,8,T (color=black)
-            1,10,3 (color=white)
-            2,10,4
-            3,8,1
-            4,8,1
-            5,8,1(color=black)
+            0:{8 T} (color: black;)
+            1:{10 3}
+            2:{10 4}
+            3:{8 1}
+            4:{8 1}
+            5:{8 1}(color: black;)
+          </div>
+          <div class="chord">
+            [base_fret=10,label=Cm/Eb]
+            0:{11 2}
+            1:{x 3}
+            2:{10 1} (color: black;)
+            3:{12 3}
+            4:{13 4}
+            5:{x 1}
+          </div>
+          <div class="chord">
+            [base_fret=11,label=Cm/Eb]
+            0:{11 T}
+            1:{x 3}
+            2:{13 2}
+            3:{12 1}
+            4:{13 3} (color: black;)
+            5:{x 1}
           </div>
         </div>
       </div>
@@ -208,21 +369,48 @@
         <div class="span12">
           <div class="chord">
             [base_fret=7,label=Cm6]
-            0,8,2 (color=black)
-            1,m,m (color=white)
-            2,7,1
-            3,8,3
-            4,8,3
-            5,8,3 (color=black)
+            0:{8 2} (color: black;)
+            1:{m m}
+            2:{7 1}
+            3:{8 3}
+            4:{8 3}
+            5:{8 3} (color: black;)
           </div>
           <div class="chord">
             [base_fret=12,label=Cm6/A]
-            0,m,T
-            1,12,1 (color=white)
-            2,13,3
-            3,12,2
-            4,13,4 (color=black)
-            5,m,1
+            0:{m T}
+            1:{12 1}
+            2:{13 3}
+            3:{12 2}
+            4:{13 4} (color: black;)
+            5:{m 1}
+          </div>
+          <div class="chord">
+            [base_fret=3,label=Cm6/G]
+            0:{3 1}
+            1:{3 1} (color: black;)
+            2:{5 3}
+            3:{5 1}
+            4:{4 2}
+            5:{5 1}
+          </div>
+          <div class="chord">
+            [base_fret=8,label=Cm6]
+            0:{8 T} (color: black;)
+            1:{10 2}
+            2:{10 2}
+            3:{8 1}
+            4:{10 3}
+            5:{x 1}
+          </div>
+          <div class="chord">
+            [base_fret=8,label=Cm6]
+            0:{8 T} (color: black;)
+            1:{x 1}
+            2:{10 3}
+            3:{8 1}
+            4:{10 4}
+            5:{x 1}
           </div>
         </div>
       </div>
@@ -230,27 +418,1080 @@
       <div class="row">
         <div class="span12">
           <div class="chord">
-            [base_fret=7,label=Cm6]
-            0,8,2 (color=black)
-            1,m,m (color=white)
-            2,7,1
-            3,8,3
-            4,8,3
-            5,8,3 (color=black)
-          </div>
-          <div class="chord">
-            [base_fret=12,label=Cm6/A]
-            0,m,T
-            1,12,1 (color=white)
-            2,13,3
-            3,12,2
-            4,13,4 (color=black)
-            5,m,1
+            [base_fret=8,label=Cm6/9]
+            0:{8 T} (color: black;)
+            1:{10 2}
+            2:{10 2}
+            3:{8 1}
+            4:{10 3}
+            5:{10 3}
           </div>
         </div>
       </div>
 
     </section>
+
+    <section id="Diminished7">
+      <div class="page-header">
+        <h2>Diminished 7</h2>
+      </div>
+
+      <div class="row">
+        <div class="span12">
+          <div class="chord">
+            [base_fret=2,label=C*7]
+            0:{x x}
+            1:{3 2} (color: black;)
+            2:{4 3}
+            3:{2 1}
+            4:{4 4}
+            5:{x x}
+          </div>
+          <div class="chord">
+            [base_fret=7,label=C*7]
+            0:{8 2} (color: black;)
+            1:{x x}
+            2:{7 1}
+            3:{8 3}
+            4:{7 1}
+            5:{x x}
+          </div>
+
+        </div>
+      </div>
+
+    <section id="Minor7">
+      <div class="page-header">
+        <h2>Minor 7</h2>
+      </div>
+
+      <div class="row">
+        <div class="span12">
+          <div class="chord">
+            [base_fret=8,label=Cm7]
+            0:{8 2} (color: black;)
+            1:{x x}
+            2:{8 3}
+            3:{8 3}
+            4:{8 3}
+            5:{8 3}
+          </div>
+          <div class="chord">
+            [base_fret=3,label=Cm7/G]
+            0:{3 1}
+            1:{3 1} (color: black;)
+            2:{5 3}
+            3:{3 1}
+            4:{4 2}
+            5:{3 1}
+          </div>
+          <div class="chord">
+            [label=Cm7/G]
+            0:{3 3}
+            1:{x 1}
+            2:{1 1}
+            3:{3 3}
+            4:{4 4}
+            5:{x x}
+          </div>
+          <div class="chord">
+            [base_fret=8,label=Cm7]
+            0:{8 T} (color: black;)
+            1:{10 3}
+            2:{8 1}
+            3:{8 1}
+            4:{8 1}
+            5:{8 1}
+          </div>
+
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="span12">
+          <div class="chord">
+            [base_fret=3,label=Cm7(b5)]
+            0:{x x}
+            1:{3 1} (color: black;)
+            2:{4 3}
+            3:{3 2}
+            4:{4 4}
+            5:{x 1}
+          </div>
+          <div class="chord">
+            [base_fret=7,label=Cm7(b5)]
+            0:{8 2} (color: black;)
+            1:{x x}
+            2:{8 3}
+            3:{8 4}
+            4:{7 1}
+            5:{x x}
+          </div>
+          <div class="chord">
+            [base_fret=10,label=Cm7(b5)/Eb]
+            0:{11 2}
+            1:{x x}
+            2:{10 1} (color: black;)
+            3:{11 3}
+            4:{11 3}
+            5:{11 3}
+          </div>
+          <div class="chord">
+            [base_fret=11,label=Cm7(b5)/Eb]
+            0:{11 T}
+            1:{13 2}
+            2:{13 2}
+            3:{11 1}
+            4:{13 3} (color: black;)
+            5:{x x}
+          </div>
+          <div class="chord">
+            [base_fret=7,label=Cm7(b5)]
+            0:{8 T} (color: black;)
+            1:{x x}
+            2:{8 2}
+            3:{8 2}
+            4:{7 1}
+            5:{8 3}
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <section id="Minor7">
+      <div class="page-header">
+        <h2>Major Arpeggios</h2>
+      </div>
+
+      <div class="toggle-chord-actions">
+        <a href="javascript:void(0);" class="btn show-button-gmaj active" onclick="toggleArpeggio('gmaj','full');">GMaj</a>
+        <a href="javascript:void(0);" class="btn show-button-gmaj7" onclick="toggleArpeggio('gmaj7','full');">GMaj7</a>
+        <a href="javascript:void(0);" class="btn show-button-g6" onclick="toggleArpeggio('g6','full');">GMaj6</a>
+        <a href="javascript:void(0);" class="btn show-button-gmaj9" onclick="toggleArpeggio('gmaj9','full');">GMaj9</a>
+      </div>
+
+      <div class="row gmaj">
+        <div class="span2">
+          <h3>GMaj</h3>
+          <div class="chord-actions">
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmaj','full');">Full Arpeggio</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmaj','closed1');">Closed Position 1</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmaj','closed2');">Closed Position 2</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmaj','closed3');">Closed Position 3</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmaj','open1');">Open Position 1</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmaj','open2');">Open Position 2</a>
+          </div>
+        </div>
+        <div class="span10">
+          <div id="arpeggio-gmaj-full" class="chord gmaj">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 3(color:black;),7,10
+            1: 2,5,10(color:black;),14
+            2: 5(color:black;),9,12
+            3: 4,7,12(color:black;)
+            4: 3,8(color:black;),12,15
+            5: 3(color:black;),7,10,15(color:black;)
+          </div>
+          <div id="arpeggio-gmaj-closed1" class="chord gmaj hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 3(color:black;)
+            1: 2,5
+            2: 5(color:black;)
+            3: 4
+            4: 3
+            5: 3(color:black;)
+          </div>
+          <div id="arpeggio-gmaj-closed2" class="chord gmaj hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 7,10
+            1: 10(color:black;)
+            2: 9
+            3: 7
+            4: 8(color:black;)
+            5: 7,10
+          </div>
+          <div id="arpeggio-gmaj-closed3" class="chord gmaj hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 10
+            1: 10(color:black;),14
+            2: 9,12
+            3: 12(color:black;)
+            4: 12
+            5: 10,15(color:black;)
+          </div>
+          <div id="arpeggio-gmaj-open1" class="chord gmaj hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 3(color:black;),7
+            1: 5
+            2: 5(color:black;),9
+            3: 7
+            4: 8(color:black;)
+            5: 7,10
+          </div>
+          <div id="arpeggio-gmaj-open2" class="chord gmaj hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 7,10
+            1: 10(color:black;)
+            2: 9,12
+            3: 12(color:black;)
+            4: 12,15
+            5: 10,15(color:black;)
+          </div>
+        </div>
+      </div>
+
+      <div class="row gmaj7">
+        <div class="span2">
+          <h3>GMaj7</h3>
+          <div class="chord-actions">
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmaj7','full');">Full Arpeggio</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmaj7','closed1');">Closed Position 1</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmaj7','closed2');">Closed Position 2</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmaj7','closed3');">Closed Position 3</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmaj7','open1');">Open Position 1</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmaj7','open2');">Open Position 2</a>
+          </div>
+        </div>
+        <div class="span10">
+          <div id="arpeggio-gmaj7-full" class="chord gmaj7">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 2,3(color:black;),7,10,14
+            1: 2,5,9,10(color: black;),14
+            2: 4,5(color: black;),9,12
+            3: 4,7,11,12(color: black;)
+            4: 3,7,8(color: black;),12
+            5: 2,3(color: black;),7,10,14,15(color: black;)
+          </div>
+          <div id="arpeggio-gmaj7-closed1" class="chord gmaj7 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 2,3(color:black;)
+            1: 2,5
+            2: 4,5(color: black;)
+            3: 4
+            4: 3,7
+            5: 2,3(color: black;),7
+          </div>
+          <div id="arpeggio-gmaj7-closed2" class="chord gmaj7 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 7,10
+            1: 9,10(color: black;)
+            2: 9
+            3: 7
+            4: 7,8(color: black;)
+            5: 7,10
+          </div>
+          <div id="arpeggio-gmaj7-closed3" class="chord gmaj7 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 10,14
+            1: 9,10(color: black;),14
+            2: 9,12
+            3: 11,12(color: black;)
+            4: 12
+            5: 10,14,15(color: black;)
+          </div>
+          <div id="arpeggio-gmaj7-open1" class="chord gmaj7 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 2,3(color:black;)
+            1: 2,5
+            2: 4,5(color: black;)
+            3: 4,7
+            4: 7,8(color: black;)
+            5: 7,10
+          </div>
+          <div id="arpeggio-gmaj7-open2" class="chord gmaj7 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 7,10
+            1: 9,10(color: black;)
+            2: 9,12
+            3: 11,12(color: black;)
+            4: 12,15
+            5: 14,15(color: black;)
+          </div>
+        </div>
+      </div>
+
+      <div class="row g6">
+        <div class="span2">
+          <h3>GMaj6</h3>
+          <div class="chord-actions">
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('g6','full');">Full Arpeggio</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('g6','closed1');">Closed Position 1</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('g6','closed2');">Closed Position 2</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('g6','closed3');">Closed Position 3</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('g6','open1');">Open Position 1</a>
+
+          </div>
+        </div>
+        <div class="span10">
+          <div id="arpeggio-g6-full" class="chord g6">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 3(color: black;),7,10,12
+            1: 2,5,7,10(color: black;),14
+            2: 2,5(color: black;),9,12,14
+            3: 4,7,9,12(color: black;)
+            4: 3,5,8(color: black;),12,15
+            5: 3(color: black;),7,10,12
+          </div>
+          <div id="arpeggio-g6-closed1" class="chord g6 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 3(color: black;)
+            1: 2,5
+            2: 2,5(color: black;)
+            3: 4
+            4: 3,5
+            5: 3(color: black;),7
+          </div>
+          <div id="arpeggio-g6-closed2" class="chord g6 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 7,10
+            1: 7,10(color: black;)
+            2: 9
+            3: 7,9
+            4: 8(color: black;)
+            5: 7,10
+          </div>
+          <div id="arpeggio-g6-closed3" class="chord g6 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 10,12
+            1: 10(color: black;),14
+            2: 9,12,14
+            3: 9,12(color: black;)
+            4: 12,15
+            5: 10,12
+          </div>
+          <div id="arpeggio-g6-open1" class="chord g6 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 3(color: black;),7
+            1: 5,7
+            2: 5(color: black;),9
+            3: 7,9
+            4: 8(color: black;),12
+            5: 10,12
+          </div>
+        </div>
+      </div>
+
+      <div class="row gmaj9">
+        <div class="span2">
+          <h3>GMaj9</h3>
+          <div class="chord-actions">
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmaj9','full');">Full Arpeggio</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmaj9','closed1');">Closed Position 1</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmaj9','closed2');">Closed Position 2</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmaj9','closed3');">Closed Position 3</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmaj9','open1');">Open Position 1</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmaj9','open2');">Open Position 1</a>
+          </div>
+        </div>
+        <div class="span10">
+          <div id="arpeggio-gmaj9-full" class="chord gmaj9">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 3(color: black;),5,7,10,14
+            1: 2,5,9,10(color: black;),12,14
+            2: 4,5(color: black;),7,9,12
+            3: 2,4,7,11,12(color: black;),14
+            4: 3,7,8(color: black;),10,12
+            5: 2,3(color: black;),5,7,10,14
+          </div>
+          <div id="arpeggio-gmaj9-closed1" class="chord gmaj9 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 3(color: black;),5
+            1: 2,5
+            2: 4,5(color: black;)
+            3: 2,4
+            4: 3
+            5: 2,3(color: black;),5,7
+          </div>
+          <div id="arpeggio-gmaj9-closed2" class="chord gmaj9 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 7,10
+            1: 9,10(color: black;)
+            2: 7,9
+            3: 7
+            4: 7,8(color: black;),10
+            5: 7,10
+          </div>
+          <div id="arpeggio-gmaj9-closed3" class="chord gmaj9 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 10,14
+            1: 10(color: black;),12,14
+            2: 9,12
+            3: 11,12(color: black;),14
+            4: 10,12
+            5: 10,14
+          </div>
+          <div id="arpeggio-gmaj9-open1" class="chord gmaj9 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 2,3(color: black;),5
+            1: 2,5
+            2: 4,5(color: black;),7
+            3: 4,7
+            4: 7,8(color: black;),10
+            5: 7,10
+          </div>
+          <div id="arpeggio-gmaj9-open2" class="chord gmaj9 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 7,10
+            1: 9,10(color: black;),12
+            2: 9,12
+            3: 11,12(color: black;),14
+            4: 12,15
+            5: 14,15(color: black;), 17
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="Minor">
+      <div class="page-header">
+        <h2>Minor Arpeggios</h2>
+      </div>
+
+      <div class="toggle-chord-actions">
+        <a href="javascript:void(0);" class="btn show-button-gmin active" onclick="toggleArpeggio('gmin','full');">GMin</a>
+        <a href="javascript:void(0);" class="btn show-button-gmin-maj7" onclick="toggleArpeggio('gmin-maj7','full');">GMin(Maj7)</a>
+        <a href="javascript:void(0);" class="btn show-button-gm6" onclick="toggleArpeggio('gm6','full');">Gm6</a>
+        <a href="javascript:void(0);" class="btn show-button-gm69" onclick="toggleArpeggio('gm69','full');">Gm6/9</a>
+        <a href="javascript:void(0);" class="btn show-button-gm7b5" onclick="toggleArpeggio('gm7b5','full');">Gm7b5</a>
+      </div>
+
+      <div class="row gmin">
+        <div class="span2">
+          <h3>Gmin</h3>
+          <div class="chord-actions">
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmin','full');">Full Arpeggio</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmin','closed1');">Closed Position 1</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmin','closed2');">Closed Position 2</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmin','closed3');">Closed Position 3</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmin','open1');">Open Position 1</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmin','open2');">Open Position 1</a>
+          </div>
+        </div>
+        <div class="span10">
+          <div id="arpeggio-gmin-full" class="chord gmin">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 3(color: black;), 6, 10
+            1: 5, 10(color: black;), 13
+            2: 5(color: black;), 8, 12
+            3: 3, 7, 12(color: black;)
+            4: 3, 8(color: black;), 11
+            5: 3, 6, 10, 15(color: black;)
+          </div>
+          <div id="arpeggio-gmin-closed1" class="chord gmin hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 3(color: black;),6
+            1: 5
+            2: 5(color: black;)
+            3: 3
+            4: 3
+            5: 3,6
+          </div>
+          <div id="arpeggio-gmin-closed2" class="chord gmin hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 10
+            1: 5,10(color: black;)
+            2: 8
+            3: 7
+            4: 8(color: black;)
+            5: 6,10
+          </div>
+          <div id="arpeggio-gmin-closed3" class="chord gmin hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 10
+            1: 10(color: black;), 13
+            2: 12
+            3: 12(color: black;)
+            4: 11
+            5: 10, 15(color: black;)
+          </div>
+          <div id="arpeggio-gmin-open1" class="chord gmin hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 3(color: black;), 6
+            1: 5
+            2: 5(color: black;), 8
+            3: 7
+            4: 8(color: black;)
+            5: 6, 10
+          </div>
+          <div id="arpeggio-gmin-open2" class="chord gmin hide">
+            [label=Cmin,orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 3
+            1: 3(color: black;), 6
+            2: 5
+            3: 5(color: black;), 8
+            4: 8
+            5: 8(color: black;), 11
+          </div>
+        </div>
+      </div>
+
+      <div class="row gmin-maj7">
+        <div class="span2">
+          <h3>Gm(maj7)</h3>
+          <div class="chord-actions">
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmin-maj7','full');">Full Arpeggio</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmin-maj7','closed1');">Closed Position 1</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmin-maj7','closed2');">Closed Position 2</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmin-maj7','closed3');">Closed Position 3</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmin-maj7','open1');">Open Position 1</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gmin-maj7','open2');">Open Position 1</a>
+          </div>
+        </div>
+        <div class="span10">
+          <div id="arpeggio-gmin-maj7-full" class="chord gmin-maj7">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 2,3(color: black;),6,10,14
+            1: 5,9,10(color: black;),13
+            2: 4,5(color: black;),8,12
+            3: 3,7,11,12(color: black;)
+            4: 3,7,8(color: black;),11
+            5: 2,3(color: black;),6,10,14,15(color: black;)
+          </div>
+          <div id="arpeggio-gmin-maj7-closed1" class="chord gmin-maj7 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 2,3(color: black;),6
+            1: 5
+            2: 4,5(color: black;)
+            3: 3
+            4: 3,7
+            5: 2,3(color: black;),6
+          </div>
+          <div id="arpeggio-gmin-maj7-closed2" class="chord gmin-maj7 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 6,10
+            1: 9,10(color: black;)
+            2: 8
+            3: 7
+            4: 7,8(color: black;)
+            5: 6,10
+          </div>
+          <div id="arpeggio-gmin-maj7-closed3" class="chord gmin-maj7 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 10,14
+            1: 9,10(color: black;),13
+            2: 12
+            3: 11,12(color: black;)
+            4: 11
+            5: 10,14,15(color: black;)
+          </div>
+          <div id="arpeggio-gmin-maj7-open1" class="chord gmin-maj7 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 2,3(color: black;)
+            1: 1,5
+            2: 4,5(color: black;)
+            3: 3,7
+            4: 7,8(color: black;)
+            5: 6,10
+          </div>
+          <div id="arpeggio-gmin-maj7-open2" class="chord gmin-maj7 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 6,10
+            1: 9,10(color: black;)
+            2: 8,12
+            3: 11,12(color: black;)
+            4: 11,15
+            5: 14,15(color: black;)
+          </div>
+        </div>
+      </div>
+
+      <div class="row gm6">
+        <div class="span2">
+          <h3>Gm6</h3>
+          <div class="chord-actions">
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gm6','full');">Full Arpeggio</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gm6','closed1');">Closed Position 1</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gm6','closed2');">Closed Position 2</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gm6','closed3');">Closed Position 3</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gm6','open1');">Open Position 1</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gm6','open2');">Open Position 1</a>
+          </div>
+        </div>
+        <div class="span10">
+          <div id="arpeggio-gm6-full" class="chord gm6">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 3(color: black;),6,10,12
+            1: 5,7,10(color: black;),13
+            2: 2,5(color: black;),8,12,14
+            3: 3,7,9,12(color: black;)
+            4: 3,5,8(color: black;),11
+            5: 3(color: black;),6,10,12
+          </div>
+          <div id="arpeggio-gm6-closed1" class="chord gm6 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 3(color: black;),6
+            1: 5
+            2: 2,5(color: black;)
+            3: 3
+            4: 3,5
+            5: 3(color: black;),6
+          </div>
+          <div id="arpeggio-gm6-closed2" class="chord gm6 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 6,10
+            1: 7,10(color: black;)
+            2: 8
+            3: 7,9
+            4: 8(color: black;)
+            5: 6,10
+          </div>
+          <div id="arpeggio-gm6-closed3" class="chord gm6 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 10,12
+            1: 10(color: black;),13
+            2: 12,14
+            3: 9,12(color: black;)
+            4: 11
+            5: 10,12
+          </div>
+          <div id="arpeggio-gm6-open1" class="chord gm6 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 3(color: black;),6
+            1: 5,7
+            2: 5(color: black;),8
+            3: 7,9
+            4: 8(color: black;),11
+            5: 10,12
+          </div>
+          <div id="arpeggio-gm6-open2" class="chord gm6 hide">
+            [label=Cm6,orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 3,5
+            1: 3(color: black;),6
+            2: 5,7
+            3: 5(color: black;),8
+            4: 8,10
+            5: 8(color: black;), 11
+          </div>
+        </div>
+      </div>
+
+      <div class="row gm69">
+        <div class="span2">
+          <h3>Gm6/9</h3>
+          <div class="chord-actions">
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gm69','full');">Full Arpeggio</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gm69','closed1');">Closed Position 1</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gm69','closed2');">Closed Position 2</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gm69','closed3');">Closed Position 3</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gm69','open1');">Open Position 1</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gm69','open2');">Open Position 1</a>
+          </div>
+        </div>
+        <div class="span10">
+          <div id="arpeggio-gm69-full" class="chord gm69">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            5: 3(color: black;),5,6,10,12
+            4: 3,5,8(color: black;),10,11
+            3: 2,3,7,9,12(color: black;)
+            2: 2,5(color: black;),7,8,12,14
+            1: 5,7,10(color: black;),12,13
+            0: 3(color: black;),5,6,10,12
+          </div>
+          <div id="arpeggio-gm69-closed1" class="chord gm69 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 3(color: black;),5,6
+            1: 5
+            2: 2,5(color: black;)
+            3: 2,3
+            4: 3,5
+            5: 3(color: black;),5,6
+          </div>
+          <div id="arpeggio-gm69-closed2" class="chord gm69 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 6,10
+            1: 7,10(color: black;)
+            2: 7,8
+            3: 7,9
+            4: 8(color: black;),10
+            5: 6,10
+          </div>
+          <div id="arpeggio-gm69-closed3" class="chord gm69 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 10,12
+            1: 10(color: black;),12,13
+            2: 12,14
+            3: 12(color: black;)
+            4: 10,11
+            5: 10,12
+          </div>
+          <div id="arpeggio-gm69-open1" class="chord gm69 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 3(color: black;),5,6
+            1: 5,7
+            2: 5(color: black;),7,8
+            3: 7,9
+            4: 8(color: black;),10,11
+            5: 10,12
+          </div>
+          <div id="arpeggio-gm69-open2" class="chord gm69 hide">
+            [label=Cm6/9,orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            0: 3,5
+            1: 3(color: black;),5,6
+            2: 5,7
+            3: 5(color: black;),7,8
+            4: 8,10
+            5: 8(color: black;), 10,11
+          </div>
+        </div>
+      </div>
+
+      <div class="row gm7b5">
+        <div class="span2">
+          <h3>Gm7b5</h3>
+          <div class="chord-actions">
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gm7b5','full');">Full Arpeggio</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gm7b5','closed1');">Closed Position 1</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gm7b5','closed2');">Closed Position 2</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gm7b5','closed3');">Closed Position 3</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gm7b5','open1');">Open Position 1</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gm7b5','open2');">Open Position 2</a>
+          </div>
+        </div>
+        <div class="span10">
+          <div id="arpeggio-gm7b5-full" class="chord gm7b5">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            5: 3,6,10,12(color: black;)
+            4: 3,5(color: black;),8,11
+            3: 3,7,9(color: black;),12
+            2: 2(color: black;),5,8,12,14(color: black;)
+            1: 5,7(color: black;),10,13
+            0: 3,6,10,12(color: black;)
+          </div>
+          <div id="arpeggio-gm7b5-closed1" class="chord gm7b5 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            5: 3,6
+            4: 3,5(color: black;)
+            3: 3
+            2: 2(color: black;),5
+            1: 5
+            0: 3,6
+          </div>
+          <div id="arpeggio-gm7b5-closed2" class="chord gm7b5 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            5: 6,10
+            4: 8
+            3: 7,9(color: black;)
+            2: 8
+            1: 7(color: black;),10
+            0: 6,10
+          </div>
+          <div id="arpeggio-gm7b5-closed3" class="chord gm7b5 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            5: 10,12(color: black;)
+            4: 11
+            3: 9(color: black;),12
+            2: 12,14(color: black;)
+            1: 10,13
+            0: 10,12(color: black;)
+          </div>
+          <div id="arpeggio-gm7b5-open1" class="chord gm7b5 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            5: 10,12(color: black;)
+            4: 8,11
+            3: 7,9(color: black;)
+            2: 5,8
+            1: 5,7(color: black;)
+            0: 3,6
+          </div>
+          <div id="arpeggio-gm7b5-open2" class="chord gm7b5 hide">
+            [label=Am7b5(Cm6),orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            5: 8,11
+            4: 8,10(color: black;)
+            3: 5,8
+            2: 5,7(color: black;)
+            1: 3,6
+            0: 3,5(color: black;)
+          </div>
+          <p>Min7b5 is an inversion of min6.  Min7b5 will only go with Min7b5.</p>
+        </div>
+      </div>
+
+    </section>
+
+    <section id="Dominant">
+      <div class="page-header">
+        <h2>Dominant Arpeggios</h2>
+      </div>
+
+      <div class="toggle-chord-actions">
+        <a href="javascript:void(0);" class="btn show-button-g7 active" onclick="toggleArpeggio('g7','full');">G7</a>
+        <a href="javascript:void(0);" class="btn show-button-g9" onclick="toggleArpeggio('g9','full');">G9</a>
+        <a href="javascript:void(0);" class="btn show-button-g7b9" onclick="toggleArpeggio('g7b9','full');">G7b9</a>
+      </div>
+
+      <div class="row g7">
+        <div class="span2">
+          <h3>G7</h3>
+          <div class="chord-actions">
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('g7','full');">Full Arpeggio</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('g7','closed1');">Closed Position 1</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('g7','closed2');">Closed Position 2</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('g7','closed3');">Closed Position 3</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('g7','open1');">Open Position 1</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('g7','open2');">Open Position 2</a>
+          </div>
+        </div>
+        <div class="span10">
+          <div id="arpeggio-g7-full" class="chord g7">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            5: 3(color: black;),7,10,13
+            4: 3,6,8(color: black;),12
+            3: 4,7,10,12(color: black;)
+            2: 3,5(color: black;),9,12
+            1: 2,5,8,10(color: black;),14
+            0: 3(color: black;),7,10,13
+          </div>
+          <div id="arpeggio-g7-closed1" class="chord g7 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            5: 3(color: black;),7
+            4: 3,6
+            3: 4
+            2: 3,5(color: black;)
+            1: 2,5
+            0: 3(color: black;)
+          </div>
+          <div id="arpeggio-g7-closed2" class="chord g7 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            5: 7,10
+            4: 6,8(color: black;)
+            3: 7,10
+            2: 9
+            1: 8,10(color: black;)
+            0: 7,10
+          </div>
+          <div id="arpeggio-g7-closed3" class="chord g7 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            5: 10,13
+            4: 12
+            3: 10,12(color: black;)
+            2: 12
+            1: 10(color: black;),14
+            0: 10,13
+          </div>
+          <div id="arpeggio-g7-open1" class="chord g7 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            5: 7,10
+            4: 6,8(color: black;)
+            3: 4,7
+            2: 3,5(color: black;)
+            1: 2,5
+            0: 1,3(color: black;)
+          </div>
+          <div id="arpeggio-g7-open2" class="chord g7 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            5: 13,15(color: black;)
+            4: 12,15
+            3: 10,12(color: black;)
+            2: 9,12
+            1: 8,10(color: black;)
+            0: 7,10
+          </div>
+        </div>
+      </div>
+
+      <div class="row g9">
+        <div class="span2">
+          <h3>G9</h3>
+          <div class="chord-actions">
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('g9','full');">Full Arpeggio</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('g9','closed1');">Closed Position 1</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('g9','closed2');">Closed Position 2</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('g9','closed3');">Closed Position 3</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('g9','open1');">Open Position 1</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('g9','open2');">Open Position 2</a>
+          </div>
+        </div>
+        <div class="span10">
+          <div id="arpeggio-g9-full" class="chord g9">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            5: 3(color: black;),5,7,10,13
+            4: 3,6,8(color: black;),10,12
+            3: 2,4,7,10,12(color: black;)
+            2: 3,5(color: black;),7,9,12
+            1: 2,5,8,10(color: black;),12,14
+            0: 3(color: black;),5,7,10,13
+          </div>
+          <div id="arpeggio-g9-closed1" class="chord g9 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            5: 3(color: black;),5
+            4: 3,6
+            3: 2,4
+            2: 3,5(color: black;)
+            1: 2,5
+            0: 3(color: black;),5
+          </div>
+          <div id="arpeggio-g9-closed2" class="chord g9 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            5: 7,10
+            4: 8(color: black;),10
+            3: 7,10
+            2: 7,9
+            1: 8,10(color: black;)
+            0: 7,10
+          </div>
+          <div id="arpeggio-g9-closed3" class="chord g9 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            5: 10,13
+            4: 10,12
+            3: 10,12(color: black;)
+            2: 9,12
+            1: 10(color: black;),12,14
+            0: 10,13
+          </div>
+          <div id="arpeggio-g9-open1" class="chord g9 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            5: 7,10
+            4: 6,8(color: black;),10
+            3: 4,7
+            2: 3,5(color: black;)
+            1: 2,5
+            0: 1,3(color: black;)
+          </div>
+          <div id="arpeggio-g9-open2" class="chord g9 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            5: 13,15(color: black;),17
+            4: 12,15
+            3: 10,12,13(color: black;)
+            2: 9,12
+            1: 8,10(color: black;),12
+            0: 7,10
+          </div>
+        </div>
+      </div>
+
+      <div class="row g7b9">
+        <div class="span2">
+          <h3>G7b9</h3>
+          <div class="chord-actions">
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('g7b9','full');">Full Arpeggio</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('g7b9','closed1');">Closed Position 1</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('g7b9','closed2');">Closed Position 2</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('g7b9','closed3');">Closed Position 3</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('g7b9','open1');">Open Position 1</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('g7b9','open2');">Open Position 2</a>
+          </div>
+        </div>
+        <div class="span10">
+          <div id="arpeggio-g7b9-full" class="chord g7b9">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            5: 3(color: black;),4,7,10,13
+            4: 3,6,8(color: black;),9,12
+            3: 4,7,10,12(color: black;),13
+            2: 3,5(color: black;),6,9,12
+            1: 2,5,8,10(color: black;),11
+            0: 3(color: black;),4,7,10,13
+          </div>
+          <div id="arpeggio-g7b9-closed1" class="chord g7b9 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            5: 3(color: black;),4,7
+            4: 3,6
+            3: 4
+            2: 3,5(color: black;),6
+            1: 2,5
+            0: 3(color: black;),4
+          </div>
+          <div id="arpeggio-g7b9-closed2" class="chord g7b9 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            5: 7,10
+            4: 8(color: black;),9
+            3: 7,10
+            2: 9
+            1: 8,10(color: black;),11
+            0: 7,10
+          </div>
+          <div id="arpeggio-g7b9-closed3" class="chord g7b9 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            5: 10,13
+            4: 12
+            3: 10,12(color: black;),13
+            2: 9,12
+            1: 10(color: black;),11
+            0: 10,13
+          </div>
+          <div id="arpeggio-g7b9-open1" class="chord g7b9 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            5: 7,10
+            4: 6,8(color: black;),9
+            3: 4,7
+            2: 3,5(color: black;),6
+            1: 2,5
+            0: 1,3(color: black;),4
+          </div>
+          <div id="arpeggio-g7b9-open2" class="chord g7b9 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            5: 13,15(color: black;),16
+            4: 12,15
+            3: 10,12(color: black;),13
+            2: 9,12
+            1: 8,10(color: black;),11
+            0: 7,10
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="Diminished">
+      <div class="page-header">
+        <h2>Diminished Arpeggios</h2>
+      </div>
+
+      <div class="toggle-chord-actions">
+        <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gdim7','full');">Gdim7</a>
+      </div>
+
+      <div class="row gdim7">
+        <div class="span2">
+          <h3>Gdim7</h3>
+          <div class="chord-actions">
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gdim7','full');">Full Arpeggio</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gdim7','closed1');">Closed Position 1</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gdim7','closed2');">Closed Position 2</a>
+            <a href="javascript:void(0);" class="btn" onclick="showArpeggioPosition('gdim7','open1');">Open Position 1</a>
+          </div>
+        </div>
+        <div class="span10">
+          <div id="arpeggio-gdim7-full" class="chord gdim7">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            5: 3(color: black;),6
+            4: 2,5
+            3: 3,6
+            2: 2,5(color: black;)
+            1: 4,7
+            0: 3(color: black;),6
+          </div>
+          <div id="arpeggio-gdim7-closed1" class="chord gdim7 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            5: 3(color: black;),
+            4: 2,5
+            3: 3
+            2: 2,5(color: black;)
+            1: 4
+            0: 3(color: black;),6
+          </div>
+          <div id="arpeggio-gdim7-closed2" class="chord gdim7 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            5: 3(color: black;),6
+            4: 5
+            3: 3,6
+            2: 5(color: black;)
+            1: 4,7
+            0: 6
+          </div>
+          <div id="arpeggio-gdim7-open1" class="chord gdim7 hide">
+            [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+            5: 9,12
+            4: 8(color: black;),11
+            3: 6,9
+            2: 5(color: black;),8
+            1: 4,7
+            0: 3(color: black;),6
+          </div>
+        </div>
+      </div>
+    </section>
+
   </div>
 
 </body>

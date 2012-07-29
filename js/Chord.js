@@ -25,6 +25,7 @@ Chord = function(_element, _config) {
 
   // raphael object
   var r = null;
+  var transform_str = "";
 
   var data_config_defaults = {
     // DATA DEFAULTS
@@ -32,7 +33,8 @@ Chord = function(_element, _config) {
     num_frets: 5,
     base_fret: 1,
     notes: [],
-    label: ""
+    label: "",
+    tuning: "EADGBe"
   }
 
   var viz_config_defaults = {
@@ -64,6 +66,9 @@ Chord = function(_element, _config) {
     label_font_size: 36,
     label_y_offset: 20,
 
+    tuning_label_font_size: 18,
+    tuning_label_offset: 14,
+
     base_fret_font_size: 26,
     base_fret_offset: 14
   };
@@ -88,7 +93,8 @@ Chord = function(_element, _config) {
     drawNeck(
       self.config.grid_x, self.config.grid_y,
       neck.width, neck.height,
-      self.config.num_strings-1, self.config.num_frets, "#000");
+      self.config.num_strings-1, self.config.num_frets, "#000"
+    );
 
     if (self.config.base_fret == 1) {
       drawNut();
@@ -97,26 +103,22 @@ Chord = function(_element, _config) {
     }
 
     drawLabel();
+    drawTuningLabel();
 
   };
 
   var setOrientation = function(orientation) {
+    if (_.isString(orientation)) {
+      if (orientation == "left") { setOrientation(NUT_LEFT); }
+      else if (orientation == "top") { setOrientation(NUT_TOP); }
+    }
     if (!_.include([NUT_TOP, NUT_LEFT], orientation)) { return; }
 
     // TODO: Deal correctly with chord label
 
     if (orientation == NUT_TOP) {
 
-      // TODO: not all things are correct for setOrientation(NUT_TOP);
-
-      _.each(neck.glyphs, function(glyph) {
-        glyph.transform("");
-      });
-      _.each(self.notes, function(note, note_id) {
-        note.glyphs['fret-marker'].transform("");
-        note.glyphs['finger-annotation'].transform("");
-      });
-
+      transform_str = "";
       self.width = self.config.grid_x + neck.width + 20 + 20;
       self.height = self.config.grid_y + neck.height + 10 + self.config.grid_bottom_padding;
       r.setSize(self.width, self.height);
@@ -129,33 +131,32 @@ Chord = function(_element, _config) {
       var rotate_o_y = (self.config.grid_y+(neck.height/2));
       var translate_x = -(self.width - self.height) / 2;
       var translate_y = (self.height - self.width) / 2;
-      var transform_str = "r-90,"+ rotate_o_x +","+ rotate_o_y +"t"+translate_x+"," + translate_y;
+      transform_str = "r-90,"+ rotate_o_x +","+ rotate_o_y +"t"+translate_x+"," + translate_y;
 
       console.log(transform_str);
-
-      _.each(neck.glyphs, function(glyph) {
-        _.each(neck.glyphs, function(glyph) {
-          if(_.isArray(glyph)) {
-            _.each(glyph, function(glyph) {
-              glyph.transform(transform_str);
-            });
-          } else {
-            glyph.transform(transform_str);
-          }
-
-        });
-      });
-      _.each(notes, function(note, note_id) {
-        _.each(note.glyphs, function(glyph) {
-          glyph.transform(transform_str);
-        });
-      });
 
       self.width = self.config.grid_x + neck.height + 20 + 20;
       self.height = self.config.grid_y + neck.width + 10 + self.config.grid_bottom_padding;
       r.setSize(self.width, self.height);
 
     }
+    _.each(neck.glyphs, function(glyph) {
+      _.each(neck.glyphs, function(glyph) {
+        if(_.isArray(glyph)) {
+          _.each(glyph, function(glyph) {
+            glyph.transform(transform_str);
+          });
+        } else {
+          glyph.transform(transform_str);
+        }
+
+      });
+    });
+    _.each(notes, function(note, note_id) {
+      _.each(note.glyphs, function(glyph) {
+        glyph.transform(transform_str);
+      });
+    });
   }
 
   var drawNeck = function(x, y, w, h, wv, hv, color) {
@@ -260,6 +261,22 @@ Chord = function(_element, _config) {
     //self.neck.push(glyph);
   };
 
+  var drawTuningLabel = function() {
+    neck.glyphs['tuning-labels'] = [];
+    for (var i=0; i<self.config.tuning.length; i++) {
+      var note = self.config.tuning[i];
+
+      var x = self.config.grid_x + (i * self.config.string_gap);
+      var y = self.config.grid_y + neck.height + self.config.tuning_label_offset;
+      var annotation_style = {
+        fill: "black"
+      };
+
+      var glyph = r.text(x, y, "" + note).attr({ 'font-size': self.config.tuning_label_font_size });
+      neck.glyphs['tuning-labels'].push(glyph);
+    }
+  }
+
   var drawBaseFret = function(base_fret) {
     var x = self.config.grid_x + neck.width + self.config.base_fret_offset;
     var y = self.config.grid_y + self.config.fret_gap/2;
@@ -282,13 +299,13 @@ Chord = function(_element, _config) {
       // TODO:
     } else if (_.isObject(note)) {
       if(note.muted) {
-        drawMuteStringAnnotatation(note);
+        drawMuteStringAnnotatation(note).transform(transform_str);
       } else if (note.fret == 0 || note.open) {
-        drawOpenStringAnnotatation(note);
+        drawOpenStringAnnotatation(note).transform(transform_str);
       } else {
-        drawFretMarker(note);
+        drawFretMarker(note).transform(transform_str);
         if (note.finger) {
-          drawFingerAnnotation(note);
+          drawFingerAnnotation(note).transform(transform_str);
         }
       }
     }
@@ -346,6 +363,7 @@ Chord = function(_element, _config) {
 
     var glyph = r.text(x, y, "X").attr({ 'font-size': self.config.anno_font_size });
     note.glyphs['finger-annotation'] = glyph;
+    return glyph;
   };
 
   var drawOpenStringAnnotatation = function(note) {
@@ -355,6 +373,7 @@ Chord = function(_element, _config) {
 
     var glyph = r.circle(x, y, self.config.open_note_radius).attr({ stroke: "black", fill: "white" });
     note.glyphs['finger-annotation'] = glyph;
+    return glyph;
   };
 
   var drawFingerAnnotation = function(note) {
@@ -368,6 +387,7 @@ Chord = function(_element, _config) {
 
     var glyph = r.text(x, y, ""+note.finger).attr({ 'font-size': self.config.anno_font_size });
     note.glyphs['finger-annotation'] = glyph;
+    return glyph;
   };
 
   var drawLabel = function() {
@@ -445,13 +465,17 @@ Chord = function(_element, _config) {
     _.defaults(_config, data_config_defaults);
     self.config = _config;
 
+    if (self.config.label == "") {
+      self.config.grid_y = 10;
+    }
+
     // Scaling is done by scaling all the constant factors in the render code
     if (self.config.scale != 1) {
       scaleSize();
     }
 
     self.width = self.config.grid_x + self.config.num_strings*self.config.string_gap + 20 + 20;
-    self.height = self.config.grid_y + self.config.num_frets*self.config.fret_gap + 10 + self.config.grid_bottom_padding;
+    self.height = self.config.grid_y + self.config.num_frets*self.config.fret_gap + 10 + self.config.grid_bottom_padding + 20;
 
     if (_.isString(_element)) {
       r = Raphael(document.getElementById(_element), self.width, self.height);

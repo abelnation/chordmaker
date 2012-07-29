@@ -16,17 +16,25 @@ var ChordMaker = (function() {
       var num_frets = 5;
       var base_fret = 1;
       var label = "";
-      var notes = [];
+      var fret_gap = 30;
+      var scale = 0.5;
+      var orientation = "top";
+      var notes_to_add = [];
 
+      var default_color = "white";
       var color = "white";
 
       var lines = chord_str.split("\n");
       _.each(lines, function(line) {
+
         if (line == "") { return; }
+
+        // Deal with chord config string
         if (line.indexOf("[")!=-1) {
           line = line.replace(/^\[|\]$/g, '');
           var params = line.split(",");
           _.each(params, function(param) {
+            param = param.replace(/^\s+|\s+$/g, '');
             var tokens = param.split("=");
             var key = tokens[0];
             var val = tokens[1];
@@ -34,68 +42,77 @@ var ChordMaker = (function() {
               base_fret = parseInt(val);
             } else if (key=="label") {
               label = val;
+            } else if (key=="orientation") {
+              orientation = val;
+            } else if (key=="num_frets") {
+              num_frets = parseInt(val);
+            } else if (key=="scale") {
+              scale = parseFloat(val);
+            } else if (key=="fret_gap") {
+              fret_gap = parseInt(val);
             }
           });
           return;
         }
-        var notes_regex = /(\d{1,2},(\d{1,2}|[mMxX]),([\d|[mMxXTt])\|?)+/g;
-        notes_str = line.match(notes_regex)[0];
-        console.log(notes_str);
 
-        // Deal with config string
-        var config_regex = /\(.*\)/g;
-        config_str = line.match(config_regex);
+        var string_regex = /\s*(\d{1,2}):/;
+        var string_num = parseInt(line.match(string_regex)[1].replace(/^\s+|\s+$/g, ''));
+        // console.log(string_num);
 
-        if (config_str) {
-          config_str2 = config_str[0];
-          config_str2 = config_str2.replace(/^\(|\)$/g, '');
-          var params = config_str2.split(",");
-          _.each(params, function(param) {
-            var tokens = param.split("=");
-            var key = tokens[0];
-            var val = tokens[1];
-            if (key == "color") {
-              color = val;
-            }
-          });
-        }
+        var notes_part = line.replace(string_regex, "");
+        // console.log(notes_part);
 
-        // Deal with note string
-        var tokens = notes_str.split("|");
-        _.each(tokens, function(token, index) {
-          var note = {};
-          var nums = token.split(",");
+        var notes = notes_part.split(',');
+        _.each(notes, function(note) {
+          color = default_color;
 
-          var string = nums[0];
-          var fret = nums[1];
-          var finger = nums[2];
-          var tonic = undefined;
+          // Deal with config string
+          var config_regex = /\(.*\)/g;
+          var config_str = note.match(config_regex);
 
-          if (!fret || !string) { return; }
-          if (fret.match(/^[oO0]$/)) {
-            note.string = string;
-            note.fret = 0;
-            note.open = true;
-          } else if (fret.match(/[mMxX]/)) {
-            note.string = string;
-            note.muted = true;
+          if (config_str) {
+            var config_str2 = config_str[0];
+            note = note.replace(config_str2, "");
+            config_str2 = config_str2.replace(/^\(|\)$/g, '');
+            var params = config_str2.split(";");
+            _.each(params, function(param) {
+              if (param == "") { return; }
+              var tokens = param.split(":");
+              // console.log("param: " + param);
+              var key = tokens[0].replace(/^\s+|\s+$/g, '');
+              var val = tokens[1].replace(/^\s+|\s+$/g, '');
+
+              if (key == "color") {
+                color = val;
+              }
+            });
+          }
+
+          var theNote = {};
+          theNote.string = string_num;
+
+          if (note.indexOf("{") != -1) {
+            note = note.replace(/[{|}]/g, "");
+            var tokens = note.split(" ");
+            theNote.fret = tokens[0].replace(/^\s+|\s+$/g, '');
+            if (tokens[1]) { theNote.finger = tokens[1]; }
           } else {
-            if ((parseInt(fret)-base_fret) > num_frets) { num_frets = parseInt(fret); }
-            note.string = string;
-            note.fret = parseInt(fret);
+            theNote.fret = note.replace(/^\s+|\s+$/g, '');
           }
 
-          if (finger) {
-            note.finger = finger;
-          }
-          if (tonic) {
-            note.tonic = true;
-          }
-          if (color) {
-            note.color = color;
+          if (theNote.fret.match(/^[oO0]$/)) {
+            theNote.fret = 0;
+            theNote.open = true;
+          } else if (theNote.fret.match(/[mMxX]/)) {
+            theNote.muted = true;
+          } else {
+            theNote.fret = parseInt(theNote.fret);
+            var fret_amt = (parseInt(theNote.fret)-base_fret);
+            if (fret_amt > num_frets) { num_frets = theNote.fret+1; }
           }
 
-          notes.push(note);
+          theNote.color = color;
+          notes_to_add.push(_.clone(theNote));
         });
 
 
@@ -106,9 +123,12 @@ var ChordMaker = (function() {
         'num_frets': num_frets,
         'num_strings': num_strings,
         'base_fret': base_fret,
-        'label': label
+        'scale': scale,
+        'orientation': orientation,
+        'label': label,
+        'fret_gap': fret_gap
       });
-      result.addNotes(notes);
+      result.addNotes(notes_to_add);
       return result
     },
 

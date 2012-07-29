@@ -1427,7 +1427,7 @@ select:focus:required:invalid:focus {
 .form-search .hide,
 .form-inline .hide,
 .form-horizontal .hide {
-  display: none;
+  display: none !important;
 }
 
 .form-search label,
@@ -4971,7 +4971,7 @@ a.badge:hover {
 }
 
 .hide {
-  display: none;
+  display: none !important;
 }
 
 .show {
