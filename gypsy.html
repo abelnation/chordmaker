@@ -21,9 +21,28 @@
 
   <script type="text/javascript" src="js/Chord.js"></script>
   <script type="text/javascript" src="js/ChordMaker.js"></script>
+  <script type="text/javascript" src="js/music.js"></script>
 
   <script type="text/javascript">
     $(function() {
+
+      function updatePracticeArpeggios() {
+        var key1 = $("#practice-key-1").val();
+        var scale1 = $("#practice-scale-1").val();
+        var key2 = $("#practice-key-2").val();
+        var scale2 = $("#practice-scale-2").val();
+
+        //$("#arpeggio-practice-1").empty();
+        //$("#arpeggio-practice-2").empty();
+        ChordMaker.makeArpeggioDiagram($("#arpeggio-practice-1")[0], key1, scale1, { scale: 1.0 });
+        ChordMaker.makeArpeggioDiagram($("#arpeggio-practice-2")[0], key2, scale2, { scale: 1.0 });
+      }
+
+      $(".practice-field").keyup(function(e) {
+        updatePracticeArpeggios();
+      });
+
+      updatePracticeArpeggios();
       ChordMaker.parseChordsInPage();
 
       toggleArpeggio("gmaj");
@@ -64,12 +83,15 @@
       }
     }
 
+
+
   </script>
 
   <style type="text/css">
     /* apply a natural box layout model to all elements */
     * { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
 
+    body { margin: 0 0 100px 0; }
     .example {
       text-align: center;
     }
@@ -1759,6 +1781,30 @@
         </div>
       </div>
     </section>
+
+    <section id="practice">
+      <div class="row">
+        Arpeggio 1:
+        <input type="text" style="width: 30px;" class="practice-field" id="practice-key-1" value="a"/>
+        <input type="text" style="width: 60px;" class="practice-field" id="practice-scale-1" value="7"/>
+      </div>
+      <div class="row">
+        Arpeggio 2:
+        <input type="text" style="width: 30px;" class="practice-field" id="practice-key-2" value="e"/>
+        <input type="text" style="width: 60px;" class="practice-field" id="practice-scale-2" value="m7b5"/>
+      </div>
+      <div class="row">
+        <div class="span12">
+          <div id="arpeggio-practice-1"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="span12">
+          <div id="arpeggio-practice-2"></div>
+        </div>
+      </div>
+    </section>
+
 
   </div>
 

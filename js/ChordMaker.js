@@ -132,6 +132,55 @@ var ChordMaker = (function() {
       return result
     },
 
+
+    makeArpeggioDiagram: function(element, key, scale, options) {
+
+      if(!_.has(Vex.Flow.Music.noteValues, key) ||
+         !_.has(Vex.Flow.Music.arpeggios, scale)) {
+        return;
+      }
+
+      element.innerHTML = "";
+
+      if(_.isUndefined(options)) { options = {}; }
+      if(_.isUndefined(options.orientation)){ options.orientation = "left"; }
+      if(_.isUndefined(options.num_frets)){ options.num_frets = 17; }
+      if(_.isUndefined(options.fret_gap)){ options.fret_gap = 50; }
+
+      var music = new Vex.Flow.Music();
+
+      var result = Chord(element, options);
+      var base_fret = result.getBaseFret();
+      var num_frets = result.getNumFrets();
+      var tuning = result.getTuning();
+
+      var scale_tones = music.getScaleTones(music.getNoteValue(key), Vex.Flow.Music.arpeggios[scale]);
+      var tonic_value = music.getNoteValue(key);
+
+      var notes_to_add = [];
+
+      for (var i=0; i<result.getNumStrings(); i++) {
+        var string_base_value = music.getNoteValue(tuning[i].toLowerCase());
+        var string_base_fret_value = string_base_value + (base_fret-1);
+        for (var j=0; j<num_frets; j++) {
+          var fret_value = (string_base_fret_value + j) % 12;
+          if (_.include(scale_tones,fret_value)) {
+            var note = {
+              string: i,
+              fret: (base_fret-1)+j,
+            };
+            if (note.fret<=0) {
+              continue;
+            } else if (fret_value == tonic_value) { note.tonic = true; note.color = 'black'; }
+            notes_to_add.push(_.clone(note));
+          }
+        }
+      }
+
+      result.addNotes(notes_to_add);
+      return result;
+    },
+
     parseChordsInPage: function(class_name) {
       if(!class_name) { class_name = "chord"; }
       $("."+class_name).each(function() {

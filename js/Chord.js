@@ -400,9 +400,26 @@ Chord = function(_element, _config) {
     r.text(x,y,fancy_label).attr({ "text-anchor": "middle", "font-size": self.config.label_font_size });
   }
 
+  var getNumStrings = function() {
+    return self.config.num_strings;
+  };
+  self.getNumStrings = getNumStrings;
+  var getBaseFret = function() {
+    return self.config.base_fret;
+  };
+  self.getBaseFret = getBaseFret;
+  var getNumFrets = function() {
+    return self.config.num_frets;
+  };
+  self.getNumFrets = getNumFrets;
+  var getTuning = function() {
+    return self.config.tuning;
+  };
+  self.getTuning = getTuning;
+
   var getCode = function() {
     return "TODO";
-  }
+  };
   self.getCode = getCode;
 
   // var getString = function() {
