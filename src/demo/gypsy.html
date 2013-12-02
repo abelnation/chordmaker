@@ -1,48 +1,58 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
+  <!-- <!-- @echo RANDOM --> -->
   <meta charset="UTF-8">
   <title>Chord Maker</title>
 
   <link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css" media="screen" title="no title" charset="utf-8">
   <link rel="stylesheet" href="prettify/prettify.css" type="text/css" media="screen" title="no title" charset="utf-8">
-  <!-- <link rel="stylesheet" href="prettify/sons-of-obsidian.css" type="text/css" media="screen" title="no title" charset="utf-8"> -->
-
-
-  <!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script> -->
-
-  <script type="text/javascript" src="js/lib/jquery-1.7.2.min.js"></script>
-  <script type="text/javascript" src="js/lib/raphael-min.js"></script>
-  <script type="text/javascript" src="js/lib/underscore-min.js"></script>
+  
+  <script type="text/javascript" src="../js/lib/jquery-1.7.2.min.js"></script>
+  <script type="text/javascript" src="../js/lib/raphael-min.js"></script>
+  <script type="text/javascript" src="../js/lib/underscore-min.js"></script>
 
   <script type="text/javascript" src="prettify/prettify.js"></script>
   <script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
 
-
-  <script type="text/javascript" src="js/Chord.js"></script>
-  <script type="text/javascript" src="js/ChordMaker.js"></script>
-  <script type="text/javascript" src="js/music.js"></script>
+  <!-- @if TARGET == 'dev' -->
+  <script type="text/javascript" src="/js/chordmaker.<!-- @echo VERSION -->.js?<!-- @echo RANDOM -->"></script>
+  <!-- @endif -->
+  <!-- @if TARGET == 'dist' -->
+  <script type="text/javascript" src="../js/chordmaker.min.js"></script>
+  <!-- @endif -->
 
   <script type="text/javascript">
     $(function() {
 
       function updatePracticeArpeggios() {
-        var key1 = $("#practice-key-1").val();
-        var scale1 = $("#practice-scale-1").val();
-        var key2 = $("#practice-key-2").val();
-        var scale2 = $("#practice-scale-2").val();
+        var key1 = $("#arpeggio-practice-key-1").val();
+        var scale1 = $("#arpeggio-practice-scale-1").val();
+        var key2 = $("#arpeggio-practice-key-2").val();
+        var scale2 = $("#arpeggio-practice-scale-2").val();
 
         //$("#arpeggio-practice-1").empty();
         //$("#arpeggio-practice-2").empty();
         ChordMaker.makeArpeggioDiagram($("#arpeggio-practice-1")[0], key1, scale1, { scale: 1.0 });
         ChordMaker.makeArpeggioDiagram($("#arpeggio-practice-2")[0], key2, scale2, { scale: 1.0 });
       }
-
-      $(".practice-field").keyup(function(e) {
+      $("#practice-arpeggios .practice-field").keyup(function(e) {
         updatePracticeArpeggios();
       });
 
+      function updatePracticeScales() {
+        var key1 = $("#scale-practice-key-1").val();
+        var scale1 = $("#scale-practice-scale-1").val();
+
+        ChordMaker.makeScaleDiagram($("#scale-practice-1")[0], key1, scale1, { scale: 1.0 });
+      }
+      $("#practice-scales .practice-field").keyup(function(e) {
+        updatePracticeScales();
+      });
+
       updatePracticeArpeggios();
+      updatePracticeScales();
+      
       ChordMaker.parseChordsInPage();
 
       toggleArpeggio("gmaj");
@@ -73,6 +83,19 @@
     function toggleArpeggio(chord) {
       var class_selector = ".row."+chord;
       var button_selector = ".show-button-"+chord;
+      var is_hidden = $(class_selector).hasClass("hide");
+      if (is_hidden) {
+        $(class_selector).siblings(".toggle-chord-actions").find(".btn").removeClass("active");
+        $(class_selector).siblings(".row").toggleClass("hide", true);
+
+        $(class_selector).toggleClass("hide",!is_hidden);
+        $(button_selector).toggleClass("active", is_hidden);
+      }
+    }
+
+    function toggleScale(scale) {
+      var class_selector = ".row."+scale;
+      var button_selector = ".show-button-"+scale;
       var is_hidden = $(class_selector).hasClass("hide");
       if (is_hidden) {
         $(class_selector).siblings(".toggle-chord-actions").find(".btn").removeClass("active");
@@ -589,8 +612,8 @@
       </div>
 
     </section>
-
-    <section id="Minor7">
+    
+    <section id="MajorArpeggios">
       <!-- <div class="page-header">
         <h2>Major Arpeggios</h2>
       </div> -->
@@ -874,7 +897,7 @@
       </div>
     </section>
 
-    <section id="Minor">
+    <section id="MinorArpeggios">
       <!-- <div class="page-header">
         <h2>Minor Arpeggios</h2>
       </div> -->
@@ -1315,7 +1338,7 @@
 
     </section>
 
-    <section id="Dominant">
+    <section id="DominantArpeggios">
       <!--<div class="page-header">
         <h2>Dominant Arpeggios</h2>
       </div> -->
@@ -1681,7 +1704,7 @@
       </div>
     </section>
 
-    <section id="Diminished">
+    <section id="DiminishedArpeggios">
       <!-- <div class="page-header">
         <h2>Diminished Arpeggios</h2>
       </div> -->
@@ -1782,16 +1805,31 @@
       </div>
     </section>
 
-    <section id="practice">
+    <section id="practice-scales">
+      <div class="row">
+        Scale:
+        <input type="text" style="width: 30px;" class="practice-field" id="scale-practice-key-1" value="g"/>
+        <input type="text" style="width: 60px;" class="practice-field" id="scale-practice-scale-1" value="major"/>
+        Options: major, dorian, phrygian, lydian, mixolydian, minor, locrian, minpent, majpent, blues, harmonicminor
+      </div>
+      <div class="row">
+        <div class="span12">
+          <div id="scale-practice-1"></div>
+        </div>
+      </div>
+    </section>
+    
+    <section id="practice-arpeggios">
       <div class="row">
         Arpeggio 1:
-        <input type="text" style="width: 30px;" class="practice-field" id="practice-key-1" value="a"/>
-        <input type="text" style="width: 60px;" class="practice-field" id="practice-scale-1" value="7"/>
+        <input type="text" style="width: 30px;" class="practice-field" id="arpeggio-practice-key-1" value="a"/>
+        <input type="text" style="width: 60px;" class="practice-field" id="arpeggio-practice-scale-1" value="7"/>
+        Options: maj, maj7, maj6, maj9, min, minmaj7, m7, m6, m69, m7b5, 7, 9, 13, 13, 7b9, 13b9, b13b9, dim
       </div>
       <div class="row">
         Arpeggio 2:
-        <input type="text" style="width: 30px;" class="practice-field" id="practice-key-2" value="e"/>
-        <input type="text" style="width: 60px;" class="practice-field" id="practice-scale-2" value="m7b5"/>
+        <input type="text" style="width: 30px;" class="practice-field" id="arpeggio-practice-key-2" value="e"/>
+        <input type="text" style="width: 60px;" class="practice-field" id="arpeggio-practice-scale-2" value="m7b5"/>
       </div>
       <div class="row">
         <div class="span12">

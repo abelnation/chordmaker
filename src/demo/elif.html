@@ -6,21 +6,20 @@
 
   <link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css" media="screen" title="no title" charset="utf-8">
   <link rel="stylesheet" href="prettify/prettify.css" type="text/css" media="screen" title="no title" charset="utf-8">
-  <!-- <link rel="stylesheet" href="prettify/sons-of-obsidian.css" type="text/css" media="screen" title="no title" charset="utf-8"> -->
-
-
-  <!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script> -->
-
-  <script type="text/javascript" src="js/lib/jquery-1.7.2.min.js"></script>
-  <script type="text/javascript" src="js/lib/raphael-min.js"></script>
-  <script type="text/javascript" src="js/lib/underscore-min.js"></script>
+  
+  <script type="text/javascript" src="../js/lib/jquery-1.7.2.min.js"></script>
+  <script type="text/javascript" src="../js/lib/raphael-min.js"></script>
+  <script type="text/javascript" src="../js/lib/underscore-min.js"></script>
 
   <script type="text/javascript" src="prettify/prettify.js"></script>
-  <script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
+  <script type="text/javascript" src="bootstrap/../js/bootstrap.js"></script>
 
-
-  <script type="text/javascript" src="js/Chord.js"></script>
-  <script type="text/javascript" src="js/ChordMaker.js"></script>
+  <!-- @if TARGET == 'dev' -->
+  <script type="text/javascript" src="../js/chordmaker.<!-- @echo VERSION -->.js?<!-- @echo RANDOM -->"></script>
+  <!-- @endif -->
+  <!-- @if TARGET == 'dist' -->
+  <script type="text/javascript" src="../js/chordmaker.min.js"></script>
+  <!-- @endif -->
 
   <script type="text/javascript">
     $(function() {
