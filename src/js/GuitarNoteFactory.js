@@ -52,7 +52,6 @@ GuitarNoteFactory.prototype = {
       throw TypeError("notesValues must be an array");
     }
 
-    console.log("values: " + notesValues);
     var notes = [];
     for (var i=0; i<notesValues.length; i++) {
       var noteVal = notesValues[i];
@@ -109,13 +108,13 @@ GuitarNoteFactory.prototype = {
 
     var keyStr = key.toLowerCase();
     var keyVal = this.music.getNoteValue(keyStr);
-    var scaleIntervals = this.music.scales[scale];
+    var scaleIntervals = Vex.Flow.Music.scales[scale];
 
     var noteValues = [];
     var curValue = keyVal;
     noteValues.push(keyVal);
     for (var i=0; i<scaleIntervals.length; i++) {
-      var noteValue = curValue + scaleIntervals[i];
+      var noteValue = (curValue + scaleIntervals[i]) % 12;
       noteValues.push(noteValue);
       curValue = noteValue;
     }
@@ -129,19 +128,19 @@ GuitarNoteFactory.prototype = {
     if(!key || !_.has(Vex.Flow.Music.noteValues, key)) {
       throw TypeError("Invalid key: " + key);
     }
-    if(!arpeggio || !_.isString(arpeggio) || !_.has(Vex.Flow.Music.scales, arpeggio)) {
+    if(!arpeggio || !_.isString(arpeggio) || !_.has(Vex.Flow.Music.arpeggios, arpeggio)) {
       throw TypeError("Invalid scale: " + arpeggio);
     }
 
     var keyStr = key.toLowerCase();
     var keyVal = this.music.getNoteValue(keyStr);
-    var arpeggioIntervals = this.music.arpeggios[arpeggio];
+    var arpeggioIntervals = Vex.Flow.Music.arpeggios[arpeggio];
 
     var noteValues = [];
     var curValue = keyVal;
     noteValues.push(keyVal);
     for (var i=0; i<arpeggioIntervals.length; i++) {
-      var noteValue = curValue + arpeggioIntervals[i];
+      var noteValue = (curValue + arpeggioIntervals[i]) % 12;
       noteValues.push(noteValue);
       curValue = noteValue;
     }

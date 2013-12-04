@@ -30,11 +30,22 @@ GuitarNote.prototype = {
   _init: function(string, fret, options) {
     // Create config dict, filling in defaults where not provided
     _.defaults(options, GuitarNote.DEFAULT_OPTIONS);
-    if (string===undefined || string===null || !_.isNumber(string) || string < 0) { throw TypeError("Please provide a valid string number >= 0: " + string); }
-    if (fret===undefined || fret===null || !_.isNumber(fret) || fret < 0) { throw TypeError("Please provide a valid fret number >= 0"); }
-    if (options.finger && (!_.isNumber(options.finger) || options.finger < 1 || options.finger > 5)) { throw TypeError("Invalid finger number: " + options.finger); }
-    if (options.finger && options.muted) { throw TypeError("Note cannot have a finger annotation and be muted at same time."); }
-    // if (options.open && fret != 0) { throw TypeError("Note cannot be open with non-zero fret number"); }
+    if (string===undefined || string===null ||
+        !_.isNumber(string) || string < 0) {
+      throw TypeError("Please provide a valid string number >= 0: " + string);
+    }
+    if (!options.muted && (fret===undefined || fret===null ||
+        !_.isNumber(fret) || fret < 0)) {
+      throw TypeError("Please provide a valid fret number >= 0");
+    }
+    if (options.finger &&
+        (!_.isNumber(options.finger) ||
+        options.finger < 1 || options.finger > 5)) {
+      throw TypeError("Invalid finger number: " + options.finger);
+    }
+    if (options.finger && options.muted) {
+      throw TypeError("Note cannot have a finger annotation and be muted at same time.");
+    }
 
     this.string = string;
     this.fret = fret;
@@ -44,6 +55,13 @@ GuitarNote.prototype = {
 
   isOpen: function() {
     return this.fret === 0;
+  },
+  getKey: function() {
+    if(this.muted) {
+      return this.string + " " + GuitarNote.MUTE_ANNOTATION;
+    } else {
+      return this.string + " " + this.fret;
+    }
   },
 
   toString: function() {

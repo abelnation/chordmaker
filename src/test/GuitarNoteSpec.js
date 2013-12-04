@@ -54,4 +54,21 @@ describe("GuitarNote", function() {
       .toEqual("String: 2, Fret: 3, Finger: " + GuitarNote.MUTE_ANNOTATION);
   });
 
+  it("note returns proper key", function() {
+    var gn;
+
+    gn = new GuitarNote(2, 3);
+    expect(gn.getKey()).toEqual("2 3");
+
+    gn = new GuitarNote(9, 0, {finger: 3});
+    expect(gn.getKey()).toEqual("9 0");
+    
+    gn = new GuitarNote(2, null, {muted: true});
+    expect(gn.getKey()).toEqual("2 " + GuitarNote.MUTE_ANNOTATION);
+
+    gn = new GuitarNote(2, 5, {muted: true});
+    expect(gn.getKey()).toEqual("2 " + GuitarNote.MUTE_ANNOTATION);
+    
+  });
+
 });

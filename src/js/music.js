@@ -113,6 +113,7 @@ Vex.Flow.Music.scales = {
   'majpent': [2, 2, 3, 2, 3],
   'blues': [3, 2, 1, 1, 3, 2],
   'harmonicminor': [2,1,2,2,1,3,1],
+  'wholetone': [2,2,2,2,2,2],
 };
 
 Vex.Flow.Music.arpeggios = {
