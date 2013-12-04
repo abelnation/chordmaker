@@ -14,5 +14,5 @@
   "browser": true,
   "trailing": true,
   "indent": 2,
-  "predef": ["$", "_", "jQuery"]
+  "predef": ["describe", "it", "expect"]
 }

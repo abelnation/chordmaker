@@ -122,6 +122,80 @@ Chord.prototype = {
       this._setOrientation(Chord.NUT_LEFT);
     }
   },
+
+  getNumStrings: function() {
+    return this.config.num_strings;
+  },
+  getBaseFret: function() {
+    return this.config.base_fret;
+  },
+  getNumFrets: function() {
+    return this.config.num_frets;
+  },
+  getTuning: function() {
+    return this.config.tuning;
+  },
+
+  getCode: function() {
+    return "TODO";
+  },
+
+  // var getString = function() {
+  //     return string;
+  //   };
+  //   this.getString = getString;
+
+  addNote: function(note, color) {
+    if (_.isUndefined(note)) { return; }
+      // TODO: throw
+    if (_.isString(note)) {
+      // TODO
+    }
+    else if (_.isObject(note)) {
+
+      if (color) { note.color = color; }
+      if (note.frets) {
+        var groupNote = {};
+        for(var i=0; i<note.frets.length; i++) {
+          groupNote = {};
+          groupNote.string = note.string;
+          groupNote.fret = note.frets[i];
+          groupNote.glyphs = {};
+
+          this._drawNote(groupNote);
+          this.notes.push(_.clone(groupNote));
+        }
+      } else {
+        note.glyphs = {};
+        this._drawNote(note);
+        this.notes.push(_.clone(note));
+      }
+
+    }
+  },
+
+  addNotes: function(notes, color) {
+    if (_.isArray(notes)) {
+      for (var i=0; i<notes.length; i++) {
+        this.addNote(notes[i], color);
+      }
+    }
+  },
+
+  removeNote: function(note) {
+    if (_.isString(note)) { // note id
+
+    } else if (_.isObject(note)) {
+
+    } else if (_.isArray(note)) {
+
+    }
+  },
+
+  toString: function() {
+
+  },
+
   _scaleSize: function() {
     _.each(Chord.VIZ_CONFIG_DEFAULTS, function(num, key) {
       if (key != "scale" && _.isNumber(this.config[key])) {
@@ -449,72 +523,5 @@ Chord.prototype = {
       .replace(/\#/g, "♯")
       .replace(/\*/g, "￮");
     this.r.text(x,y,fancy_label).attr({ "text-anchor": "middle", "font-size": this.config.label_font_size });
-  },
-
-  getNumStrings: function() {
-    return this.config.num_strings;
-  },
-  getBaseFret: function() {
-    return this.config.base_fret;
-  },
-  getNumFrets: function() {
-    return this.config.num_frets;
-  },
-  getTuning: function() {
-    return this.config.tuning;
-  },
-
-  getCode: function() {
-    return "TODO";
-  },
-
-  // var getString = function() {
-  //     return string;
-  //   };
-  //   this.getString = getString;
-
-  addNote: function(note, color) {
-    if (_.isUndefined(note)) { return; }
-
-    if (_.isString(note)) {}
-    else if (_.isObject(note)) {
-
-      if (color) { note.color = color; }
-      if (note.frets) {
-        var groupNote = {};
-        for(var i=0; i<note.frets.length; i++) {
-          groupNote = {};
-          groupNote.string = note.string;
-          groupNote.fret = note.frets[i];
-          groupNote.glyphs = {};
-
-          this._drawNote(groupNote);
-          this.notes.push(_.clone(groupNote));
-        }
-      } else {
-        note.glyphs = {};
-        this._drawNote(note);
-        this.notes.push(_.clone(note));
-      }
-
-    }
-  },
-
-  addNotes: function(notes, color) {
-    if (_.isArray(notes)) {
-      for (var i=0; i<notes.length; i++) {
-        this.addNote(notes[i], color);
-      }
-    }
-  },
-
-  removeNote: function(note) {
-    if (_.isString(note)) { // note id
-
-    } else if (_.isObject(note)) {
-
-    } else if (_.isArray(note)) {
-
-    }
   },
 };

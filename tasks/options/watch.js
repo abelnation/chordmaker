@@ -13,11 +13,12 @@ module.exports = {
   js: {
     files: ['<%= jshint.src.src %>'],
     tasks: [
-      'jshint:src', 
+      'jshint:src',
+      'clean:devjscompiled',
       'copy:devjs', 
       'concat:dev',
       'uglify:dev',
-      // 'test'
+      'test'
     ],
   },
   sass: {
@@ -26,7 +27,7 @@ module.exports = {
   },
   tests: {
     files: ['<%= paths.src %>/test/**'],
-    tasks: ['copy:devtest', 'test']
+    tasks: ['jshint:test', 'copy:devtest', 'test']
   },
   livereload: {
     options: { livereload: true, },

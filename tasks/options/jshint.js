@@ -9,12 +9,12 @@ module.exports = {
     options: {
       jshintrc: '<%= paths.src %>/js/.jshintrc'
     },
-    src: ['<%= paths.src %>/js/app/**/*.js', '<%= paths.src %>/js/*.js']
+    src: ['<%= paths.src %>/js/*.js']
   },
   test: {
     options: {
       jshintrc: '<%= paths.src %>/test/.jshintrc'
     },
-    src: ['<%= paths.src %>/test/**/*.js']
+    src: ['<%= paths.src %>/test/*.js']
   },
 };

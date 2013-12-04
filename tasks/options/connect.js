@@ -21,6 +21,7 @@ module.exports = {
     options: {
       port: 8082,
       base: './',
+      debug: true,
     }
   }
 };

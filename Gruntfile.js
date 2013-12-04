@@ -9,7 +9,7 @@ function loadConfig(path) {
     key = option.replace(/\.js$/,'');
     object[key] = require(path + option);
   });
- 
+
   return object;
 }
 
@@ -38,7 +38,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('dev', ['jshint', 'copy:dev', 'preprocess:dev', /* 'sass:dev', */ 'concat:dev', 'uglify:dev' /*, 'test' */]);
   grunt.registerTask('dist', ['clean:dist', 'jshint', 'copy:dist', 'preprocess:dist', 'strip:dist', /* 'sass:dist',*/ 'concat:dist', 'uglify:dist', 'clean:scrub_dist']);
-  // grunt.registerTask('test', ['copy:devtest', 'connect:test', 'jasmine:testlocalserver']);
+  grunt.registerTask('test', ['copy:devtest', 'connect:test', 'jasmine:testlocalserver']);
 
   grunt.registerTask('default', ['dev']);
 };
