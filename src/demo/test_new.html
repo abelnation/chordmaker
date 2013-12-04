@@ -21,6 +21,13 @@
   <!-- @endif -->  
 
   <script type="text/javascript">
+    function time_fn(fn, done_fn) {
+      var start = new Date().getTime();
+      fn();
+      var end = new Date().getTime();
+      var time = end-start;
+      done_fn(time);
+    }
     $(function() {
       var factory = new GuitarNoteFactory({ numFrets: 15 });
       var fmaj_notes = [
@@ -34,11 +41,17 @@
       var model = new ChordModel({ label: "FMaj" });
       model.addNotes(fmaj_notes);
 
-      new ChordView("chord-ex1.1", ChordView.DEFAULT_OPTIONS, model);
-      new ChordView("chord-ex1.2",
+      time_fn(
+        function() { 
+          new ChordView("chord-ex1-1", ChordView.DEFAULT_OPTIONS, model);
+        }, 
+        function(time) {
+          $("#chord-ex1-1").append("<p>"+time + "ms</p>");
+        });
+      new ChordView("chord-ex1-2",
         { finger_position: ChordView.FINGER_ONNOTE }, model);
-      new ChordView("chord-ex1.3", ChordView.OPTIONS_COMPACT, model);
-      new ChordView("chord-ex1.4", ChordView.OPTIONS_COMPACT, model);
+      new ChordView("chord-ex1-3", ChordView.OPTIONS_COMPACT, model);
+      new ChordView("chord-ex1-4", ChordView.OPTIONS_COMPACT, model);
       
       var cmaj_notes = [
         new GuitarNote(0,3, { finger: 1 }),
@@ -50,10 +63,10 @@
       ];
       model_2 = new ChordModel({ label: "CMaj", baseFret: 3 });
       model_2.addNotes(cmaj_notes);
-      new ChordView("chord-ex1.5", {}, model_2);
-      new ChordView("chord-ex1.6", ChordView.OPTIONS_COMPACT, model_2);
+      new ChordView("chord-ex1-5", {}, model_2);
+      new ChordView("chord-ex1-6", ChordView.OPTIONS_COMPACT, model_2);
 
-      new ChordView("chord-ex2.1", {
+      new ChordView("chord-ex2-1", {
           //show_fingers: false,
           orientation: ChordView.NUT_LEFT,
         }, 
@@ -62,14 +75,14 @@
           notes: factory.notesForScale("g", "major") }
         )
       );
-      new ChordView("chord-ex2.2", { orientation: ChordView.NUT_LEFT }, 
+      new ChordView("chord-ex2-2", { orientation: ChordView.NUT_LEFT }, 
         new ChordModel({
           label: "Maj6",
           numFrets: 8, 
           notes: factory.notesForArpeggio("g", "maj6") }
         )
       );
-      new ChordView("chord-ex2.3", { scale: 1.0, orientation: ChordView.NUT_LEFT, }, 
+      new ChordView("chord-ex2-3", { scale: 1.0, orientation: ChordView.NUT_LEFT, }, 
         new ChordModel({
           label: "WholeTone",
           numFrets: 8, 
@@ -77,13 +90,20 @@
         )
       );
       
-      new ChordView("chord-ex3.1", ChordView.OPTIONS_NECK, 
-        new ChordModel({
-          label: "Dorian",
-          numFrets: 15, 
-          notes: factory.notesForScale("g", "dorian") }
-        )
-      );
+      time_fn(
+        function() { 
+          new ChordView("chord-ex3-1", ChordView.OPTIONS_NECK, 
+            new ChordModel({
+              label: "Dorian",
+              numFrets: 15, 
+              notes: factory.notesForScale("g", "dorian") }
+            )
+          );
+        }, 
+        function(time) {
+          $("#chord-ex3-1").append("<p>"+time + "ms</p>");
+        });
+      
     });
 
   </script>
@@ -107,22 +127,22 @@
       <h2>Share same model</h2>
       <div class="row">
         <div class="span2">
-          <div id="chord-ex1.1" class="example"></div>
+          <div id="chord-ex1-1" class="example"></div>
         </div>
         <div class="span2">
-          <div id="chord-ex1.2" class="example"></div>
+          <div id="chord-ex1-2" class="example"></div>
         </div>
         <div class="span2">
-          <div id="chord-ex1.3" class="example"></div>
+          <div id="chord-ex1-3" class="example"></div>
         </div>
         <div class="span2">
-          <div id="chord-ex1.4" class="example"></div>
+          <div id="chord-ex1-4" class="example"></div>
         </div>
         <div class="span2">
-          <div id="chord-ex1.5" class="example"></div>
+          <div id="chord-ex1-5" class="example"></div>
         </div>
         <div class="span2">
-          <div id="chord-ex1.6" class="example"></div>
+          <div id="chord-ex1-6" class="example"></div>
         </div>
       </div>
     </section>
@@ -131,21 +151,21 @@
       <div class="row">
         <div class="span3">
           G Major Scale
-          <div id="chord-ex2.1" class="example"></div>
+          <div id="chord-ex2-1" class="example"></div>
         </div>
         <div class="span3">
           G Maj6 Arpeggio
-          <div id="chord-ex2.2" class="example"></div>
+          <div id="chord-ex2-2" class="example"></div>
         </div>
         <div class="span6">
           Whole Tone
-          <div id="chord-ex2.3" class="example" style="text-align: left;"></div>
+          <div id="chord-ex2-3" class="example" style="text-align: left;"></div>
         </div>
       </div>
       <div class="row">
         <div class="span12">
           G Major Scale
-          <div id="chord-ex3.1" class="example" style="text-align: left;"></div>
+          <div id="chord-ex3-1" class="example" style="text-align: left;"></div>
         </div>
       </div>
     </section>

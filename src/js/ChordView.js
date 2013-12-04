@@ -74,7 +74,7 @@ ChordView.DEFAULT_OPTIONS = {
   grid_stroke_width: 1.5,
   
   grid_padding_bottom: 20,
-  grid_padding_right: 40,
+  grid_padding_right: 20,
   grid_padding_left: 20,
 
   label_font_size: 36,
@@ -86,7 +86,8 @@ ChordView.DEFAULT_OPTIONS = {
   tuning_label_offset: 14,
 
   base_fret_font_size: 26,
-  base_fret_offset: 14
+  base_fret_label_width: 20,
+  base_fret_offset: 16
 };
 ChordView.OPTIONS_COMPACT = {
   scale: 0.25,
@@ -95,6 +96,9 @@ ChordView.OPTIONS_COMPACT = {
   note_stroke_width: 1.0,
   note_color: 'black',
   note_gradient: false,
+  base_fret_font_size: 36,
+  base_fret_offset: 20,
+  grid_padding_right: 40,
 };
 ChordView.OPTIONS_NECK = {
   scale: 1.0,
@@ -146,7 +150,7 @@ ChordView.prototype = {
     this.r = null;
     this.transform_str = "";
 
-    this.width = this.options.grid_x + this.model.getNumStrings() * this.options.string_gap + this.options.grid_padding_right;
+    this.width = this.options.grid_x + this.model.getNumStrings() * this.options.string_gap + this.options.base_fret_label_width + this.options.grid_padding_right;
     this.height = this.options.grid_y + this.model.getNumFrets() * this.options.fret_gap + this.options.tuning_label_font_size + this.options.grid_padding_bottom;
 
     if (_.isString(container)) {
@@ -223,7 +227,7 @@ ChordView.prototype = {
     if (orientation == ChordView.NUT_TOP) {
 
       this.transform_str = "";
-      this.width = this.options.grid_x + this.model.getNumStrings() * this.options.string_gap + this.options.grid_padding_right;
+      this.width = this.options.grid_x + this.model.getNumStrings() * this.options.string_gap + this.options.base_fret_label_width + this.options.grid_padding_right;
       this.height = this.options.grid_y + this.model.getNumFrets() * this.options.fret_gap + this.options.tuning_label_font_size + this.options.grid_padding_bottom;
       this.r.setSize(this.width, this.height);
 
@@ -239,7 +243,7 @@ ChordView.prototype = {
       // TODO: explain this transformation
       // don't include right padding for sideways layouts
       // TODO: position base fret label differently depending on orientation
-      this.transform_str = "r-90,0,0" + "t-" +(this.width - this.options.grid_padding_right) + ",0";
+      this.transform_str = "r-90,0,0" + "t-"+(this.width - (this.options.base_fret_label_width + this.options.grid_padding_right)) + ",0";
 
       this.height = this.options.grid_x + this.model.getNumStrings() * this.options.string_gap;
       this.width = this.options.grid_y + this.model.getNumFrets() * this.options.fret_gap + this.options.tuning_label_font_size + this.options.grid_padding_bottom;

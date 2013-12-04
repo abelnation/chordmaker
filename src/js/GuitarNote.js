@@ -16,6 +16,7 @@ function GuitarNote(string, fret, options) {
 GuitarNote.DEFAULT_OPTIONS = {
   muted: false,
   finger: null,
+  tonic: false,
 };
 GuitarNote.MUTE_ANNOTATION = "x";
 

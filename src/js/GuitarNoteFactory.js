@@ -21,6 +21,20 @@ GuitarNoteFactory.DEFAULT_OPTIONS = {
   maxFret: 20,
 };
 
+// TODO: chord voicing library
+// GuitarNoteFactory.openChordVoicings = {
+//   "guitar": {
+//     "a": [0,0,2,2,2,0],
+//     "am": [0,0,2,2,1,0],
+//     "a7": [
+//       [0,0,2,2,2,3],
+//       [0,0,2,0,2,3],
+//     ],
+//     "b": []
+//   }
+  
+// }
+
 GuitarNoteFactory.prototype = {
   /**
    * Whenever you replace an Object's Prototype, you need to repoint
