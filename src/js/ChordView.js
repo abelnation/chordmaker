@@ -69,14 +69,17 @@ ChordView.DEFAULT_OPTIONS = {
   neck_marker_color: "#999",
 
   nut_height: 5,
-  grid_x: 20,
-  grid_y: 60,
+  grid_x: 0,
+  grid_y: 0,
   grid_stroke_width: 1.5,
-  grid_bottom_padding: 20,
+  
+  grid_padding_bottom: 20,
   grid_padding_right: 40,
+  grid_padding_left: 20,
 
   label_font_size: 36,
   label_y_offset: 20,
+  label_height: 40,
 
   show_tuning: true,
   tuning_label_font_size: 18,
@@ -97,7 +100,6 @@ ChordView.OPTIONS_NECK = {
   scale: 1.0,
   orientation: ChordView.NUT_LEFT,
   show_tuning: true,
-  show_fingers: false,
   fret_gap: 50,
 };
 
@@ -121,11 +123,10 @@ ChordView.prototype = {
     
     this.model = model;
 
-    if (this.model.getLabel() === "" || this.orientation!==ChordView.NUT_TOP) {
-      this.options.grid_y -= this.options.label_font_size;
-    }
-    if (!this.options.show_fingers || this.options.finger_position != ChordView.FINGER_TOP) {
-      this.options.grid_y -= (this.options.anno_font_size - 4);
+    this.options.grid_x = this.options.grid_padding_left;
+    this.options.grid_y = this.options.anno_font_size + 4;
+    if (this.options.orientation === ChordView.NUT_TOP && this.model.getLabel() !== "") {
+      this.options.grid_y += this.options.label_height;
     }
 
     // Scaling is done by scaling all the constant factors in the render code
@@ -146,7 +147,7 @@ ChordView.prototype = {
     this.transform_str = "";
 
     this.width = this.options.grid_x + this.model.getNumStrings() * this.options.string_gap + this.options.grid_padding_right;
-    this.height = this.options.grid_y + this.model.getNumFrets() * this.options.fret_gap + this.options.tuning_label_font_size + this.options.grid_bottom_padding;
+    this.height = this.options.grid_y + this.model.getNumFrets() * this.options.fret_gap + this.options.tuning_label_font_size + this.options.grid_padding_bottom;
 
     if (_.isString(container)) {
       container = document.getElementById(container.replace("#",""));
@@ -223,7 +224,7 @@ ChordView.prototype = {
 
       this.transform_str = "";
       this.width = this.options.grid_x + this.model.getNumStrings() * this.options.string_gap + this.options.grid_padding_right;
-      this.height = this.options.grid_y + this.model.getNumFrets() * this.options.fret_gap + this.options.tuning_label_font_size + this.options.grid_bottom_padding;
+      this.height = this.options.grid_y + this.model.getNumFrets() * this.options.fret_gap + this.options.tuning_label_font_size + this.options.grid_padding_bottom;
       this.r.setSize(this.width, this.height);
 
     } else if (orientation == ChordView.NUT_LEFT) {
@@ -241,7 +242,7 @@ ChordView.prototype = {
       this.transform_str = "r-90,0,0" + "t-" +(this.width - this.options.grid_padding_right) + ",0";
 
       this.height = this.options.grid_x + this.model.getNumStrings() * this.options.string_gap;
-      this.width = this.options.grid_y + this.model.getNumFrets() * this.options.fret_gap + this.options.tuning_label_font_size + this.options.grid_bottom_padding;
+      this.width = this.options.grid_y + this.model.getNumFrets() * this.options.fret_gap + this.options.tuning_label_font_size + this.options.grid_padding_bottom;
 
       this.r.setSize(this.width, this.height);
     }

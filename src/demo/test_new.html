@@ -23,7 +23,7 @@
   <script type="text/javascript">
     $(function() {
       var factory = new GuitarNoteFactory({ numFrets: 15 });
-      var notes = [
+      var fmaj_notes = [
         new GuitarNote(0,1, { finger: 1 }),
         new GuitarNote(1,3, { finger: 4 }),
         new GuitarNote(2,3, { finger: 3 }),
@@ -32,7 +32,7 @@
         new GuitarNote(5,1, { finger: 1 }),
       ];
       var model = new ChordModel({ label: "FMaj" });
-      model.addNotes(notes);
+      model.addNotes(fmaj_notes);
 
       new ChordView("chord-ex1.1", ChordView.DEFAULT_OPTIONS, model);
       new ChordView("chord-ex1.2",
@@ -40,6 +40,19 @@
       new ChordView("chord-ex1.3", ChordView.OPTIONS_COMPACT, model);
       new ChordView("chord-ex1.4", ChordView.OPTIONS_COMPACT, model);
       
+      var cmaj_notes = [
+        new GuitarNote(0,3, { finger: 1 }),
+        new GuitarNote(1,3, { finger: 1 }),
+        new GuitarNote(2,5, { finger: 3 }),
+        new GuitarNote(3,5, { finger: 3 }),
+        new GuitarNote(4,5, { finger: 3 }),
+        new GuitarNote(5,3, { finger: 1 }),
+      ];
+      model_2 = new ChordModel({ label: "CMaj", baseFret: 3 });
+      model_2.addNotes(cmaj_notes);
+      new ChordView("chord-ex1.5", {}, model_2);
+      new ChordView("chord-ex1.6", ChordView.OPTIONS_COMPACT, model_2);
+
       new ChordView("chord-ex2.1", {
           //show_fingers: false,
           orientation: ChordView.NUT_LEFT,
@@ -49,27 +62,21 @@
           notes: factory.notesForScale("g", "major") }
         )
       );
-      new ChordView("chord-ex2.2", { orientation: ChordView.NUT_LEFT, }, 
+      new ChordView("chord-ex2.2", { orientation: ChordView.NUT_LEFT }, 
         new ChordModel({
           label: "Maj6",
           numFrets: 8, 
           notes: factory.notesForArpeggio("g", "maj6") }
         )
       );
-      new ChordView("chord-ex2.3", { orientation: ChordView.NUT_LEFT, }, 
+      new ChordView("chord-ex2.3", { scale: 1.0, orientation: ChordView.NUT_LEFT, }, 
         new ChordModel({
           label: "WholeTone",
           numFrets: 8, 
           notes: factory.notesForScale("g", "wholetone") }
         )
       );
-      new ChordView("chord-ex2.4", { orientation: ChordView.NUT_LEFT, }, 
-        new ChordModel({
-          label: "Dorian",
-          numFrets: 8, 
-          notes: factory.notesForScale("g", "dorian") }
-        )
-      );
+      
       new ChordView("chord-ex3.1", ChordView.OPTIONS_NECK, 
         new ChordModel({
           label: "Dorian",
@@ -130,13 +137,9 @@
           G Maj6 Arpeggio
           <div id="chord-ex2.2" class="example"></div>
         </div>
-        <div class="span3">
+        <div class="span6">
           Whole Tone
-          <div id="chord-ex2.3" class="example"></div>
-        </div>
-        <div class="span3">
-          Dorian
-          <div id="chord-ex2.4" class="example"></div>
+          <div id="chord-ex2.3" class="example" style="text-align: left;"></div>
         </div>
       </div>
       <div class="row">
