@@ -8,7 +8,7 @@ function Chord(_element, _config) {
   if (!(this instanceof Chord)) {
     throw new TypeError("Chord constructor cannot be called as a function.");
   }
-  if(!_config) { _config = {}; }
+  if (!_config) { _config = {}; }
   
   this._init(_element, _config);
 }
@@ -105,8 +105,8 @@ Chord.prototype = {
     this.r = null;
     this.transform_str = "";
 
-    this.width = this.config.grid_x + this.config.num_strings*this.config.string_gap + 20 + 20;
-    this.height = this.config.grid_y + this.config.num_frets*this.config.fret_gap + 10 + this.config.grid_bottom_padding + 20;
+    this.width = this.config.grid_x + this.config.num_strings * this.config.string_gap + 20 + 20;
+    this.height = this.config.grid_y + this.config.num_frets * this.config.fret_gap + 10 + this.config.grid_bottom_padding + 20;
 
     if (_.isString(_element)) {
       this.r = Raphael(document.getElementById(_element), this.width, this.height);
@@ -150,13 +150,12 @@ Chord.prototype = {
       // TODO: throw
     if (_.isString(note)) {
       // TODO
-    }
-    else if (_.isObject(note)) {
+    } else if (_.isObject(note)) {
 
       if (color) { note.color = color; }
       if (note.frets) {
         var groupNote = {};
-        for(var i=0; i<note.frets.length; i++) {
+        for (var i = 0; i < note.frets.length; i++) {
           groupNote = {};
           groupNote.string = note.string;
           groupNote.fret = note.frets[i];
@@ -176,7 +175,7 @@ Chord.prototype = {
 
   addNotes: function(notes, color) {
     if (_.isArray(notes)) {
-      for (var i=0; i<notes.length; i++) {
+      for (var i = 0; i < notes.length; i++) {
         this.addNote(notes[i], color);
       }
     }
@@ -210,13 +209,13 @@ Chord.prototype = {
   },
 
   _render: function() {
-    this.neck.width = (this.config.num_strings-1)*this.config.string_gap;
-    this.neck.height = this.config.num_frets*this.config.fret_gap;
+    this.neck.width = (this.config.num_strings - 1) * this.config.string_gap;
+    this.neck.height = this.config.num_frets * this.config.fret_gap;
 
     this._drawNeck(
       this.config.grid_x, this.config.grid_y,
       this.neck.width, this.neck.height,
-      this.config.num_strings-1, this.config.num_frets, "#000"
+      this.config.num_strings - 1, this.config.num_frets, "#000"
     );
 
     if (this.config.base_fret == 1) {
@@ -240,7 +239,7 @@ Chord.prototype = {
         return;
       }
     }
-    if (!_.include([Chord.NUT_TOP, Chord.NUT_LEFT], orientation)) { return; }
+    if (!_.include([ Chord.NUT_TOP, Chord.NUT_LEFT ], orientation)) { return; }
 
     // TODO: Deal correctly with chord label
 
@@ -255,11 +254,11 @@ Chord.prototype = {
       // Rotate Horizontally
       // var transform_str = "t-"+this.neck.height+",0" + "r-90,"+this.config.grid_x+","+this.config.grid_y;
 
-      var rotate_o_x = (this.config.grid_x+(this.neck.width/2)),
-          rotate_o_y = (this.config.grid_y+(this.neck.height/2)),
-          translate_x = -(this.width - this.height) / 2,
-          translate_y = (this.height - this.width) / 2;
-      this.transform_str = "r-90,"+ rotate_o_x +","+ rotate_o_y +"t"+translate_x+"," + translate_y;
+      var rotate_o_x = (this.config.grid_x+(this.neck.width / 2));
+      var rotate_o_y = (this.config.grid_y+(this.neck.height / 2));
+      var translate_x = -(this.width - this.height) / 2;
+      var translate_y = (this.height - this.width) / 2;
+      this.transform_str = "r-90," + rotate_o_x + "," + rotate_o_y + "t" + translate_x + "," + translate_y;
 
       //console.log(transform_str);
 
@@ -269,7 +268,7 @@ Chord.prototype = {
 
     }
     _.each(this.neck.glyphs, function(glyph) {
-      if(_.isArray(glyph)) {
+      if (_.isArray(glyph)) {
         _.each(glyph, function(glyph) {
           glyph.transform(this.transform_str);
         });
@@ -286,19 +285,19 @@ Chord.prototype = {
 
   _drawNeck: function(x, y, w, h, wv, hv, color) {
     color = color || "#000";
-    var path = ["M", Math.round(x) + 0.5, Math.round(y) + 0.5, "L", Math.round(x + w) + 0.5, Math.round(y) + 0.5, Math.round(x + w) + 0.5, Math.round(y + h) + 0.5, Math.round(x) + 0.5, Math.round(y + h) + 0.5, Math.round(x) + 0.5, Math.round(y) + 0.5],
-        rowHeight = h / hv,
-        columnWidth = w / wv;
+    var path = [ "M", Math.round(x) + 0.5, Math.round(y) + 0.5, "L", Math.round(x + w) + 0.5, Math.round(y) + 0.5, Math.round(x + w) + 0.5, Math.round(y + h) + 0.5, Math.round(x) + 0.5, Math.round(y + h) + 0.5, Math.round(x) + 0.5, Math.round(y) + 0.5 ];
+    var rowHeight = h / hv;
+    var columnWidth = w / wv;
     for (var i = 1; i < hv; i++) {
-      path = path.concat(["M", Math.round(x) + 0.5, Math.round(y + i * rowHeight) + 0.5, "H", Math.round(x + w) + 0.5]);
+      path = path.concat([ "M", Math.round(x) + 0.5, Math.round(y + i * rowHeight) + 0.5, "H", Math.round(x + w) + 0.5 ]);
     }
     for (i = 1; i < wv; i++) {
-      path = path.concat(["M", Math.round(x + i * columnWidth) + 0.5, Math.round(y) + 0.5, "V", Math.round(y + h) + 0.5]);
+      path = path.concat([ "M", Math.round(x + i * columnWidth) + 0.5, Math.round(y) + 0.5, "V", Math.round(y + h) + 0.5 ]);
     }
 
     this.neck.glyphs['grid_back'] = this.r.rect(this.config.grid_x, this.config.grid_y, this.neck.width, this.neck.height).attr("fill", "white");
     this._drawNeckMarkers();
-    this.neck.glyphs['grid'] = this.r.path(path.join(",")).attr({stroke: color, 'stroke-width': this.config.grid_stroke_width});
+    this.neck.glyphs['grid'] = this.r.path(path.join(",")).attr({ stroke: color, 'stroke-width': this.config.grid_stroke_width });
 
     // TODO: Start Here
     //       Hacky code to do a cursor and to add notes.
@@ -331,18 +330,18 @@ Chord.prototype = {
 
   _drawNeckMarkers: function() {
     var markers = [
-      [5, 1],
-      [7, 2],
-      [9, 1],
-      [12,2],
-      [15,1],
-      [17,1]
+      [ 5, 1 ],
+      [ 7, 2 ],
+      [ 9, 1 ],
+      [ 12, 2 ],
+      [ 15, 1 ],
+      [ 17, 1 ]
     ];
     this.neck.glyphs['neck-markers'] = [];
 
-    for (var i=0; i<markers.length; i++) {
+    for (var i = 0; i < markers.length; i++) {
       var marker = markers[i];
-      if(marker[0] > this.config.base_fret &&
+      if (marker[0] > this.config.base_fret &&
          marker[0] < this.config.base_fret+this.config.num_frets) {
         this._drawNeckMarker(marker);
       }
@@ -350,16 +349,16 @@ Chord.prototype = {
   },
 
   _drawNeckMarker: function(neck_marker) {
-    if(_.isUndefined(neck_marker)) { return; }
+    if (_.isUndefined(neck_marker)) { return; }
 
-    var y = this.config.grid_y + ((neck_marker[0]-(this.config.base_fret-1)) * this.config.fret_gap) - (this.config.fret_gap/2);
+    var y = this.config.grid_y + ((neck_marker[0] - (this.config.base_fret - 1)) * this.config.fret_gap) - (this.config.fret_gap / 2);
     var marker_style = {
       fill: "90-#bbb:5-#ccc:95",
       stroke: "none"
     };
 
     if (neck_marker[1] == 1) {
-      var x = this.config.grid_x + this.neck.width/2;
+      var x = this.config.grid_x + this.neck.width / 2;
 
       var glyph = this.r.circle(x,y,this.config.neck_marker_radius);
       glyph.attr(marker_style);
@@ -380,7 +379,7 @@ Chord.prototype = {
   },
 
   _drawNut: function() {
-    var glyph = this.r.rect(this.config.grid_x,this.config.grid_y, (this.config.num_strings-1)*this.config.string_gap, this.config.nut_height).attr({ fill: "black"});
+    var glyph = this.r.rect(this.config.grid_x, this.config.grid_y, (this.config.num_strings - 1) * this.config.string_gap, this.config.nut_height).attr({ fill: "black" });
 
     this.neck.glyphs['nut'] = glyph;
     //this.neck.push(glyph);
@@ -388,7 +387,7 @@ Chord.prototype = {
 
   _drawTuningLabel: function() {
     this.neck.glyphs['tuning-labels'] = [];
-    for (var i=0; i<this.config.tuning.length; i++) {
+    for (var i = 0; i < this.config.tuning.length; i++) {
       var note = this.config.tuning[i];
 
       var x = this.config.grid_x + (i * this.config.string_gap);
@@ -404,7 +403,7 @@ Chord.prototype = {
 
   _drawBaseFret: function(base_fret) {
     var x = this.config.grid_x + this.neck.width + this.config.base_fret_offset;
-    var y = this.config.grid_y + this.config.fret_gap/2;
+    var y = this.config.grid_y + this.config.fret_gap / 2;
 
     this.r.text(x,y, ""+base_fret+"fr.").attr({ 'text-anchor': 'start', 'font-size': this.config.base_fret_font_size });
   },
@@ -423,7 +422,7 @@ Chord.prototype = {
     if (_.isString(note)) {
       // TODO:
     } else if (_.isObject(note)) {
-      if(note.muted) {
+      if (note.muted) {
         this._drawMuteStringAnnotatation(note).transform(this.transform_str);
       } else if (note.fret === 0 || note.open) {
         this._drawOpenStringAnnotatation(note).transform(this.transform_str);
@@ -437,13 +436,13 @@ Chord.prototype = {
   },
 
   _drawFretMarker: function(note) {
-    if(_.isUndefined(note.fret) || note.fret === 0) { return; }
+    if (_.isUndefined(note.fret) || note.fret === 0) { return; }
 
     if (note.fret < this.config.base_fret ||
         note.fret > this.config.base_fret + this.config.num_frets) { return; }
 
     var x = this.config.grid_x + (note.string * this.config.string_gap);
-    var y = this.config.grid_y + ((note.fret-this.config.base_fret+1) * this.config.fret_gap) - (this.config.fret_gap / 2);
+    var y = this.config.grid_y + ((note.fret - this.config.base_fret + 1) * this.config.fret_gap) - (this.config.fret_gap / 2);
     var note_style = {
       fill: Chord.NOTE_COLORS[this.config.note_color]
     };
@@ -471,7 +470,7 @@ Chord.prototype = {
   //       This is not robust at all
   _drawFretMarkerGroup: function(note_group) {
     var note;
-    for(var i=0; i<note_group.frets.length; i++) {
+    for (var i = 0; i < note_group.frets.length; i++) {
       note = {};
       note.string = note_group.string;
       note.fret = note_group.frets[i];

@@ -13,7 +13,7 @@ describe("GuitarNoteFactory", function() {
     expect(function() { new GuitarNoteFactory({ numFrets: "asdf" }); }).toThrow();
     expect(function() { new GuitarNoteFactory({ numFrets: -10 }); }).toThrow();
     expect(function() { new GuitarNoteFactory({ numFrets: [ 23, 43 ] }); }).toThrow();
-    expect(function() { new GuitarNoteFactory({ numFrets: {"foo": 23} }); }).toThrow();
+    expect(function() { new GuitarNoteFactory({ numFrets: { "foo": 23 } }); }).toThrow();
   });
 
   it("notesForNotesValues errors if provided invalid note values", function() {
@@ -21,31 +21,31 @@ describe("GuitarNoteFactory", function() {
     expect(function() { nf.notesForNotesValues(); }).toThrow();
     expect(function() { nf.notesForNotesValues(234); }).toThrow();
     expect(function() { nf.notesForNotesValues("234"); }).toThrow();
-    expect(function() { nf.notesForNotesValues({foo: "bar"}); }).toThrow();
+    expect(function() { nf.notesForNotesValues({ foo: "bar" }); }).toThrow();
     expect(function() { nf.notesForNotesValues(null); }).toThrow();
 
-    expect(function() { nf.notesForNotesValues([-1]); }).toThrow();
-    expect(function() { nf.notesForNotesValues([12]); }).toThrow();
-    expect(function() { nf.notesForNotesValues([13]); }).toThrow();
-    expect(function() { nf.notesForNotesValues(["asdf"]); }).toThrow();
-    expect(function() { nf.notesForNotesValues([{foo: "bar"}]); }).toThrow();
+    expect(function() { nf.notesForNotesValues([ -1 ]); }).toThrow();
+    expect(function() { nf.notesForNotesValues([ 12 ]); }).toThrow();
+    expect(function() { nf.notesForNotesValues([ 13 ]); }).toThrow();
+    expect(function() { nf.notesForNotesValues([ "asdf" ]); }).toThrow();
+    expect(function() { nf.notesForNotesValues([ { foo: "bar" } ]); }).toThrow();
   });
 
   it("notesForNotesValues returns correct notes", function() {
-    var nf = new GuitarNoteFactory({tuning: "E", numFrets: 12});
+    var nf = new GuitarNoteFactory({ tuning: "E", numFrets: 12 });
 
     //open e string (int_val: 4)
-    var note = nf.notesForNotesValues([4])[0];
+    var note = nf.notesForNotesValues([ 4 ])[0];
     expect(note.string).toEqual(0);
     expect(note.fret).toEqual(0);
 
-    note = nf.notesForNotesValues([6])[0];
+    note = nf.notesForNotesValues([ 6 ])[0];
     expect(note.string).toEqual(0);
     expect(note.fret).toEqual(2);
 
     
-    nf = new GuitarNoteFactory({tuning: "E D C", numFrets: 12});
-    var notes = nf.notesForNotesValues([4]); // e (int_val: 4)
+    nf = new GuitarNoteFactory({ tuning: "E D C", numFrets: 12 });
+    var notes = nf.notesForNotesValues([ 4 ]); // e (int_val: 4)
     expect(notes.length).toEqual(3);
     expect(notes[0].string).toEqual(0);
     expect(notes[0].fret).toEqual(0);
@@ -55,41 +55,41 @@ describe("GuitarNoteFactory", function() {
     expect(notes[2].fret).toEqual(4);
   });
   it("notesForNotesValues range limiting works", function() {
-    var nf = new GuitarNoteFactory({tuning: "E", numFrets: 20, minFret: 5, maxFret: 9 });
+    var nf = new GuitarNoteFactory({ tuning: "E", numFrets: 20, minFret: 5, maxFret: 9 });
 
     //open e string (int_val: 4)
-    var notes = nf.notesForNotesValues([4]);
+    var notes = nf.notesForNotesValues([ 4 ]);
     expect(notes.length).toEqual(0);
     
     // bottom of range (inclusive)
-    notes = nf.notesForNotesValues([9]);
+    notes = nf.notesForNotesValues([ 9 ]);
     expect(notes[0].fret).toEqual(5);
 
     // top of range
-    notes = nf.notesForNotesValues([0]);
+    notes = nf.notesForNotesValues([ 0 ]);
     expect(notes[0].fret).toEqual(8);
 
     // just out of range
-    notes = nf.notesForNotesValues([1]);
+    notes = nf.notesForNotesValues([ 1 ]);
     expect(notes.length).toEqual(0);
   });
 
   it("notesForNotesValues returns proper number of notes", function() {
-    var nf = new GuitarNoteFactory({tuning: "E", numFrets: 12});
-    expect(nf.notesForNotesValues([4]).length).toEqual(1);
-    expect(nf.notesForNotesValues([0]).length).toEqual(1);
-    expect(nf.notesForNotesValues([11]).length).toEqual(1);
-    expect(nf.notesForNotesValues([]).length).toEqual(0);
-    expect(nf.notesForNotesValues([4, 7]).length).toEqual(2);
-    expect(nf.notesForNotesValues([4, 7, 11, 0, 3, 7, 3]).length).toEqual(7);
-    expect(nf.notesForNotesValues([4, 4, 4]).length).toEqual(3);
+    var nf = new GuitarNoteFactory({ tuning: "E", numFrets: 12 });
+    expect(nf.notesForNotesValues([ 4 ]).length).toEqual(1);
+    expect(nf.notesForNotesValues([ 0 ]).length).toEqual(1);
+    expect(nf.notesForNotesValues([ 11 ]).length).toEqual(1);
+    expect(nf.notesForNotesValues([ ]).length).toEqual(0);
+    expect(nf.notesForNotesValues([ 4, 7 ]).length).toEqual(2);
+    expect(nf.notesForNotesValues([ 4, 7, 11, 0, 3, 7, 3 ]).length).toEqual(7);
+    expect(nf.notesForNotesValues([ 4, 4, 4 ]).length).toEqual(3);
 
-    nf = new GuitarNoteFactory({tuning: "EADGBE", numFrets: 12});
-    expect(nf.notesForNotesValues([]).length).toEqual(0);
-    expect(nf.notesForNotesValues([4]).length).toEqual(6);
-    expect(nf.notesForNotesValues([0]).length).toEqual(6);
-    expect(nf.notesForNotesValues([11]).length).toEqual(6);
-    expect(nf.notesForNotesValues([1,2,3]).length).toEqual(6*3);
+    nf = new GuitarNoteFactory({ tuning: "EADGBE", numFrets: 12 });
+    expect(nf.notesForNotesValues([ ]).length).toEqual(0);
+    expect(nf.notesForNotesValues([ 4 ]).length).toEqual(6);
+    expect(nf.notesForNotesValues([ 0 ]).length).toEqual(6);
+    expect(nf.notesForNotesValues([ 11 ]).length).toEqual(6);
+    expect(nf.notesForNotesValues([ 1,2,3 ]).length).toEqual(6 * 3);
   });
 
   it("notesForNotesStr throws for invalid note strings", function() {
@@ -158,7 +158,7 @@ describe("GuitarNoteFactory", function() {
   });
 
   it("notesForNotesStr returns proper number of notes", function() {
-    var nf = new GuitarNoteFactory({tuning: "E", numFrets: 12});
+    var nf = new GuitarNoteFactory({ tuning: "E", numFrets: 12 });
     expect(nf.notesForNotesStr("").length).toEqual(0);
 
     expect(nf.notesForNotesStr("A").length).toEqual(1);
@@ -173,15 +173,15 @@ describe("GuitarNoteFactory", function() {
     expect(nf.notesForNotesStr("A## d").length).toEqual(2);
     expect(nf.notesForNotesStr("Abb e").length).toEqual(2);
 
-    nf = new GuitarNoteFactory({tuning: "EADGBE", numFrets: 12});
+    nf = new GuitarNoteFactory({ tuning: "EADGBE", numFrets: 12 });
     expect(nf.notesForNotesStr("A#").length).toEqual(6);
     expect(nf.notesForNotesStr("Ab").length).toEqual(6);
     expect(nf.notesForNotesStr("A#").length).toEqual(6);
-    expect(nf.notesForNotesStr("Abb C d#").length).toEqual(6*3);
+    expect(nf.notesForNotesStr("Abb C d#").length).toEqual(6 * 3);
   });
 
   it("notesForScale validates input", function() {
-    var nf = new GuitarNoteFactory({tuning: "E", numFrets: 12});
+    var nf = new GuitarNoteFactory({ tuning: "E", numFrets: 12 });
     
     expect(function() { nf.notesForScale(); }).toThrow();
     expect(function() { nf.notesForScale("C"); }).toThrow();
@@ -201,7 +201,7 @@ describe("GuitarNoteFactory", function() {
   });
 
   it("notesForNotesStr returns proper number of notes", function() {
-    var nf = new GuitarNoteFactory({tuning: "E", numFrets: 12});
+    var nf = new GuitarNoteFactory({ tuning: "E", numFrets: 12 });
     expect(nf.notesForNotesStr("").length).toEqual(0);
 
     expect(nf.notesForNotesStr("A").length).toEqual(1);
@@ -216,10 +216,10 @@ describe("GuitarNoteFactory", function() {
     expect(nf.notesForNotesStr("A## d").length).toEqual(2);
     expect(nf.notesForNotesStr("Abb e").length).toEqual(2);
 
-    nf = new GuitarNoteFactory({tuning: "EADGBE", numFrets: 12});
+    nf = new GuitarNoteFactory({ tuning: "EADGBE", numFrets: 12 });
     expect(nf.notesForNotesStr("A#").length).toEqual(6);
     expect(nf.notesForNotesStr("Ab").length).toEqual(6);
     expect(nf.notesForNotesStr("A#").length).toEqual(6);
-    expect(nf.notesForNotesStr("Abb C d#").length).toEqual(6*3);
+    expect(nf.notesForNotesStr("Abb C d#").length).toEqual(6 * 3);
   });
 });

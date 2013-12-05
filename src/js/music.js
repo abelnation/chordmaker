@@ -43,19 +43,19 @@ Vex.Flow.Music.diatonic_intervals = [
 ];
 
 Vex.Flow.Music.diatonic_accidentals = {
-  "unison": {note: 0, accidental: 0},
-  "m2":     {note: 1, accidental: -1},
-  "M2":     {note: 1, accidental: 0},
-  "m3":     {note: 2, accidental: -1},
-  "M3":     {note: 2, accidental: 0},
-  "p4":     {note: 3, accidental: 0},
-  "dim5":   {note: 4, accidental: -1},
-  "p5":     {note: 4, accidental: 0},
-  "m6":     {note: 5, accidental: -1},
-  "M6":     {note: 5, accidental: 0},
-  "b7":     {note: 6, accidental: -1},
-  "M7":     {note: 6, accidental: 0},
-  "octave": {note: 7, accidental: 0}
+  "unison": { note: 0, accidental: 0 },
+  "m2":     { note: 1, accidental: -1 },
+  "M2":     { note: 1, accidental: 0 },
+  "m3":     { note: 2, accidental: -1 },
+  "M3":     { note: 2, accidental: 0 },
+  "p4":     { note: 3, accidental: 0 },
+  "dim5":   { note: 4, accidental: -1 },
+  "p5":     { note: 4, accidental: 0 },
+  "m6":     { note: 5, accidental: -1 },
+  "M6":     { note: 5, accidental: 0 },
+  "b7":     { note: 6, accidental: -1 },
+  "M7":     { note: 6, accidental: 0 },
+  "octave": { note: 7, accidental: 0 }
 };
 
 Vex.Flow.Music.intervals = {
@@ -102,39 +102,39 @@ Vex.Flow.Music.intervals = {
 };
 
 Vex.Flow.Music.scales = {
-  'major': [2, 2, 1, 2, 2, 2, 1],
-  'dorian': [2, 1, 2, 2, 2, 1, 2],
-  'phrygian': [1, 2, 2, 2, 1, 2, 2],
-  'lydian': [2, 2, 2, 1, 2, 2, 1],
-  'mixolydian': [2, 2, 1, 2, 2, 1, 2],
-  'minor': [2, 1, 2, 2, 1, 2, 2],
-  'locrian': [1, 2, 2, 1, 2, 2, 2],
-  'minpent': [3, 2, 2, 3, 2],
-  'majpent': [2, 2, 3, 2, 3],
-  'blues': [3, 2, 1, 1, 3, 2],
-  'harmonicminor': [2,1,2,2,1,3,1],
-  'wholetone': [2,2,2,2,2,2],
+  'major': [ 2, 2, 1, 2, 2, 2, 1 ],
+  'dorian': [ 2, 1, 2, 2, 2, 1, 2 ],
+  'phrygian': [ 1, 2, 2, 2, 1, 2, 2 ],
+  'lydian': [ 2, 2, 2, 1, 2, 2, 1 ],
+  'mixolydian': [ 2, 2, 1, 2, 2, 1, 2 ],
+  'minor': [ 2, 1, 2, 2, 1, 2, 2 ],
+  'locrian': [ 1, 2, 2, 1, 2, 2, 2 ],
+  'minpent': [ 3, 2, 2, 3, 2 ],
+  'majpent': [ 2, 2, 3, 2, 3 ],
+  'blues': [ 3, 2, 1, 1, 3, 2 ],
+  'harmonicminor': [ 2, 1, 2, 2, 1, 3, 1 ],
+  'wholetone': [ 2, 2, 2, 2, 2, 2 ],
 };
 
 Vex.Flow.Music.arpeggios = {
-  'maj':      [4,3,5],
-  'maj7':     [4,3,4,1],
-  'maj6':     [4,3,2,3],
-  'maj9':     [2,2,3,4,1],
-  'min':      [3,4,5],
-  'minmaj7':  [3,4,4,1],
-  'm7':       [3,4,3,2],
-  'm6':       [3,4,2,3],
-  'm69':      [2,1,4,2,3],
-  'm7b5':     [3,3,4,2],
-  '7':      [4,3,3,2],
-  '9':      [2,2,3,3,2],
-  '13':     [4,3,2,1,2],
-  '13(9)':  [2,2,3,2,1,2],
-  '7b9':    [1,3,3,3,2],
-  '13b9':   [],
-  'b13b9':  [],
-  'dim':    [3,3,3,3]
+  'maj':      [  4, 3, 5 ],
+  'maj7':     [ 4, 3, 4, 1 ],
+  'maj6':     [ 4, 3, 2, 3 ],
+  'maj9':     [ 2, 2, 3, 4, 1 ],
+  'min':      [ 3, 4, 5 ],
+  'minmaj7':  [ 3, 4, 4, 1 ],
+  'm7':       [ 3, 4, 3, 2 ],
+  'm6':       [ 3, 4, 2, 3 ],
+  'm69':      [ 2, 1, 4, 2, 3 ],
+  'm7b5':     [ 3, 3, 4, 2 ],
+  '7':      [ 4, 3, 3, 2 ],
+  '9':      [ 2, 2, 3, 3, 2 ],
+  '13':     [ 4, 3, 2, 1, 2 ],
+  '13(9)':  [ 2, 2, 3, 2, 1, 2 ],
+  '7b9':    [ 1, 3, 3, 3, 2 ],
+  '13b9':   [ ],
+  'b13b9':  [ ],
+  'dim':    [ 3, 3, 3, 3 ]
 };
 
 Vex.Flow.Music.accidentals = [ "bb", "b", "n", "#", "##" ];

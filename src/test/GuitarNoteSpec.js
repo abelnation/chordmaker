@@ -8,9 +8,9 @@ describe("GuitarNote", function() {
   });
 
   it("errors if not provided invalid string values", function() {
-    expect(function() { new GuitarNote(-1, 3); }).toThrow();
+    expect(function() { new GuitarNote( -1, 3 ); }).toThrow();
     expect(function() { new GuitarNote("asdf", 4); }).toThrow();
-    expect(function() { new GuitarNote({"foo": 3}, 4); }).toThrow();
+    expect(function() { new GuitarNote({ "foo": 3 }, 4); }).toThrow();
     expect(function() { new GuitarNote(null, 4); }).toThrow();
     expect(function() { new GuitarNote(undefined, 4); }).toThrow();
     expect(function() { new GuitarNote(false, 4); }).toThrow();
@@ -20,7 +20,7 @@ describe("GuitarNote", function() {
   it("errors if not provided invalid fret values", function() {
     expect(function() { new GuitarNote(2, -1); }).toThrow();
     expect(function() { new GuitarNote(2, "asdf"); }).toThrow();
-    expect(function() { new GuitarNote(2, {"foo": 3}); }).toThrow();
+    expect(function() { new GuitarNote(2, { "foo": 3 }); }).toThrow();
     expect(function() { new GuitarNote(2, null); }).toThrow();
     expect(function() { new GuitarNote(2, undefined); }).toThrow();
     expect(function() { new GuitarNote(2, false); }).toThrow();
@@ -45,11 +45,11 @@ describe("GuitarNote", function() {
     expect(gn.toString())
       .toEqual("String: 2, Fret: 3");
 
-    gn = new GuitarNote(2, 3, {finger: 3});
+    gn = new GuitarNote(2, 3, { finger: 3 });
     expect(gn.toString())
       .toEqual("String: 2, Fret: 3, Finger: 3");
 
-    gn = new GuitarNote(2, 3, {muted: true});
+    gn = new GuitarNote(2, 3, { muted: true });
     expect(gn.toString())
       .toEqual("String: 2, Fret: 3, Finger: " + GuitarNote.MUTE_ANNOTATION);
   });
@@ -60,13 +60,13 @@ describe("GuitarNote", function() {
     gn = new GuitarNote(2, 3);
     expect(gn.getKey()).toEqual("2 3");
 
-    gn = new GuitarNote(9, 0, {finger: 3});
+    gn = new GuitarNote(9, 0, { finger: 3 });
     expect(gn.getKey()).toEqual("9 0");
     
-    gn = new GuitarNote(2, null, {muted: true});
+    gn = new GuitarNote(2, null, { muted: true });
     expect(gn.getKey()).toEqual("2 " + GuitarNote.MUTE_ANNOTATION);
 
-    gn = new GuitarNote(2, 5, {muted: true});
+    gn = new GuitarNote(2, 5, { muted: true });
     expect(gn.getKey()).toEqual("2 " + GuitarNote.MUTE_ANNOTATION);
     
   });

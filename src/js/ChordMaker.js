@@ -30,7 +30,7 @@ var ChordMaker = (function() {
         if (line === "") { return; }
 
         // Deal with chord config string
-        if (line.indexOf("[")!=-1) {
+        if (line.indexOf("[") != -1) {
           line = line.replace(/^\[|\]$/g, '');
           var params = line.split(",");
           _.each(params, function(param) {
@@ -38,17 +38,17 @@ var ChordMaker = (function() {
             var tokens = param.split("=");
             var key = tokens[0];
             var val = tokens[1];
-            if (key=="base_fret") {
+            if (key == "base_fret") {
               base_fret = parseInt(val, 10);
-            } else if (key=="label") {
+            } else if (key == "label") {
               label = val;
-            } else if (key=="orientation") {
+            } else if (key == "orientation") {
               orientation = val;
-            } else if (key=="num_frets") {
+            } else if (key == "num_frets") {
               num_frets = parseInt(val, 10);
-            } else if (key=="scale") {
+            } else if (key == "scale") {
               scale = parseFloat(val);
-            } else if (key=="fret_gap") {
+            } else if (key == "fret_gap") {
               fret_gap = parseInt(val, 10);
             }
           });
@@ -107,14 +107,13 @@ var ChordMaker = (function() {
             theNote.muted = true;
           } else {
             theNote.fret = parseInt(theNote.fret, 10);
-            var fret_amt = (parseInt(theNote.fret, 10)-base_fret);
-            if (fret_amt > num_frets) { num_frets = theNote.fret+1; }
+            var fret_amt = (parseInt(theNote.fret, 10) - base_fret);
+            if (fret_amt > num_frets) { num_frets = theNote.fret + 1; }
           }
 
           theNote.color = color;
           notes_to_add.push(_.clone(theNote));
         });
-
 
       });
 
@@ -132,17 +131,17 @@ var ChordMaker = (function() {
     },
 
     makeScaleDiagram: function(element, key, scale, options) {
-      if(!_.has(Vex.Flow.Music.noteValues, key) ||
+      if (!_.has(Vex.Flow.Music.noteValues, key) ||
          !_.has(Vex.Flow.Music.scales, scale)) {
         return;
       }
 
       element.innerHTML = "";
 
-      if(_.isUndefined(options)) { options = {}; }
-      if(_.isUndefined(options.orientation)){ options.orientation = "left"; }
-      if(_.isUndefined(options.num_frets)){ options.num_frets = 17; }
-      if(_.isUndefined(options.fret_gap)){ options.fret_gap = 50; }
+      if (_.isUndefined(options)) { options = {}; }
+      if (_.isUndefined(options.orientation)){ options.orientation = "left"; }
+      if (_.isUndefined(options.num_frets)){ options.num_frets = 17; }
+      if (_.isUndefined(options.fret_gap)){ options.fret_gap = 50; }
 
       var music = new Vex.Flow.Music();
 
@@ -156,17 +155,17 @@ var ChordMaker = (function() {
 
       var notes_to_add = [];
 
-      for (var i=0; i<result.getNumStrings(); i++) {
+      for (var i = 0; i < result.getNumStrings(); i++) {
         var string_base_value = music.getNoteValue(tuning[i].toLowerCase());
-        var string_base_fret_value = string_base_value + (base_fret-1);
-        for (var j=0; j<num_frets; j++) {
+        var string_base_fret_value = string_base_value + (base_fret - 1);
+        for (var j = 0; j < num_frets; j++) {
           var fret_value = (string_base_fret_value + j) % 12;
           if (_.include(scale_tones,fret_value)) {
             var note = {
               string: i,
-              fret: (base_fret-1)+j,
+              fret: (base_fret - 1) + j,
             };
-            if (note.fret<=0) {
+            if (note.fret <= 0) {
               continue;
             } else if (fret_value == tonic_value) { note.tonic = true; note.color = 'black'; }
             notes_to_add.push(_.clone(note));
@@ -180,17 +179,17 @@ var ChordMaker = (function() {
 
     makeArpeggioDiagram: function(element, key, scale, options) {
 
-      if(!_.has(Vex.Flow.Music.noteValues, key) ||
+      if (!_.has(Vex.Flow.Music.noteValues, key) ||
          !_.has(Vex.Flow.Music.arpeggios, scale)) {
         return;
       }
 
       element.innerHTML = "";
 
-      if(_.isUndefined(options)) { options = {}; }
-      if(_.isUndefined(options.orientation)){ options.orientation = "left"; }
-      if(_.isUndefined(options.num_frets)){ options.num_frets = 17; }
-      if(_.isUndefined(options.fret_gap)){ options.fret_gap = 50; }
+      if (_.isUndefined(options)) { options = {}; }
+      if (_.isUndefined(options.orientation)){ options.orientation = "left"; }
+      if (_.isUndefined(options.num_frets)){ options.num_frets = 17; }
+      if (_.isUndefined(options.fret_gap)){ options.fret_gap = 50; }
 
       var music = new Vex.Flow.Music();
 
@@ -204,17 +203,17 @@ var ChordMaker = (function() {
 
       var notes_to_add = [];
 
-      for (var i=0; i<result.getNumStrings(); i++) {
+      for (var i = 0; i < result.getNumStrings(); i++) {
         var string_base_value = music.getNoteValue(tuning[i].toLowerCase());
-        var string_base_fret_value = string_base_value + (base_fret-1);
-        for (var j=0; j<num_frets; j++) {
+        var string_base_fret_value = string_base_value + (base_fret - 1);
+        for (var j = 0; j < num_frets; j++) {
           var fret_value = (string_base_fret_value + j) % 12;
           if (_.include(scale_tones,fret_value)) {
             var note = {
               string: i,
-              fret: (base_fret-1)+j,
+              fret: (base_fret - 1) + j,
             };
-            if (note.fret<=0) {
+            if (note.fret <= 0) {
               continue;
             } else if (fret_value == tonic_value) { note.tonic = true; note.color = 'black'; }
             notes_to_add.push(_.clone(note));
@@ -227,7 +226,7 @@ var ChordMaker = (function() {
     },
 
     parseChordsInPage: function(class_name) {
-      if(!class_name) { class_name = "chord"; }
+      if (!class_name) { class_name = "chord"; }
       $("."+class_name).each(function() {
         var chord_str = $(this).html();
         var elem = $(this)[0];

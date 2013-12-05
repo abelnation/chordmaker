@@ -1,5 +1,11 @@
 /* global _, Tuning, GuitarNote */
 
+/**
+* Data model for a Guitar Chord.
+* 
+* @class ChordModel
+* @constructor
+*/
 function ChordModel(options) {
   // This first guard ensures that the callee has invoked our Class' constructor function
   // with the `new` keyword - failure to do this will result in the `this` keyword referring 
@@ -9,7 +15,7 @@ function ChordModel(options) {
     throw new TypeError("ChordModel cannot be called as a function.");
   }
 
-  if(!options) { options = {}; }
+  if (!options) { options = {}; }
   this._init(options);
 }
 
@@ -36,19 +42,19 @@ ChordModel.prototype = {
     this.tuningStr = options.tuning;
     this.tuning = new Tuning(this.tuningStr);
 
-    if(_.isUndefined(options.numFrets) || _.isNull(options.numFrets) || !_.isNumber(options.numFrets) || options.numFrets < 0) {
+    if (_.isUndefined(options.numFrets) || _.isNull(options.numFrets) || !_.isNumber(options.numFrets) || options.numFrets < 0) {
       throw TypeError("numFrets must be a valid integer greater than 0: " + options.numFrets);
     }
     this.numFrets = options.numFrets;
 
-    if(_.isUndefined(options.baseFret) || _.isNull(options.baseFret) ||
+    if (_.isUndefined(options.baseFret) || _.isNull(options.baseFret) ||
         !_.isNumber(options.baseFret) ||
         options.baseFret < 0 || options.baseFret >= this.numFrets) {
       throw TypeError("baseFret must be a valid integer greater than 0: " + options.baseFret);
     }
     this.baseFret = options.baseFret;
 
-    if(!_.isString(options.label)) {
+    if (!_.isString(options.label)) {
       throw TypeError("label must be a string");
     }
     this.label = options.label;
@@ -84,16 +90,16 @@ ChordModel.prototype = {
   },
 
   addNotes: function(notes) {
-    if(!_.isArray(notes)) {
+    if (!_.isArray(notes)) {
       throw TypeError("addNotes takes an array of notes: " + notes);
     }
-    for(var i=0; i<notes.length; i++) {
+    for (var i = 0; i < notes.length; i++) {
       var note = notes[i];
       this.addNote(note);
     }
   },
   addNote: function(note) {
-    if(_.isUndefined(note) || _.isNull(note)) {
+    if (_.isUndefined(note) || _.isNull(note)) {
       throw TypeError("Note is undefined");
     } else if (_.isString(note)) {
       // TODO: implement

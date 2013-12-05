@@ -36,9 +36,9 @@ module.exports = function (grunt) {
   grunt.util._.extend(config, loadConfig('./tasks/options/'));
   grunt.initConfig(config);
 
-  grunt.registerTask('dev', ['jshint', 'copy:dev', 'preprocess:dev', /* 'sass:dev', */ 'concat:dev', 'uglify:dev' /*, 'test' */]);
-  grunt.registerTask('dist', ['clean:dist', 'jshint', 'copy:dist', 'preprocess:dist', 'strip:dist', /* 'sass:dist',*/ 'concat:dist', 'uglify:dist', 'clean:scrub_dist']);
-  grunt.registerTask('test', ['copy:devtest', 'connect:test', 'jasmine:testlocalserver']);
+  grunt.registerTask('dev', ['jshint:src', 'jscs:src', 'copy:dev', 'preprocess:dev', /* 'sass:dev', */ 'concat:dev', 'uglify:dev', 'test' /* ,'yuidoc:dev' */ ]);
+  grunt.registerTask('dist', ['clean:dist', 'jshint:src', 'jscs:src', 'copy:dist', 'preprocess:dist', 'strip:dist', /* 'sass:dist',*/ 'concat:dist', 'uglify:dist', 'clean:scrub_dist' /*, 'yuidoc:dist'*/ ]);
+  grunt.registerTask('test', ['jshint:test', 'jscs:test', 'copy:devtest', 'connect:test', 'jasmine:testlocalserver']);
 
   grunt.registerTask('default', ['dev']);
 };

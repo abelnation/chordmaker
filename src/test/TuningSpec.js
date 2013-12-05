@@ -56,16 +56,16 @@ describe("Tuning", function() {
     expect(function() { Tuning.parseTuningString([ 3 ]); }).toThrow();
   });
   it("parseTuningString works for spaced strings", function() {
-    expect(Tuning.parseTuningString("E A D G B E")).toEqual(["E", "A", "D", "G", "B", "E"]);
-    expect(Tuning.parseTuningString("E A# Db G Bbb E##")).toEqual(["E", "A#", "Db", "G", "Bbb", "E##"]);
-    expect(Tuning.parseTuningString("E A# Db G Bbb E##")).toEqual(["E", "A#", "Db", "G", "Bbb", "E##"]);
-    expect(Tuning.parseTuningString("e A# db G Bbb E##")).toEqual(["e", "A#", "db", "G", "Bbb", "E##"]);
+    expect(Tuning.parseTuningString("E A D G B E")).toEqual([ "E", "A", "D", "G", "B", "E" ]);
+    expect(Tuning.parseTuningString("E A# Db G Bbb E##")).toEqual([ "E", "A#", "Db", "G", "Bbb", "E##" ]);
+    expect(Tuning.parseTuningString("E A# Db G Bbb E##")).toEqual([ "E", "A#", "Db", "G", "Bbb", "E##" ]);
+    expect(Tuning.parseTuningString("e A# db G Bbb E##")).toEqual([ "e", "A#", "db", "G", "Bbb", "E##" ]);
   });
   it("parseTuningString works for non-spaced strings", function() {
-    expect(Tuning.parseTuningString("EADGBE")).toEqual(["E", "A", "D", "G", "B", "E"]);
-    expect(Tuning.parseTuningString("EA#DGBE##")).toEqual(["E", "A#", "D", "G", "B", "E##"]);
-    expect(Tuning.parseTuningString("EA#DGBE##")).toEqual(["E", "A#", "D", "G", "B", "E##"]);
-    expect(Tuning.parseTuningString("eA#dGBE##")).toEqual(["e", "A#", "d", "G", "B", "E##"]);
+    expect(Tuning.parseTuningString("EADGBE")).toEqual([ "E", "A", "D", "G", "B", "E" ]);
+    expect(Tuning.parseTuningString("EA#DGBE##")).toEqual([ "E", "A#", "D", "G", "B", "E##" ]);
+    expect(Tuning.parseTuningString("EA#DGBE##")).toEqual([ "E", "A#", "D", "G", "B", "E##" ]);
+    expect(Tuning.parseTuningString("eA#dGBE##")).toEqual([ "e", "A#", "d", "G", "B", "E##" ]);
   });
   it("parseTuningString catches ambiguous flats strings", function() {
     expect(function() { Tuning.parseTuningString("EAbDGBE"); }).toThrow();
@@ -96,7 +96,5 @@ describe("Tuning", function() {
       expect(_.has(Tuning.instruments[inst], "default")).toBe(true);
     }
   });
-
-
 
 });

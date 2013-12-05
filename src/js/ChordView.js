@@ -8,8 +8,8 @@ function ChordView(container, options, model) {
   if (!(this instanceof ChordView)) {
     throw new TypeError("ChordView constructor cannot be called as a function.");
   }
-  if(!options) { options = {}; }
-  if(!model) { model = new ChordModel(); }
+  if (!options) { options = {}; }
+  if (!model) { model = new ChordModel(); }
   
   this._init(container, options, model);
 }
@@ -37,12 +37,12 @@ ChordView.NOTE_GRADIENTS = {
   'green': '90-#0f0:5-#0f0:95'
 };
 ChordView.NECK_MARKERS = [
-  [5, 1],
-  [7, 2],
-  [9, 1],
-  [12,2],
-  [15,1],
-  [17,1]
+  [ 5, 1 ],
+  [ 7, 2 ],
+  [ 9, 1 ],
+  [ 12, 2 ],
+  [ 15, 1 ],
+  [ 17, 1 ]
 ];
 
 ChordView.DEFAULT_OPTIONS = {
@@ -116,7 +116,7 @@ ChordView.prototype = {
   constructor: ChordView,
 
   _init: function(container, options, model) {
-    if(!_.isString(container) && !_.isElement(container)) {
+    if (!_.isString(container) && !_.isElement(container)) {
       throw TypeError("container must be a DOM elem or DOM ID string.");
     }
 
@@ -170,7 +170,7 @@ ChordView.prototype = {
   _scaleSize: function() {
     _.each(ChordView.DEFAULT_OPTIONS, function(num, key) {
       // TODO: improve the fact that we're using negative numbers to distinguish values from consts
-      if (key != "scale" && _.isNumber(this.options[key]) && this.options[key]>=0) {
+      if (key != "scale" && _.isNumber(this.options[key]) && this.options[key] >= 0) {
         this.options[key] = this.options[key] * this.options.scale;
       }
     }, this);
@@ -182,13 +182,13 @@ ChordView.prototype = {
   // },
 
   _render: function() {
-    this.neck.width = (this.model.getNumStrings()-1)*this.options.string_gap;
-    this.neck.height = this.model.getNumFrets()*this.options.fret_gap;
+    this.neck.width = (this.model.getNumStrings() - 1) * this.options.string_gap;
+    this.neck.height = this.model.getNumFrets() * this.options.fret_gap;
 
     this._drawNeck(
       this.options.grid_x, this.options.grid_y,
       this.neck.width, this.neck.height,
-      this.model.getNumStrings()-1, this.model.getNumFrets(), "#000"
+      this.model.getNumStrings() - 1, this.model.getNumFrets(), "#000"
     );
 
     if (this.model.getBaseFret() == 1) {
@@ -200,7 +200,7 @@ ChordView.prototype = {
     if (this.options.orientation === ChordView.NUT_TOP) {
       this._drawLabel();
     }
-    if(this.options.show_tuning) {
+    if (this.options.show_tuning) {
       this._drawTuningLabel();
     }
     this._drawNotes();
@@ -218,7 +218,7 @@ ChordView.prototype = {
         throw TypeError("Invalid orientation string: " + orientation);
       }
     }
-    if (!_.include([ChordView.NUT_TOP, ChordView.NUT_LEFT], orientation)) {
+    if (!_.include([ ChordView.NUT_TOP, ChordView.NUT_LEFT ], orientation)) {
       throw TypeError("Invalid orientation: " + orientation);
     }
 
@@ -235,10 +235,10 @@ ChordView.prototype = {
       // Rotate Horizontally
       // var transform_str = "t-"+this.neck.height+",0" + "r-90,"+this.options.grid_x+","+this.options.grid_y;
 
-      var rotate_o_x = (this.options.grid_x+(this.neck.width/2)),
-          rotate_o_y = (this.options.grid_y+(this.neck.height/2)),
-          translate_x = -(this.width - this.height) / 2,
-          translate_y = (this.height - this.width) / 2;
+      var rotate_o_x = (this.options.grid_x + (this.neck.width / 2));
+      var rotate_o_y = (this.options.grid_y + (this.neck.height / 2));
+      var translate_x = -(this.width - this.height) / 2;
+      var translate_y = (this.height - this.width) / 2;
 
       // TODO: explain this transformation
       // don't include right padding for sideways layouts
@@ -251,7 +251,7 @@ ChordView.prototype = {
       this.r.setSize(this.width, this.height);
     }
     _.each(_.values(this.neck.glyphs), function(glyph) {
-      if(_.isArray(glyph)) {
+      if (_.isArray(glyph)) {
         _.each(glyph, function(glyph) {
           glyph.transform(this.transform_str);
         }, this);
@@ -261,7 +261,7 @@ ChordView.prototype = {
     }, this);
     _.each(_.values(this.noteGlyphs), function(note) {
       _.each(_.values(note), function(glyph) {
-        if(orientation == ChordView.NUT_LEFT) {
+        if (orientation == ChordView.NUT_LEFT) {
           glyph.transform(this.transform_str + "r90");
         } else {
           glyph.transform(this.transform_str);
@@ -272,27 +272,31 @@ ChordView.prototype = {
 
   _drawNeck: function(x, y, w, h, wv, hv, color) {
     color = color || "#000";
-    var path = ["M", Math.round(x) + 0.5, Math.round(y) + 0.5, "L", Math.round(x + w) + 0.5, Math.round(y) + 0.5, Math.round(x + w) + 0.5, Math.round(y + h) + 0.5, Math.round(x) + 0.5, Math.round(y + h) + 0.5, Math.round(x) + 0.5, Math.round(y) + 0.5],
-        rowHeight = h / hv,
-        columnWidth = w / wv;
+    var path = [ "M", Math.round(x) + 0.5, Math.round(y) + 0.5, "L", Math.round(x + w) + 0.5, Math.round(y) + 0.5, Math.round(x + w) + 0.5, Math.round(y + h) + 0.5, Math.round(x) + 0.5, Math.round(y + h) + 0.5, Math.round(x) + 0.5, Math.round(y) + 0.5 ];
+    var rowHeight = h / hv;
+    var columnWidth = w / wv;
+
     for (var i = 1; i < hv; i++) {
-      path = path.concat(["M", Math.round(x) + 0.5, Math.round(y + i * rowHeight) + 0.5, "H", Math.round(x + w) + 0.5]);
+      path = path.concat([ "M", Math.round(x) + 0.5, Math.round(y + i * rowHeight) + 0.5, "H", Math.round(x + w) + 0.5 ]);
     }
     for (i = 1; i < wv; i++) {
-      path = path.concat(["M", Math.round(x + i * columnWidth) + 0.5, Math.round(y) + 0.5, "V", Math.round(y + h) + 0.5]);
+      path = path.concat([ "M", Math.round(x + i * columnWidth) + 0.5, Math.round(y) + 0.5, "V", Math.round(y + h) + 0.5 ]);
     }
 
     // this.neck.glyphs['grid_back'] = this.r.rect(this.options.grid_x, this.options.grid_y, this.neck.width, this.neck.height).attr("fill", "white");
     this._drawNeckMarkers();
-    this.neck.glyphs['grid'] = this.r.path(path.join(",")).attr({stroke: color, 'stroke-width': this.options.grid_stroke_width});
+    this.neck.glyphs['grid'] = this.r.path(path.join(",")).attr({
+      'stroke': color,
+      'stroke-width': this.options.grid_stroke_width
+    });
   },
 
   _drawNeckMarkers: function() {
     this.neck.glyphs['neck-markers'] = [];
 
-    for (var i=0; i<ChordView.NECK_MARKERS.length; i++) {
+    for (var i = 0; i < ChordView.NECK_MARKERS.length; i++) {
       var marker = ChordView.NECK_MARKERS[i];
-      if(marker[0] > this.model.getBaseFret() &&
+      if (marker[0] > this.model.getBaseFret() &&
          marker[0] < this.model.getBaseFret()+this.model.getNumFrets()) {
         this._drawNeckMarker(marker);
       }
@@ -300,16 +304,16 @@ ChordView.prototype = {
   },
 
   _drawNeckMarker: function(neck_marker) {
-    if(_.isUndefined(neck_marker)) { return; }
+    if (_.isUndefined(neck_marker)) { return; }
 
-    var y = this.options.grid_y + ((neck_marker[0]-(this.model.getBaseFret()-1)) * this.options.fret_gap) - (this.options.fret_gap/2);
+    var y = this.options.grid_y + ((neck_marker[0] - (this.model.getBaseFret() - 1)) * this.options.fret_gap) - (this.options.fret_gap / 2);
     var marker_style = {
       fill: "90-#bbb:5-#ccc:95",
       stroke: "none"
     };
 
     if (neck_marker[1] == 1) {
-      var x = this.options.grid_x + this.neck.width/2;
+      var x = this.options.grid_x + this.neck.width / 2;
 
       var glyph = this.r.circle(x,y,this.options.neck_marker_radius);
       glyph.attr(marker_style);
@@ -330,7 +334,11 @@ ChordView.prototype = {
   },
 
   _drawNut: function() {
-    var glyph = this.r.rect(this.options.grid_x,this.options.grid_y, (this.model.getNumStrings()-1)*this.options.string_gap, this.options.nut_height).attr({ fill: "black"});
+    var glyph = this.r.rect(
+      this.options.grid_x,this.options.grid_y,
+      (this.model.getNumStrings() - 1) * this.options.string_gap,
+      this.options.nut_height).attr({ fill: "black" }
+    );
 
     this.neck.glyphs['nut'] = glyph;
     //this.neck.push(glyph);
@@ -338,7 +346,7 @@ ChordView.prototype = {
 
   _drawTuningLabel: function() {
     this.neck.glyphs['tuning-labels'] = [];
-    for (var i=0; i<this.model.getNumStrings(); i++) {
+    for (var i = 0; i < this.model.getNumStrings(); i++) {
       var note = this.model.getTuning().notes[i];
 
       var x = this.options.grid_x + (i * this.options.string_gap);
@@ -347,16 +355,21 @@ ChordView.prototype = {
         fill: "black"
       };
 
-      var glyph = this.r.text(x, y, "" + note).attr({ 'font-size': this.options.tuning_label_font_size });
+      var glyph = this.r.text(x, y, "" + note).attr({
+        'font-size': this.options.tuning_label_font_size
+      });
       this.neck.glyphs['tuning-labels'].push(glyph);
     }
   },
 
   _drawBaseFret: function(base_fret) {
     var x = this.options.grid_x + this.neck.width + this.options.base_fret_offset;
-    var y = this.options.grid_y + this.options.fret_gap/2;
+    var y = this.options.grid_y + this.options.fret_gap / 2;
 
-    this.r.text(x,y, ""+base_fret+"fr.").attr({ 'text-anchor': 'start', 'font-size': this.options.base_fret_font_size });
+    this.r.text(x,y, "" + base_fret + "fr.").attr({
+      'text-anchor': 'start',
+      'font-size': this.options.base_fret_font_size
+    });
   },
 
   _drawNotes: function() {
@@ -372,13 +385,13 @@ ChordView.prototype = {
       if (_.isUndefined(this.noteGlyphs[note.getKey()])) {
         this.noteGlyphs[note.getKey()] = {};
       }
-      if(note.muted) {
+      if (note.muted) {
         this._drawMuteStringAnnotatation(note).transform(this.transform_str);
       } else if (note.isOpen()) {
         this._drawOpenStringAnnotatation(note).transform(this.transform_str);
       } else {
         var marker = this._drawFretMarker(note);
-        if(marker) {
+        if (marker) {
           marker.transform(this.transform_str);
         }
         if (this.options.show_fingers && note.finger) {
@@ -389,13 +402,13 @@ ChordView.prototype = {
   },
 
   _drawFretMarker: function(note) {
-    if(_.isUndefined(note.fret) || note.fret === 0) { return; }
+    if (_.isUndefined(note.fret) || note.fret === 0) { return; }
 
     if (note.fret < this.model.getBaseFret() ||
         note.fret >= this.model.getBaseFret() + this.model.getNumFrets()) { return; }
 
     var x = this.options.grid_x + (note.string * this.options.string_gap) + 0.5;
-    var y = this.options.grid_y + ((note.fret-this.model.getBaseFret()+1) * this.options.fret_gap) - (this.options.fret_gap / 2) + 0.5;
+    var y = this.options.grid_y + ((note.fret - this.model.getBaseFret() + 1) * this.options.fret_gap) - (this.options.fret_gap / 2) + 0.5;
     
     var note_style = {
       fill: this._colorValueForName(this.options.note_color)
@@ -444,7 +457,10 @@ ChordView.prototype = {
   _drawFingerAnnotation: function(note) {
     if (_.isUndefined(note.string) || _.isUndefined(note.finger)) { return; }
 
-    var x,y,annotation_style;
+    var x;
+    var y;
+    var annotation_style;
+
     if (this.options.finger_position === ChordView.FINGER_TOP) {
       x = this.options.grid_x + (note.string * this.options.string_gap);
       y = this.options.grid_y - this.options.finger_anno_y;
@@ -452,14 +468,14 @@ ChordView.prototype = {
         fill: "black"
       };
     } else if (this.options.finger_position === ChordView.FINGER_LEFT) {
-      x = this.options.grid_x + (note.string * this.options.string_gap) - this.options.note_radius*2 + 0.5;
-      y = this.options.grid_y + ((note.fret-this.model.getBaseFret()+1) * this.options.fret_gap) - (this.options.fret_gap / 2) + 0.5;
+      x = this.options.grid_x + (note.string * this.options.string_gap) - (this.options.note_radius * 2) + 0.5;
+      y = this.options.grid_y + ((note.fret - this.model.getBaseFret()+1) * this.options.fret_gap) - (this.options.fret_gap / 2) + 0.5;
       annotation_style = {
         fill: "black"
       };
     } else if (this.options.finger_position === ChordView.FINGER_ONNOTE) {
       x = this.options.grid_x + (note.string * this.options.string_gap) + 0.5;
-      y = this.options.grid_y + ((note.fret-this.model.getBaseFret()+1) * this.options.fret_gap) - (this.options.fret_gap / 2) + 0.5;
+      y = this.options.grid_y + ((note.fret - this.model.getBaseFret()+1) * this.options.fret_gap) - (this.options.fret_gap / 2) + 0.5;
       annotation_style = {
         fill: "black"
       };

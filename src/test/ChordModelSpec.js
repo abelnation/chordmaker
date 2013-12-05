@@ -3,19 +3,19 @@
 describe("ChordModel", function() {
   
   it("constructor validates arguments", function() {
-    expect(function(){ new ChordModel({ tuning: "INVALID" }); }).toThrow();
+    expect(function() { new ChordModel({ tuning: "INVALID" }); }).toThrow();
 
-    expect(function(){ new ChordModel({ numFrets: "INVALID" }); }).toThrow();
-    expect(function(){ new ChordModel({ numFrets: { foo: "bar" } }); }).toThrow();
-    expect(function(){ new ChordModel({ numFrets: [1234] }); }).toThrow();
-    expect(function(){ new ChordModel({ numFrets: -234 }); }).toThrow();
+    expect(function() { new ChordModel({ numFrets: "INVALID" }); }).toThrow();
+    expect(function() { new ChordModel({ numFrets: { foo: "bar" } }); }).toThrow();
+    expect(function() { new ChordModel({ numFrets: [ 1234 ] }); }).toThrow();
+    expect(function() { new ChordModel({ numFrets: -234 }); }).toThrow();
 
-    expect(function(){ new ChordModel({ numFrets: 5, baseFret: 8 }); }).toThrow();
-    expect(function(){ new ChordModel({ numFrets: 5, baseFret: -23 }); }).toThrow();
+    expect(function() { new ChordModel({ numFrets: 5, baseFret: 8 }); }).toThrow();
+    expect(function() { new ChordModel({ numFrets: 5, baseFret: -23 }); }).toThrow();
 
-    expect(function(){ new ChordModel({ label: 1234 }); }).toThrow();
-    expect(function(){ new ChordModel({ label: {foo:"bar"} }); }).toThrow();
-    expect(function(){ new ChordModel({ label: [1234] }); }).toThrow();
+    expect(function() { new ChordModel({ label: 1234 }); }).toThrow();
+    expect(function() { new ChordModel({ label: { foo: "bar" } }); }).toThrow();
+    expect(function() { new ChordModel({ label: [ 1234 ] }); }).toThrow();
     
   });
 
@@ -24,8 +24,8 @@ describe("ChordModel", function() {
     expect(function() { cm.addNote(null); }).toThrow();
     expect(function() { cm.addNote(undefined); }).toThrow();
     expect(function() { cm.addNote(1234); }).toThrow();
-    expect(function() { cm.addNote({foo:"bar"}); }).toThrow();
-    expect(function() { cm.addNote([1234]); }).toThrow();
+    expect(function() { cm.addNote({ foo: "bar" }); }).toThrow();
+    expect(function() { cm.addNote([ 1234 ]); }).toThrow();
 
     // TODO: note strings
     // expect(cm.addNote("INVALID")).toThrow();
@@ -52,14 +52,14 @@ describe("ChordModel", function() {
   it("addNotes works", function() {
     var cm = new ChordModel();
     var notes = [];
-    for (var i=1; i<5; i++) {
+    for (var i = 1; i < 5; i++) {
       notes.push(new GuitarNote(0,i));
     }
     cm.addNotes(notes);
     expect(cm.getNumNotes()).toEqual(4);
 
     notes = [];
-    for (var j=1; j<3; j++) {
+    for (var j = 1; j < 3; j++) {
       notes.push(new GuitarNote(1,j));
     }
     cm.addNotes(notes);
@@ -69,7 +69,7 @@ describe("ChordModel", function() {
   it("removeNote works", function() {
     var cm = new ChordModel();
     var notes = [];
-    for (var i=1; i<5; i++) {
+    for (var i = 1; i < 5; i++) {
       notes.push(new GuitarNote(0,i));
     }
     cm.addNotes(notes);

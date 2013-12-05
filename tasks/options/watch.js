@@ -14,11 +14,13 @@ module.exports = {
     files: ['<%= jshint.src.src %>'],
     tasks: [
       'jshint:src',
+      'jscs:src',
       'clean:devjscompiled',
       'copy:devjs', 
       'concat:dev',
       'uglify:dev',
-      'test'
+      'test',
+      'yuidoc:dev',
     ],
   },
   sass: {

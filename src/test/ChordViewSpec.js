@@ -15,7 +15,7 @@ describe("ChordView", function() {
     expect(function() { new ChordView(undefined); }).toThrow();
     expect(function() { new ChordView(NaN); }).toThrow();
     expect(function() { new ChordView({ foo: "bar" }); }).toThrow();
-    expect(function() { new ChordView(["chord-ex1"]); }).toThrow();
+    expect(function() { new ChordView([ "chord-ex1" ]); }).toThrow();
   });
   
   it("constructor with valid element inserts SVG", function() {

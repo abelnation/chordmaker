@@ -10,7 +10,6 @@ function Tuning(tuningStr) {
   this._init(tuningStr);
 }
 
-
 Tuning.prototype = {
   /**
    * Whenever you replace an Object's Prototype, you need to repoint
@@ -56,7 +55,7 @@ Tuning.parseTuningString = function(tuningStr) {
   for (var i in tokens) {
     var token = tokens[i];
     var match = token.match(/[ABCDEFGabcdefg](bb|b|n|##|#)?/g);
-    for (var j=0; j<match.length; j++) {
+    for (var j = 0; j < match.length; j++) {
       notes.push(match[j]);
     }
   }
