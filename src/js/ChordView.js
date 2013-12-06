@@ -15,9 +15,13 @@ function ChordView(container, options, model) {
 }
 
 // CONSTANTS
+// ---------
+
+// Diagram orientation constants
 ChordView.NUT_TOP = -1;
 ChordView.NUT_LEFT = -2;
 
+// Finger position constants
 ChordView.FINGER_TOP = -1;
 ChordView.FINGER_LEFT = -2;
 ChordView.FINGER_ONNOTE = -3;
@@ -36,6 +40,9 @@ ChordView.NOTE_GRADIENTS = {
   'red'  : '90-#f22:5-#f55:95',
   'green': '90-#0f0:5-#0f0:95'
 };
+
+// Positions on neck of neck marker dots  
+// TODO: only applicable for guitar
 ChordView.NECK_MARKERS = [
   [ 5, 1 ],
   [ 7, 2 ],
@@ -45,20 +52,33 @@ ChordView.NECK_MARKERS = [
   [ 17, 1 ]
 ];
 
+// Render Options
+// --------------
+
+// Render attributes are configurable via the ChordView's options object.  
+// Render options tend to contain measurement, color, and boolean values.
+
+// Default options for a standard chord diagram.  These can be over-ridden
+// by passing in a config object to the ChordView constructor.
 ChordView.DEFAULT_OPTIONS = {
-  // RENDER DEFAULTS
+  // Constant factor to scale all subsquent values by.
   scale: 0.5,
+
+  // Orientation. Side view is useful for longer neck diagrams.
   orientation: ChordView.NUT_TOP,
 
   string_gap: 30,
   fret_gap: 30,
 
+  // Finger number annotations
   show_fingers: true,
   finger_anno_y: 10,
   finger_position: ChordView.FINGER_TOP,
   anno_font_size: 18,
+  // TODO: open annotations not really related to finger annotations
   open_note_radius: 6,
 
+  // Note markers
   note_radius: 10,
   note_stroke_width: 1.5,
   note_gradient: true,
@@ -68,7 +88,10 @@ ChordView.DEFAULT_OPTIONS = {
   neck_marker_radius: 8,
   neck_marker_color: "#999",
 
+  // Nut (zero-th fret) marker
   nut_height: 5,
+
+  // Offset from origin of neck grid
   grid_x: 0,
   grid_y: 0,
   grid_stroke_width: 1.5,
@@ -77,18 +100,23 @@ ChordView.DEFAULT_OPTIONS = {
   grid_padding_right: 20,
   grid_padding_left: 20,
 
+  // Chord label
   label_font_size: 36,
   label_y_offset: 20,
   label_height: 40,
 
+  // Instrument tuning annotation
   show_tuning: true,
   tuning_label_font_size: 18,
   tuning_label_offset: 14,
 
+  // Base fret annotation (when chord is offset from the nut)
   base_fret_font_size: 26,
   base_fret_label_width: 20,
   base_fret_offset: 16
 };
+
+// Pre-set for compact tiny format
 ChordView.OPTIONS_COMPACT = {
   scale: 0.25,
   show_tuning: false,
@@ -100,12 +128,17 @@ ChordView.OPTIONS_COMPACT = {
   base_fret_offset: 20,
   grid_padding_right: 40,
 };
+
+// Pre-set suitable for longer neck diagram
 ChordView.OPTIONS_NECK = {
   scale: 1.0,
   orientation: ChordView.NUT_LEFT,
   show_tuning: true,
   fret_gap: 50,
 };
+
+// ChordView Class
+// ---------------
 
 ChordView.prototype = {
   /**
@@ -120,7 +153,8 @@ ChordView.prototype = {
       throw TypeError("container must be a DOM elem or DOM ID string.");
     }
 
-    // Create fresh copy of options object
+    // Create fresh copy of options object in case they have passed in one of 
+    // the static pre-set options objects
     this.options = {};
     _.defaults(this.options, options);
     _.defaults(this.options, ChordView.DEFAULT_OPTIONS);
@@ -146,16 +180,15 @@ ChordView.prototype = {
     };
     this.noteGlyphs = {};
 
-    // raphael object
-    this.r = null;
     this.transform_str = "";
-
+    // TODO: decomp out this calculation
     this.width = this.options.grid_x + this.model.getNumStrings() * this.options.string_gap + this.options.base_fret_label_width + this.options.grid_padding_right;
     this.height = this.options.grid_y + this.model.getNumFrets() * this.options.fret_gap + this.options.tuning_label_font_size + this.options.grid_padding_bottom;
 
     if (_.isString(container)) {
       container = document.getElementById(container.replace("#",""));
     }
+    this.r = null;
     this.r = Raphael(container, this.width, this.height);
     
     this._render();

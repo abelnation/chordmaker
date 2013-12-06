@@ -27,6 +27,17 @@ module.exports = {
       'groc',
     ],
   },
+  peg: {
+    files: "<%= paths.src %>/grammar/*",
+    tasks: [
+      'peg',
+      'clean:devjscompiled',
+      'copy:devjs', 
+      'concat:dev',
+      'uglify:dev',
+      'test',
+    ]
+  },
   sass: {
     files: '<%= paths.src %>/scss/**/*.scss',
     tasks: ['copy:devscss', 'sass:dev'],

@@ -8,10 +8,8 @@ to the callee's scope (typically the window global) which will result in the fol
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">model</span><span class="p">)</span> <span class="p">{</span> <span class="nx">model</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ChordModel</span><span class="p">();</span> <span class="p">}</span>
   
   <span class="k">this</span><span class="p">.</span><span class="nx">_init</span><span class="p">(</span><span class="nx">container</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">model</span><span class="p">);</span>
-<span class="p">}</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>CONSTANTS</p></div></div><div class="code"><div class="wrapper"><span class="nx">ChordView</span><span class="p">.</span><span class="nx">NUT_TOP</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-<span class="nx">ChordView</span><span class="p">.</span><span class="nx">NUT_LEFT</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span><span class="p">;</span>
-
-<span class="nx">ChordView</span><span class="p">.</span><span class="nx">FINGER_TOP</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="constants">CONSTANTS</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Diagram orientation constants</p></div></div><div class="code"><div class="wrapper"><span class="nx">ChordView</span><span class="p">.</span><span class="nx">NUT_TOP</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="nx">ChordView</span><span class="p">.</span><span class="nx">NUT_LEFT</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span><span class="p">;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Finger position constants</p></div></div><div class="code"><div class="wrapper"><span class="nx">ChordView</span><span class="p">.</span><span class="nx">FINGER_TOP</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
 <span class="nx">ChordView</span><span class="p">.</span><span class="nx">FINGER_LEFT</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span><span class="p">;</span>
 <span class="nx">ChordView</span><span class="p">.</span><span class="nx">FINGER_ONNOTE</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span><span class="p">;</span>
 
@@ -28,59 +26,43 @@ to the callee's scope (typically the window global) which will result in the fol
   <span class="s1">&#39;blue&#39;</span> <span class="o">:</span> <span class="s1">&#39;90-#22f:5-#55f:95&#39;</span><span class="p">,</span>
   <span class="s1">&#39;red&#39;</span>  <span class="o">:</span> <span class="s1">&#39;90-#f22:5-#f55:95&#39;</span><span class="p">,</span>
   <span class="s1">&#39;green&#39;</span><span class="o">:</span> <span class="s1">&#39;90-#0f0:5-#0f0:95&#39;</span>
-<span class="p">};</span>
-<span class="nx">ChordView</span><span class="p">.</span><span class="nx">NECK_MARKERS</span> <span class="o">=</span> <span class="p">[</span>
+<span class="p">};</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Positions on neck of neck marker dots <br />
+TODO: only applicable for guitar</p></div></div><div class="code"><div class="wrapper"><span class="nx">ChordView</span><span class="p">.</span><span class="nx">NECK_MARKERS</span> <span class="o">=</span> <span class="p">[</span>
   <span class="p">[</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span> <span class="p">],</span>
   <span class="p">[</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span> <span class="p">],</span>
   <span class="p">[</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">1</span> <span class="p">],</span>
   <span class="p">[</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">2</span> <span class="p">],</span>
   <span class="p">[</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">1</span> <span class="p">],</span>
   <span class="p">[</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">1</span> <span class="p">]</span>
-<span class="p">];</span>
-
-<span class="nx">ChordView</span><span class="p">.</span><span class="nx">DEFAULT_OPTIONS</span> <span class="o">=</span> <span class="p">{</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>RENDER DEFAULTS</p></div></div><div class="code"><div class="wrapper">  <span class="nx">scale</span><span class="o">:</span> <span class="mf">0.5</span><span class="p">,</span>
-  <span class="nx">orientation</span><span class="o">:</span> <span class="nx">ChordView</span><span class="p">.</span><span class="nx">NUT_TOP</span><span class="p">,</span>
+<span class="p">];</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="render-options">Render Options</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Render attributes are configurable via the ChordView's options object. <br />
+Render options tend to contain measurement, color, and boolean values.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Default options for a standard chord diagram.  These can be over-ridden
+by passing in a config object to the ChordView constructor.</p></div></div><div class="code"><div class="wrapper"><span class="nx">ChordView</span><span class="p">.</span><span class="nx">DEFAULT_OPTIONS</span> <span class="o">=</span> <span class="p">{</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Constant factor to scale all subsquent values by.</p></div></div><div class="code"><div class="wrapper">  <span class="nx">scale</span><span class="o">:</span> <span class="mf">0.5</span><span class="p">,</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Orientation. Side view is useful for longer neck diagrams.</p></div></div><div class="code"><div class="wrapper">  <span class="nx">orientation</span><span class="o">:</span> <span class="nx">ChordView</span><span class="p">.</span><span class="nx">NUT_TOP</span><span class="p">,</span>
 
   <span class="nx">string_gap</span><span class="o">:</span> <span class="mi">30</span><span class="p">,</span>
-  <span class="nx">fret_gap</span><span class="o">:</span> <span class="mi">30</span><span class="p">,</span>
-
-  <span class="nx">show_fingers</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nx">fret_gap</span><span class="o">:</span> <span class="mi">30</span><span class="p">,</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Finger number annotations</p></div></div><div class="code"><div class="wrapper">  <span class="nx">show_fingers</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
   <span class="nx">finger_anno_y</span><span class="o">:</span> <span class="mi">10</span><span class="p">,</span>
   <span class="nx">finger_position</span><span class="o">:</span> <span class="nx">ChordView</span><span class="p">.</span><span class="nx">FINGER_TOP</span><span class="p">,</span>
-  <span class="nx">anno_font_size</span><span class="o">:</span> <span class="mi">18</span><span class="p">,</span>
-  <span class="nx">open_note_radius</span><span class="o">:</span> <span class="mi">6</span><span class="p">,</span>
-
-  <span class="nx">note_radius</span><span class="o">:</span> <span class="mi">10</span><span class="p">,</span>
+  <span class="nx">anno_font_size</span><span class="o">:</span> <span class="mi">18</span><span class="p">,</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: open annotations not really related to finger annotations</p></div></div><div class="code"><div class="wrapper">  <span class="nx">open_note_radius</span><span class="o">:</span> <span class="mi">6</span><span class="p">,</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Note markers</p></div></div><div class="code"><div class="wrapper">  <span class="nx">note_radius</span><span class="o">:</span> <span class="mi">10</span><span class="p">,</span>
   <span class="nx">note_stroke_width</span><span class="o">:</span> <span class="mf">1.5</span><span class="p">,</span>
   <span class="nx">note_gradient</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
   <span class="nx">note_color</span><span class="o">:</span> <span class="s1">&#39;white&#39;</span><span class="p">,</span>
   <span class="nx">tonic_color</span><span class="o">:</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span>
 
   <span class="nx">neck_marker_radius</span><span class="o">:</span> <span class="mi">8</span><span class="p">,</span>
-  <span class="nx">neck_marker_color</span><span class="o">:</span> <span class="s2">&quot;#999&quot;</span><span class="p">,</span>
-
-  <span class="nx">nut_height</span><span class="o">:</span> <span class="mi">5</span><span class="p">,</span>
-  <span class="nx">grid_x</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nx">neck_marker_color</span><span class="o">:</span> <span class="s2">&quot;#999&quot;</span><span class="p">,</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Nut (zero-th fret) marker</p></div></div><div class="code"><div class="wrapper">  <span class="nx">nut_height</span><span class="o">:</span> <span class="mi">5</span><span class="p">,</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Offset from origin of neck grid</p></div></div><div class="code"><div class="wrapper">  <span class="nx">grid_x</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
   <span class="nx">grid_y</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
   <span class="nx">grid_stroke_width</span><span class="o">:</span> <span class="mf">1.5</span><span class="p">,</span>
   
   <span class="nx">grid_padding_bottom</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
   <span class="nx">grid_padding_right</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
-  <span class="nx">grid_padding_left</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
-
-  <span class="nx">label_font_size</span><span class="o">:</span> <span class="mi">36</span><span class="p">,</span>
+  <span class="nx">grid_padding_left</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Chord label</p></div></div><div class="code"><div class="wrapper">  <span class="nx">label_font_size</span><span class="o">:</span> <span class="mi">36</span><span class="p">,</span>
   <span class="nx">label_y_offset</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
-  <span class="nx">label_height</span><span class="o">:</span> <span class="mi">40</span><span class="p">,</span>
-
-  <span class="nx">show_tuning</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nx">label_height</span><span class="o">:</span> <span class="mi">40</span><span class="p">,</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Instrument tuning annotation</p></div></div><div class="code"><div class="wrapper">  <span class="nx">show_tuning</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
   <span class="nx">tuning_label_font_size</span><span class="o">:</span> <span class="mi">18</span><span class="p">,</span>
-  <span class="nx">tuning_label_offset</span><span class="o">:</span> <span class="mi">14</span><span class="p">,</span>
-
-  <span class="nx">base_fret_font_size</span><span class="o">:</span> <span class="mi">26</span><span class="p">,</span>
+  <span class="nx">tuning_label_offset</span><span class="o">:</span> <span class="mi">14</span><span class="p">,</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Base fret annotation (when chord is offset from the nut)</p></div></div><div class="code"><div class="wrapper">  <span class="nx">base_fret_font_size</span><span class="o">:</span> <span class="mi">26</span><span class="p">,</span>
   <span class="nx">base_fret_label_width</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
   <span class="nx">base_fret_offset</span><span class="o">:</span> <span class="mi">16</span>
-<span class="p">};</span>
-<span class="nx">ChordView</span><span class="p">.</span><span class="nx">OPTIONS_COMPACT</span> <span class="o">=</span> <span class="p">{</span>
+<span class="p">};</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Pre-set for compact tiny format</p></div></div><div class="code"><div class="wrapper"><span class="nx">ChordView</span><span class="p">.</span><span class="nx">OPTIONS_COMPACT</span> <span class="o">=</span> <span class="p">{</span>
   <span class="nx">scale</span><span class="o">:</span> <span class="mf">0.25</span><span class="p">,</span>
   <span class="nx">show_tuning</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
   <span class="nx">show_fingers</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
@@ -90,22 +72,20 @@ to the callee's scope (typically the window global) which will result in the fol
   <span class="nx">base_fret_font_size</span><span class="o">:</span> <span class="mi">36</span><span class="p">,</span>
   <span class="nx">base_fret_offset</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
   <span class="nx">grid_padding_right</span><span class="o">:</span> <span class="mi">40</span><span class="p">,</span>
-<span class="p">};</span>
-<span class="nx">ChordView</span><span class="p">.</span><span class="nx">OPTIONS_NECK</span> <span class="o">=</span> <span class="p">{</span>
+<span class="p">};</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Pre-set suitable for longer neck diagram</p></div></div><div class="code"><div class="wrapper"><span class="nx">ChordView</span><span class="p">.</span><span class="nx">OPTIONS_NECK</span> <span class="o">=</span> <span class="p">{</span>
   <span class="nx">scale</span><span class="o">:</span> <span class="mf">1.0</span><span class="p">,</span>
   <span class="nx">orientation</span><span class="o">:</span> <span class="nx">ChordView</span><span class="p">.</span><span class="nx">NUT_LEFT</span><span class="p">,</span>
   <span class="nx">show_tuning</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
   <span class="nx">fret_gap</span><span class="o">:</span> <span class="mi">50</span><span class="p">,</span>
-<span class="p">};</span>
-
-<span class="nx">ChordView</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Whenever you replace an Object's Prototype, you need to repoint
+<span class="p">};</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="chordview-class">ChordView Class</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="nx">ChordView</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Whenever you replace an Object's Prototype, you need to repoint
 the base Constructor back at the original constructor Function, 
 otherwise <code>instanceof</code> calls will fail.</p></div></div><div class="code"><div class="wrapper">  <span class="nx">constructor</span><span class="o">:</span> <span class="nx">ChordView</span><span class="p">,</span>
 
   <span class="nx">_init</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">container</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">model</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">_</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">container</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nx">_</span><span class="p">.</span><span class="nx">isElement</span><span class="p">(</span><span class="nx">container</span><span class="p">))</span> <span class="p">{</span>
       <span class="k">throw</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;container must be a DOM elem or DOM ID string.&quot;</span><span class="p">);</span>
-    <span class="p">}</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create fresh copy of options object</p></div></div><div class="code"><div class="wrapper">    <span class="k">this</span><span class="p">.</span><span class="nx">options</span> <span class="o">=</span> <span class="p">{};</span>
+    <span class="p">}</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create fresh copy of options object in case they have passed in one of 
+the static pre-set options objects</p></div></div><div class="code"><div class="wrapper">    <span class="k">this</span><span class="p">.</span><span class="nx">options</span> <span class="o">=</span> <span class="p">{};</span>
     <span class="nx">_</span><span class="p">.</span><span class="nx">defaults</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
     <span class="nx">_</span><span class="p">.</span><span class="nx">defaults</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">,</span> <span class="nx">ChordView</span><span class="p">.</span><span class="nx">DEFAULT_OPTIONS</span><span class="p">);</span>
     
@@ -125,15 +105,15 @@ otherwise <code>instanceof</code> calls will fail.</p></div></div><div class="co
       <span class="nx">width</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
       <span class="nx">height</span><span class="o">:</span> <span class="mi">0</span>
     <span class="p">};</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">noteGlyphs</span> <span class="o">=</span> <span class="p">{};</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>raphael object</p></div></div><div class="code"><div class="wrapper">    <span class="k">this</span><span class="p">.</span><span class="nx">r</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">transform_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">noteGlyphs</span> <span class="o">=</span> <span class="p">{};</span>
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_x</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">getNumStrings</span><span class="p">()</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">string_gap</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">base_fret_label_width</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_padding_right</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">transform_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: decomp out this calculation</p></div></div><div class="code"><div class="wrapper">    <span class="k">this</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_x</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">getNumStrings</span><span class="p">()</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">string_gap</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">base_fret_label_width</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_padding_right</span><span class="p">;</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_y</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">getNumFrets</span><span class="p">()</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">fret_gap</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">tuning_label_font_size</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_padding_bottom</span><span class="p">;</span>
 
     <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">container</span><span class="p">))</span> <span class="p">{</span>
       <span class="nx">container</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">container</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">));</span>
     <span class="p">}</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">r</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">r</span> <span class="o">=</span> <span class="nx">Raphael</span><span class="p">(</span><span class="nx">container</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
     
     <span class="k">this</span><span class="p">.</span><span class="nx">_render</span><span class="p">();</span>

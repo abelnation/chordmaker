@@ -1,4 +1,4 @@
-// music test
+// music
 // -----
 
 // VexFlow - Music Engraving for HTML5

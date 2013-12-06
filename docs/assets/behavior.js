@@ -106,7 +106,79 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                 "title": "ChordModel"
               },
               "depth": 3,
-              "outline": []
+              "outline": [
+                {
+                  "type": "heading",
+                  "data": {
+                    "level": 2,
+                    "title": "ChordModel",
+                    "slug": "chordmodel"
+                  },
+                  "depth": 2
+                }, {
+                  "type": "heading",
+                  "data": {
+                    "level": 2,
+                    "title": "Options",
+                    "slug": "options"
+                  },
+                  "depth": 2
+                }, {
+                  "type": "heading",
+                  "data": {
+                    "level": 2,
+                    "title": "ChordModel Class",
+                    "slug": "chordmodel-class"
+                  },
+                  "depth": 2
+                }
+              ]
+            }, {
+              "type": "file",
+              "data": {
+                "language": {
+                  "nameMatchers": [".js"],
+                  "pygmentsLexer": "javascript",
+                  "multiLineComment": ["/*", "*", "*/"],
+                  "singleLineComment": ["//"],
+                  "ignorePrefix": "}",
+                  "foldPrefix": "^",
+                  "name": "JavaScript"
+                },
+                "sourcePath": "/Users/aallison/Workspace/chordmaker/src/js/ChordParser.js",
+                "projectPath": "src/js/ChordParser.js",
+                "targetPath": "src/js/ChordParser",
+                "pageTitle": "src/js/ChordParser",
+                "title": "ChordParser"
+              },
+              "depth": 3,
+              "outline": [
+                {
+                  "type": "heading",
+                  "data": {
+                    "level": 2,
+                    "title": "ChordParser",
+                    "slug": "chordparser"
+                  },
+                  "depth": 2
+                }, {
+                  "type": "heading",
+                  "data": {
+                    "level": 2,
+                    "title": "Options",
+                    "slug": "options"
+                  },
+                  "depth": 2
+                }, {
+                  "type": "heading",
+                  "data": {
+                    "level": 2,
+                    "title": "ChordParser Class",
+                    "slug": "chordparser-class"
+                  },
+                  "depth": 2
+                }
+              ]
             }, {
               "type": "file",
               "data": {
@@ -126,7 +198,33 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                 "title": "ChordView"
               },
               "depth": 3,
-              "outline": []
+              "outline": [
+                {
+                  "type": "heading",
+                  "data": {
+                    "level": 2,
+                    "title": "CONSTANTS",
+                    "slug": "constants"
+                  },
+                  "depth": 2
+                }, {
+                  "type": "heading",
+                  "data": {
+                    "level": 2,
+                    "title": "Render Options",
+                    "slug": "render-options"
+                  },
+                  "depth": 2
+                }, {
+                  "type": "heading",
+                  "data": {
+                    "level": 2,
+                    "title": "ChordView Class",
+                    "slug": "chordview-class"
+                  },
+                  "depth": 2
+                }
+              ]
             }, {
               "type": "file",
               "data": {
@@ -231,8 +329,8 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                   "type": "heading",
                   "data": {
                     "level": 2,
-                    "title": "music test",
-                    "slug": "music-test"
+                    "title": "music",
+                    "slug": "music"
                   },
                   "depth": 2
                 }, {

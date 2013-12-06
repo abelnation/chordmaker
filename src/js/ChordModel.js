@@ -1,12 +1,12 @@
+// ChordModel
+// ----------
+
 /* global _, Tuning, GuitarNote */
 
-/**
-* Data model for a Guitar Chord.
-* 
-* @class ChordModel
-* @constructor
-*/
+// Data model for a Guitar Chord.
 function ChordModel(options) {
+  // - `options` : config object
+
   // This first guard ensures that the callee has invoked our Class' constructor function
   // with the `new` keyword - failure to do this will result in the `this` keyword referring 
   // to the callee's scope (typically the window global) which will result in the following fields
@@ -19,13 +19,26 @@ function ChordModel(options) {
   this._init(options);
 }
 
+// Options
+// -------
+
+// Default options are for 6-stringed guitar in standard tuning
 ChordModel.DEFAULT_OPTIONS = {
   // DATA DEFAULTS
   numFrets: 5,
+
+  // TODO: doesn't make sense that a chord with a nut is based at fret 1, not 0
   baseFret: 1,
+
+  // Name/label for the chord
   label: "",
+
+  // Tuning, expressed a a tuning string (see Tuning.js)
   tuning: "EADGBe"
 };
+
+// ChordModel Class
+// ----------------
 
 ChordModel.prototype = {
   /**
