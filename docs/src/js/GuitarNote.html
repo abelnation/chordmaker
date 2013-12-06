@@ -52,6 +52,17 @@ otherwise <code>instanceof</code> calls will fail.</p></div></div><div class="co
       <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">string</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">fret</span><span class="p">;</span>
     <span class="p">}</span>
   <span class="p">},</span>
+  <span class="nx">equals</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">note</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">string</span> <span class="o">!==</span> <span class="nx">note</span><span class="p">.</span><span class="nx">string</span> <span class="o">||</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">fret</span> <span class="o">!==</span> <span class="nx">note</span><span class="p">.</span><span class="nx">fret</span> <span class="o">||</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">muted</span> <span class="o">!==</span> <span class="nx">note</span><span class="p">.</span><span class="nx">muted</span> <span class="o">||</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">finger</span> <span class="o">!==</span> <span class="nx">note</span><span class="p">.</span><span class="nx">finger</span> <span class="o">||</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">tonic</span> <span class="o">!==</span> <span class="nx">note</span><span class="p">.</span><span class="nx">tonic</span> <span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+  <span class="p">},</span>
 
   <span class="nx">toString</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: implement</p></div></div><div class="code"><div class="wrapper">    <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="s2">&quot;String: &quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">string</span> <span class="o">+</span> <span class="s2">&quot;, Fret: &quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">fret</span><span class="p">;</span>
     <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">muted</span><span class="p">)</span> <span class="p">{</span>
