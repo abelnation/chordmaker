@@ -1,0 +1,79 @@
+<!DOCTYPE html><html lang="en"><head><title>src/js/Tuning</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="src/js/Tuning"><meta name="groc-project-path" content="src/js/Tuning.js"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/js/Tuning.js</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="kd">function</span> <span class="nx">Tuning</span><span class="p">(</span><span class="nx">tuningStr</span><span class="p">)</span> <span class="p">{</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>This first guard ensures that the callee has invoked our Class' constructor function
+with the <code>new</code> keyword - failure to do this will result in the <code>this</code> keyword referring 
+to the callee's scope (typically the window global) which will result in the following fields
+(name and _age) leaking into the global namespace and not being set on this object.</p></div></div><div class="code"><div class="wrapper">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="k">this</span> <span class="k">instanceof</span> <span class="nx">Tuning</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;tuningStr cannot be called as a function.&quot;</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="k">this</span><span class="p">.</span><span class="nx">_init</span><span class="p">(</span><span class="nx">tuningStr</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">Tuning</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Whenever you replace an Object's Prototype, you need to repoint
+the base Constructor back at the original constructor Function, 
+otherwise <code>instanceof</code> calls will fail.</p></div></div><div class="code"><div class="wrapper">  <span class="nx">constructor</span><span class="o">:</span> <span class="nx">Tuning</span><span class="p">,</span>
+  <span class="nx">_init</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">tuningStr</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">Tuning</span><span class="p">.</span><span class="nx">isValidTuningString</span><span class="p">(</span><span class="nx">tuningStr</span><span class="p">))</span> <span class="p">{</span>
+      <span class="k">throw</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;Invalid tuningStr: &quot;</span> <span class="o">+</span> <span class="nx">tuningStr</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">tuningStr</span> <span class="o">=</span> <span class="nx">tuningStr</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">notes</span> <span class="o">=</span> <span class="nx">Tuning</span><span class="p">.</span><span class="nx">parseTuningString</span><span class="p">(</span><span class="nx">tuningStr</span><span class="p">);</span>
+  <span class="p">},</span>
+
+  <span class="nx">getNumStrings</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">notes</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+  <span class="p">},</span>
+
+  <span class="nx">toString</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">tuningStr</span><span class="p">;</span>
+  <span class="p">},</span>
+
+<span class="p">};</span>
+
+<span class="nx">Tuning</span><span class="p">.</span><span class="nx">isValidTuningString</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">tuningStr</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">tuningStr</span> <span class="o">||</span> <span class="o">!</span><span class="nx">_</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">tuningStr</span><span class="p">)</span> <span class="o">||</span> <span class="nx">tuningStr</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span> <span class="p">}</span>
+  <span class="k">return</span> <span class="nx">tuningStr</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/^([abcdefg#]\s?)+$/gi</span><span class="p">)</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="nx">Tuning</span><span class="p">.</span><span class="nx">parseTuningString</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">tuningStr</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">Tuning</span><span class="p">.</span><span class="nx">isValidTuningString</span><span class="p">(</span><span class="nx">tuningStr</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">throw</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;Invalid tuning string: &quot;</span> <span class="o">+</span> <span class="nx">tuningStr</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">tuningStr</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/(bb[ABCDEFGabcdefg])|(b[ABCDEFGacdefg])/g</span><span class="p">)</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">throw</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;Ambiguous tuning string. Flats confused with B Notes.  Use spaces between notes: &quot;</span> <span class="o">+</span> <span class="nx">tuningStr</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="kd">var</span> <span class="nx">notes</span> <span class="o">=</span> <span class="p">[];</span>
+  <span class="kd">var</span> <span class="nx">tokens</span> <span class="o">=</span> <span class="nx">tuningStr</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">);</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="k">in</span> <span class="nx">tokens</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">token</span> <span class="o">=</span> <span class="nx">tokens</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+    <span class="kd">var</span> <span class="nx">match</span> <span class="o">=</span> <span class="nx">token</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/[ABCDEFGabcdefg](bb|b|n|##|#)?/g</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&lt;</span> <span class="nx">match</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">notes</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">match</span><span class="p">[</span><span class="nx">j</span><span class="p">]);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="nx">notes</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="nx">Tuning</span><span class="p">.</span><span class="nx">instruments</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s2">&quot;guitar&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;default&quot;</span><span class="o">:</span> <span class="s2">&quot;EADGBe&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;standard&quot;</span><span class="o">:</span> <span class="s2">&quot;EADGBe&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;drop-d&quot;</span><span class="o">:</span> <span class="s2">&quot;DADGBe&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;open-g&quot;</span><span class="o">:</span> <span class="s2">&quot;DGDGBD&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;open-g-dobro&quot;</span><span class="o">:</span> <span class="s2">&quot;GBDGBD&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;open-d&quot;</span><span class="o">:</span> <span class="s2">&quot;DADF#AD&quot;</span><span class="p">,</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: add more?</p></div></div><div class="code"><div class="wrapper">  <span class="p">},</span>
+  <span class="s2">&quot;banjo&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;default&quot;</span><span class="o">:</span> <span class="s2">&quot;gDGBD&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;open-g&quot;</span><span class="o">:</span> <span class="s2">&quot;gDGBD&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;g-modal&quot;</span><span class="o">:</span> <span class="s2">&quot;gDGCD&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;open-g-minor&quot;</span><span class="o">:</span> <span class="s2">&quot;gDGA#D&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;standard-c&quot;</span><span class="o">:</span> <span class="s2">&quot;gCGBD&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;open-d&quot;</span><span class="o">:</span> <span class="s2">&quot;f#DF#AD&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: add more?</p></div></div><div class="code"><div class="wrapper">  <span class="p">},</span>
+  <span class="s2">&quot;mandolin&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;default&quot;</span><span class="o">:</span> <span class="s2">&quot;GDAE&quot;</span><span class="p">,</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: fill in</p></div></div><div class="code"><div class="wrapper">  <span class="p">},</span>
+  <span class="s2">&quot;bass&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;default&quot;</span><span class="o">:</span> <span class="s2">&quot;EADG&quot;</span><span class="p">,</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: fill in</p></div></div><div class="code"><div class="wrapper">  <span class="p">},</span>
+<span class="p">};</span></div></div></div></div></body></html>

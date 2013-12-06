@@ -9,6 +9,16 @@ module.exports = {
       open: 'http://127.0.0.1:8081/demo/gypsy.html',
     }
   },
+  docs: {
+    options: {
+      port: 8083,
+      base: "<%= paths.docs %>",
+      keepalive: true,
+      livereload: true,
+      debug: true,
+      open: 'http://127.0.0.1:8083/src/js/music.html',
+    }
+  },
   dist: {
     options: {
       port: 8081,

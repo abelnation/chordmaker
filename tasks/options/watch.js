@@ -1,4 +1,8 @@
 module.exports = {
+  readme: {
+    files: 'README.md',
+    tasks: ['groc']
+  },
   gruntfile: {
     files: '<%= jshint.gruntfile.src %>',
     tasks: ['jshint:gruntfile']
@@ -20,7 +24,7 @@ module.exports = {
       'concat:dev',
       'uglify:dev',
       'test',
-      'yuidoc:dev',
+      'groc',
     ],
   },
   sass: {
@@ -33,6 +37,6 @@ module.exports = {
   },
   livereload: {
     options: { livereload: true, },
-    files: ['<%= paths.dev %>/**'],
+    files: ['<%= paths.dev %>/**', '<%= paths.docs %>/**'],
   }
 };

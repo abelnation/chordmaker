@@ -1,0 +1,126 @@
+<!DOCTYPE html><html lang="en"><head><title>src/js/ChordModel</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="src/js/ChordModel"><meta name="groc-project-path" content="src/js/ChordModel.js"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/js/ChordModel.js</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><p>global _, Tuning, GuitarNote </p></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'>Constructor class ChordModel</span></p>
+
+<p>Data model for a Guitar Chord.</p></div></div><div class="code"><div class="wrapper"><span class="kd">function</span> <span class="nx">ChordModel</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>This first guard ensures that the callee has invoked our Class' constructor function
+with the <code>new</code> keyword - failure to do this will result in the <code>this</code> keyword referring 
+to the callee's scope (typically the window global) which will result in the following fields
+(name and _age) leaking into the global namespace and not being set on this object.</p></div></div><div class="code"><div class="wrapper">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="k">this</span> <span class="k">instanceof</span> <span class="nx">ChordModel</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;ChordModel cannot be called as a function.&quot;</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{};</span> <span class="p">}</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">_init</span><span class="p">(</span><span class="nx">options</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">ChordModel</span><span class="p">.</span><span class="nx">DEFAULT_OPTIONS</span> <span class="o">=</span> <span class="p">{</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>DATA DEFAULTS</p></div></div><div class="code"><div class="wrapper">  <span class="nx">numFrets</span><span class="o">:</span> <span class="mi">5</span><span class="p">,</span>
+  <span class="nx">baseFret</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="nx">label</span><span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+  <span class="nx">tuning</span><span class="o">:</span> <span class="s2">&quot;EADGBe&quot;</span>
+<span class="p">};</span>
+
+<span class="nx">ChordModel</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Whenever you replace an Object's Prototype, you need to repoint
+the base Constructor back at the original constructor Function, 
+otherwise <code>instanceof</code> calls will fail.</p></div></div><div class="code"><div class="wrapper">  <span class="nx">constructor</span><span class="o">:</span> <span class="nx">ChordModel</span><span class="p">,</span>
+  <span class="nx">_init</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create config dict, filling in defaults where not provided</p></div></div><div class="code"><div class="wrapper">    
+    <span class="nx">_</span><span class="p">.</span><span class="nx">defaults</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span> <span class="nx">ChordModel</span><span class="p">.</span><span class="nx">DEFAULT_OPTIONS</span><span class="p">);</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">tuningStr</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">tuning</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">tuning</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Tuning</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">tuningStr</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">numFrets</span><span class="p">)</span> <span class="o">||</span> <span class="nx">_</span><span class="p">.</span><span class="nx">isNull</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">numFrets</span><span class="p">)</span> <span class="o">||</span> <span class="o">!</span><span class="nx">_</span><span class="p">.</span><span class="nx">isNumber</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">numFrets</span><span class="p">)</span> <span class="o">||</span> <span class="nx">options</span><span class="p">.</span><span class="nx">numFrets</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">throw</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;numFrets must be a valid integer greater than 0: &quot;</span> <span class="o">+</span> <span class="nx">options</span><span class="p">.</span><span class="nx">numFrets</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">numFrets</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">numFrets</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">baseFret</span><span class="p">)</span> <span class="o">||</span> <span class="nx">_</span><span class="p">.</span><span class="nx">isNull</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">baseFret</span><span class="p">)</span> <span class="o">||</span>
+        <span class="o">!</span><span class="nx">_</span><span class="p">.</span><span class="nx">isNumber</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">baseFret</span><span class="p">)</span> <span class="o">||</span>
+        <span class="nx">options</span><span class="p">.</span><span class="nx">baseFret</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">options</span><span class="p">.</span><span class="nx">baseFret</span> <span class="o">&gt;=</span> <span class="k">this</span><span class="p">.</span><span class="nx">numFrets</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">throw</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;baseFret must be a valid integer greater than 0: &quot;</span> <span class="o">+</span> <span class="nx">options</span><span class="p">.</span><span class="nx">baseFret</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">baseFret</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">baseFret</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">_</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">label</span><span class="p">))</span> <span class="p">{</span>
+      <span class="k">throw</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;label must be a string&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">label</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">label</span><span class="p">;</span>
+    
+    <span class="k">this</span><span class="p">.</span><span class="nx">notes</span> <span class="o">=</span> <span class="p">{};</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">notes</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">_</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">notes</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">note</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">notes</span><span class="p">[</span><span class="nx">note</span><span class="p">.</span><span class="nx">getKey</span><span class="p">()]</span> <span class="o">=</span> <span class="nx">note</span><span class="p">;</span>
+      <span class="p">},</span> <span class="k">this</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+
+  <span class="nx">getNotes</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">notes</span><span class="p">;</span>
+  <span class="p">},</span>
+  <span class="nx">getNumNotes</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">_</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">notes</span><span class="p">).</span><span class="nx">length</span><span class="p">;</span>
+  <span class="p">},</span>
+  <span class="nx">getNumStrings</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">tuning</span><span class="p">.</span><span class="nx">getNumStrings</span><span class="p">();</span>
+  <span class="p">},</span>
+  <span class="nx">getBaseFret</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">baseFret</span><span class="p">;</span>
+  <span class="p">},</span>
+  <span class="nx">getNumFrets</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">numFrets</span><span class="p">;</span>
+  <span class="p">},</span>
+  <span class="nx">getTuning</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">tuning</span><span class="p">;</span>
+  <span class="p">},</span>
+  <span class="nx">getLabel</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">label</span><span class="p">;</span>
+  <span class="p">},</span>
+
+  <span class="nx">addNotes</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">notes</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">_</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">notes</span><span class="p">))</span> <span class="p">{</span>
+      <span class="k">throw</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;addNotes takes an array of notes: &quot;</span> <span class="o">+</span> <span class="nx">notes</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">notes</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">note</span> <span class="o">=</span> <span class="nx">notes</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">addNote</span><span class="p">(</span><span class="nx">note</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="nx">addNote</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">note</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">note</span><span class="p">)</span> <span class="o">||</span> <span class="nx">_</span><span class="p">.</span><span class="nx">isNull</span><span class="p">(</span><span class="nx">note</span><span class="p">))</span> <span class="p">{</span>
+      <span class="k">throw</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;Note is undefined&quot;</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">note</span><span class="p">))</span> <span class="p">{</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: implement</p></div></div><div class="code"><div class="wrapper">      <span class="k">this</span><span class="p">.</span><span class="nx">addNote</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_noteFromString</span><span class="p">(</span><span class="nx">note</span><span class="p">));</span>
+
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="nx">note</span> <span class="k">instanceof</span> <span class="nx">GuitarNote</span><span class="p">))</span> <span class="p">{</span>
+      <span class="k">throw</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;addNote requires a valid note string or GuitarNote object: &quot;</span> <span class="o">+</span> <span class="nx">note</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">note</span><span class="p">.</span><span class="nx">string</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">note</span><span class="p">.</span><span class="nx">string</span> <span class="o">&gt;=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getNumStrings</span><span class="p">())</span> <span class="p">{</span>
+      <span class="k">throw</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;note string is not valid for this chord&quot;</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">note</span><span class="p">.</span><span class="nx">fret</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">baseFret</span> <span class="o">||</span> <span class="nx">note</span><span class="p">.</span><span class="nx">fret</span> <span class="o">&gt;=</span> <span class="k">this</span><span class="p">.</span><span class="nx">baseFret</span><span class="o">+</span><span class="k">this</span><span class="p">.</span><span class="nx">numFrets</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">throw</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;note fret out of the range of this chord&quot;</span><span class="p">);</span>
+    <span class="p">}</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: notify listeners</p></div></div><div class="code"><div class="wrapper">    <span class="kd">var</span> <span class="nx">key</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_keyForNote</span><span class="p">(</span><span class="nx">note</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">notes</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">note</span><span class="p">;</span>
+  <span class="p">},</span>
+  <span class="nx">removeNote</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">note</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">key</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_keyForNote</span><span class="p">(</span><span class="nx">note</span><span class="p">);</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: notify listeners</p></div></div><div class="code"><div class="wrapper">    <span class="k">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">notes</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
+  <span class="p">},</span>
+
+  <span class="nx">_keyForNote</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">note</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="nx">note</span> <span class="k">instanceof</span> <span class="nx">GuitarNote</span><span class="p">))</span> <span class="p">{</span>
+      <span class="k">throw</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;addNote requires a valid note string or GuitarNote object: &quot;</span> <span class="o">+</span> <span class="nx">note</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">note</span><span class="p">.</span><span class="nx">string</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nx">note</span><span class="p">.</span><span class="nx">fret</span><span class="p">;</span>
+  <span class="p">},</span>
+  <span class="nx">_noteFromString</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">noteStr</span><span class="p">)</span> <span class="p">{</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Examples (fret, finger/mute):
+{x x}
+{3 2}
+{5 T}
+{0 x}</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: string would not be included in this, correct?
+var theNote = {};
+theNote.string = string_num;</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>if (note.indexOf("{") != -1) {
+  note = note.replace(/[{|}]/g, "");
+  var tokens = note.split(" ");
+  theNote.fret = tokens[0].replace(/^\s+|\s+$/g, '');
+  if (tokens[1]) { theNote.finger = tokens[1]; }</p></div></div><div class="code"><div class="wrapper">    <span class="c1">//  else {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>theNote.fret = note.replace(/^\s+|\s+$/g, '');</p></div></div><div class="code"><div class="wrapper">    <span class="c1">// </span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>if (theNote.fret.match(/^[oO0]$/)) {
+  theNote.fret = 0;
+  theNote.open = true;</p></div></div><div class="code"><div class="wrapper">    <span class="c1">//  else if (theNote.fret.match(/[mMxX]/)) {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>theNote.muted = true;</p></div></div><div class="code"><div class="wrapper">    <span class="c1">//  else {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>theNote.fret = parseInt(theNote.fret, 10);
+  var fret<em>amt = (parseInt(theNote.fret, 10)-base</em>fret);
+  if (fret<em>amt > num</em>frets) { num_frets = theNote.fret+1; }</p></div></div><div class="code"><div class="wrapper">    <span class="c1">// </span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: stub</p></div></div><div class="code"><div class="wrapper">    <span class="k">throw</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">&quot;Not implemented yet.&quot;</span><span class="p">);</span>
+  <span class="p">},</span>
+
+<span class="p">};</span></div></div></div></div></body></html>

@@ -26,7 +26,8 @@ module.exports = function (grunt) {
     paths: {
       src: "./src",
       dist: "./build/dist",
-      dev: "./build/dev"
+      dev: "./build/dev",
+      docs: "./docs"
     },
     banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
       '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
@@ -36,8 +37,8 @@ module.exports = function (grunt) {
   grunt.util._.extend(config, loadConfig('./tasks/options/'));
   grunt.initConfig(config);
 
-  grunt.registerTask('dev', ['jshint:src', 'jscs:src', 'copy:dev', 'preprocess:dev', /* 'sass:dev', */ 'concat:dev', 'uglify:dev', 'test' ,'docco:dev' ]);
-  grunt.registerTask('dist', ['clean:dist', 'jshint:src', 'jscs:src', 'copy:dist', 'preprocess:dist', 'strip:dist', /* 'sass:dist',*/ 'concat:dist', 'uglify:dist', 'clean:scrub_dist', 'docco:dist' ]);
+  grunt.registerTask('dev', ['jshint:src', 'jscs:src', 'copy:dev', 'preprocess:dev', /* 'sass:dev', */ 'concat:dev', 'uglify:dev', 'test', 'groc' ]);
+  grunt.registerTask('dist', ['clean:dist', 'jshint:src', 'jscs:src', 'copy:dist', 'preprocess:dist', 'strip:dist', /* 'sass:dist',*/ 'concat:dist', 'uglify:dist', 'clean:scrub_dist', 'groc' ]);
   grunt.registerTask('test', ['jshint:test', 'jscs:test', 'copy:devtest', 'connect:test', 'jasmine:testlocalserver']);
 
   grunt.registerTask('default', ['dev']);
