@@ -97,4 +97,26 @@ describe("Tuning", function() {
     }
   });
 
+  it("Equality", function() {
+    // Test equality for variety of instruments
+    var t1;
+    var t2;
+    for (var inst in Tuning.instruments) {
+      t1 = new Tuning(Tuning.instruments[inst]["default"]);
+      t2 = new Tuning(Tuning.instruments[inst]["default"]);
+      expect(t1.equals(t2)).toBe(true);
+      expect(t2.equals(t1)).toBe(true);
+    }
+
+    // Inequality
+    expect((new Tuning("ABCDEF")).equals(
+            new Tuning("ABC"))).toBe(false);
+    expect((new Tuning("ABCDEF")).equals(
+            new Tuning("A"))).toBe(false);
+    expect((new Tuning("A")).equals(
+            new Tuning("ABCDEF"))).toBe(false);
+    expect((new Tuning("A")).equals(
+            new Tuning("ABCDEF"))).toBe(false);
+  });
+
 });

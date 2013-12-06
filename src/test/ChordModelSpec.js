@@ -85,4 +85,74 @@ describe("ChordModel", function() {
     expect(cm.getNumNotes()).toEqual(2);
   });
 
+  it("empty", function() {
+    var cm1 = new ChordModel();
+    var notes = [];
+    for (var i = 1; i < 5; i++) {
+      notes.push(new GuitarNote(0,i));
+    }
+    cm1.addNotes(notes);
+    expect(cm1.getNumNotes()).toEqual(4);
+    cm1.empty();
+    expect(cm1.getNumNotes()).toEqual(0);
+    cm1.addNote(new GuitarNote(0,i));
+    expect(cm1.getNumNotes()).toEqual(1);
+    cm1.empty();
+    expect(cm1.getNumNotes()).toEqual(0);
+    cm1.empty();
+    expect(cm1.getNumNotes()).toEqual(0);
+  });
+
+  it("equality tests: notes", function() {
+    var cm1 = new ChordModel();
+    var cm2 = new ChordModel();
+    var notes = [];
+    var numNotes = 4;
+    for (var i = 1; i <= numNotes; i++) {
+      notes.push(new GuitarNote(0,i));
+    }
+    cm1.addNotes(notes);
+
+    _.shuffle(notes);
+    cm2.addNotes(notes);
+
+    // identity
+    expect(cm1.equals(cm1)).toEqual(true);
+    expect(cm2.equals(cm2)).toEqual(true);
+
+    // symmetry
+    expect(cm1.equals(cm2)).toEqual(true);
+    expect(cm2.equals(cm1)).toEqual(true);
+
+    cm2.empty();
+    expect(cm1.equals(cm2)).toEqual(false);
+    expect(cm2.equals(cm1)).toEqual(false);
+
+    for (i = 0; i < numNotes; i++) {
+      expect(cm1.equals(cm2)).toEqual(false);
+      expect(cm2.equals(cm1)).toEqual(false);
+      cm2.addNote(notes[i]);
+    }
+    expect(cm1.equals(cm2)).toEqual(true);
+    expect(cm2.equals(cm1)).toEqual(true);
+  });
+
+  it("equality tests: options", function() {
+    var notes = [];
+    var numNotes = 4;
+    for (var i = 1; i <= numNotes; i++) {
+      notes.push(new GuitarNote(0,i));
+    }
+
+    // Test option inequality
+    expect((new ChordModel({ "notes": notes })).equals(
+            new ChordModel({ "notes": notes, baseFret: 3 }))).toBe(false);
+    expect((new ChordModel({ "notes": notes })).equals(
+            new ChordModel({ "notes": notes, numFrets: 8 }))).toBe(false);
+    expect((new ChordModel({ "notes": notes })).equals(
+            new ChordModel({ "notes": notes, label: "banana" }))).toBe(false);
+    expect((new ChordModel({ "notes": notes })).equals(
+            new ChordModel({ "notes": notes, tuning: "GBDA" }))).toBe(false);
+  });
+
 });

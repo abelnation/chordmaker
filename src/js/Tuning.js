@@ -30,6 +30,14 @@ Tuning.prototype = {
     return this.notes.length;
   },
 
+  equals: function(tuning) {
+    if (this.getNumStrings() !== tuning.getNumStrings()) { return false; }
+    for (var i = 0; i < this.getNumStrings(); i++) {
+      if (this.notes[i] !== tuning.notes[i]) { return false; }
+    }
+    return true;
+  },
+
   toString: function() {
     return this.tuningStr;
   },

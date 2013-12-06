@@ -118,4 +118,14 @@ describe("GuitarNote", function() {
       .toEqual(false);
   });
 
+  it("equality is symmetric", function() {
+    // identity
+    expect((new GuitarNote(2, 3)).equals(new GuitarNote(2, 3))).toEqual(true);
+    
+    expect((new GuitarNote(2, 3)).equals(new GuitarNote(2, 5))).toEqual(false);
+    expect((new GuitarNote(2, 5)).equals(new GuitarNote(2, 3))).toEqual(false);
+    expect((new GuitarNote(2, 5, { muted: true })).equals(new GuitarNote(2, 5))).toEqual(false);
+    expect((new GuitarNote(2, 5)).equals(new GuitarNote(2, 5, { muted: true }))).toEqual(false);
+  });
+
 });

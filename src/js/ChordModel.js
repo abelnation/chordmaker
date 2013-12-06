@@ -135,6 +135,34 @@ ChordModel.prototype = {
     // TODO: notify listeners
     delete this.notes[key];
   },
+  empty: function() {
+    this.notes = {};
+  },
+  equals: function(model) {
+    if (this.getNumStrings() != model.getNumStrings() ||
+        this.getNumNotes() != model.getNumNotes() ||
+        this.getNumFrets() != model.getNumFrets() ||
+        !this.getTuning().equals(model.getTuning()) ||
+        this.getBaseFret() != model.getBaseFret() ||
+        this.getLabel() != model.getLabel()) {
+      return false;
+    }
+
+    // Compare each note's key
+    var modelNotes = model.getNotes();
+    var note1;
+    var note2;
+    _.each(_.keys(model.getNotes()), function(noteKey) {
+      // Compare keys first
+      if (!_.has(modelNotes, noteKey)) { return false; }
+      // Then check equality on note objects
+      note1 = this.getNotes()[noteKey];
+      note2 = modelNotes[noteKey];
+      if (!note1.equals(note2)) { return false; }
+    }, this);
+
+    return true;
+  },
 
   _keyForNote: function(note) {
     if (!(note instanceof GuitarNote)) {
