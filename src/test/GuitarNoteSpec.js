@@ -71,4 +71,51 @@ describe("GuitarNote", function() {
     
   });
 
+  it("equality tests equal and unequal cases", function() {
+    expect((new GuitarNote(2, 3)).equals(new GuitarNote(2, 3))).toEqual(true);
+    expect((new GuitarNote(0, 5)).equals(new GuitarNote(0, 5))).toEqual(true);
+    expect((new GuitarNote(3742, 23)).equals(new GuitarNote(3742, 23))).toEqual(true);
+    expect((new GuitarNote(2, 3, { finger: 3 })).equals(
+            new GuitarNote(2, 3, { finger: 3 })))
+      .toEqual(true);
+    expect((new GuitarNote(2, 3, { muted: true })).equals(
+            new GuitarNote(2, 3, { muted: true })))
+      .toEqual(true);
+    expect((new GuitarNote(2, 3, { tonic: true })).equals(
+            new GuitarNote(2, 3, { tonic: true })))
+      .toEqual(true);
+    expect((new GuitarNote(2, 3, { tonic: true, finger: 3 })).equals(
+            new GuitarNote(2, 3, { tonic: true, finger: 3 })))
+      .toEqual(true);
+
+    // False cases
+
+    // frets diff
+    expect((new GuitarNote(2, 3)).equals(
+            new GuitarNote(2, 5)))
+      .toEqual(false);
+    // strings diff
+    expect((new GuitarNote(2, 5)).equals(
+            new GuitarNote(6, 5)))
+      .toEqual(false);
+    // both diff
+    expect((new GuitarNote(2, 5)).equals(
+            new GuitarNote(6, 2)))
+      .toEqual(false);
+    // one has option
+    expect((new GuitarNote(6, 2)).equals(
+            new GuitarNote(6, 2, { muted: true })))
+      .toEqual(false);
+
+    // options differ
+    expect((new GuitarNote(6, 2, { muted: false })).equals(
+            new GuitarNote(6, 2, { muted: true })))
+      .toEqual(false);
+
+    // options differ
+    expect((new GuitarNote(6, 2, { tonic: true, muted: false })).equals(
+            new GuitarNote(6, 2, { tonic: true, muted: true })))
+      .toEqual(false);
+  });
+
 });

@@ -64,6 +64,17 @@ GuitarNote.prototype = {
       return this.string + " " + this.fret;
     }
   },
+  equals: function(note) {
+    if ( this.string !== note.string ||
+        this.fret !== note.fret ||
+        this.muted !== note.muted ||
+        this.finger !== note.finger ||
+        this.tonic !== note.tonic ) {
+      return false;
+    }
+    
+    return true;
+  },
 
   toString: function() {
     // TODO: implement
