@@ -96,26 +96,6 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                   "foldPrefix": "^",
                   "name": "JavaScript"
                 },
-                "sourcePath": "/Users/aallison/Workspace/chordmaker/src/js/Chord.js",
-                "projectPath": "src/js/Chord.js",
-                "targetPath": "src/js/Chord",
-                "pageTitle": "src/js/Chord",
-                "title": "Chord"
-              },
-              "depth": 3,
-              "outline": []
-            }, {
-              "type": "file",
-              "data": {
-                "language": {
-                  "nameMatchers": [".js"],
-                  "pygmentsLexer": "javascript",
-                  "multiLineComment": ["/*", "*", "*/"],
-                  "singleLineComment": ["//"],
-                  "ignorePrefix": "}",
-                  "foldPrefix": "^",
-                  "name": "JavaScript"
-                },
                 "sourcePath": "/Users/aallison/Workspace/chordmaker/src/js/ChordFactory.js",
                 "projectPath": "src/js/ChordFactory.js",
                 "targetPath": "src/js/ChordFactory",
@@ -150,26 +130,6 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                   "depth": 2
                 }
               ]
-            }, {
-              "type": "file",
-              "data": {
-                "language": {
-                  "nameMatchers": [".js"],
-                  "pygmentsLexer": "javascript",
-                  "multiLineComment": ["/*", "*", "*/"],
-                  "singleLineComment": ["//"],
-                  "ignorePrefix": "}",
-                  "foldPrefix": "^",
-                  "name": "JavaScript"
-                },
-                "sourcePath": "/Users/aallison/Workspace/chordmaker/src/js/ChordMaker.js",
-                "projectPath": "src/js/ChordMaker.js",
-                "targetPath": "src/js/ChordMaker",
-                "pageTitle": "src/js/ChordMaker",
-                "title": "ChordMaker"
-              },
-              "depth": 3,
-              "outline": []
             }, {
               "type": "file",
               "data": {
