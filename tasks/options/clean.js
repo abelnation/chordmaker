@@ -9,6 +9,11 @@ module.exports = {
   scrub_dist: [
     'build/dist/scss',
     'build/dist/test',
+    'build/dist/grammar',
+    'build/dist/js/lib',
+    'build/dist/js/*.js',
+    '!build/dist/js/chordmaker.0.1.0.js',
+    '!build/dist/js/chordmaker.min.js',
   ],
   scrub_dev: [
     'build/dev/scss',
