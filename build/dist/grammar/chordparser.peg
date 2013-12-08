@@ -1,0 +1,115 @@
+/* ChordParser Grammar
+ * -------------------
+ *
+ * - TODO: stringStr config strings
+ * - TODO: allow for whitespace in strings
+ * - TODO: better syntax
+ *
+ */
+ 
+/* Possible config string followed by any number of string descriptors */
+start
+  = config:(config_str)? strings:(string_str)+ {
+    return {
+      'config': config,
+      'strings': strings
+    };
+  }
+
+/* Any number of key value pairs separated by an equal sign */
+config_str
+  = "[" head:config_pair tail:("," pair:config_pair { return pair; })* "]" LineTerminator {
+    var result = [head];
+    for (var i = 0; i < tail.length; i++) {
+      result = result.concat(tail[i]);
+    }
+    return result;
+  }
+
+config_pair
+  = key:config_key "=" val:config_value {
+    return {
+      'key': key,
+      'value': val
+    }
+  }
+
+config_key
+  = ConfigStringValue
+
+config_value
+  = FloatValue / IntValue / ConfigStringValue
+
+string_str
+  = string_num:string_num ":" frets:fret_list WhiteSpace* LineTerminator {
+    return {
+      'string': string_num,
+      'frets': frets
+    }
+  }
+
+string_num
+  = digits:(Digit Digit?) { 
+      return parseInt(digits.join(""), 10); 
+    }
+
+fret_list
+  = (head:fret_marker tail:("," fret:fret_marker { return fret; })* { 
+      var result = [ head ];
+      for (var i = 0; i < tail.length; i++) {
+        result = result.concat(tail[i]);
+      }
+      return result;
+    })
+
+fret_marker
+  = fret_with_finger
+  / fret:(fret_num / mute_marker) { 
+      return { 'fret': fret }; 
+    }
+
+fret_with_finger
+  = "{" fret:(fret_num / mute_marker) " " finger:(finger_num / mute_marker) "}" { 
+      return { 'fret': fret, 'finger': finger }; 
+    }
+
+fret_num
+  = digits:(Digit Digit?) { 
+      return parseInt(digits.join(""), 10); 
+    }
+
+finger_num
+  = [1234Tt]
+
+mute_marker
+  = [MmXx]
+
+IntValue
+  = digits:[0-9]+ { 
+      return parseInt(digits.join(""), 10); 
+    }
+
+FloatValue
+  = left:[0-9]* "." right:[0-9]+ { 
+      return parseFloat(left.join("") + "." + right.join("")); 
+    }
+
+ConfigStringValue
+  = parts:ConfigCharacter+ { 
+      return parts.join(""); 
+    }
+
+ConfigCharacter
+  = ![=,\[\]] char:SourceCharacter { return char; }
+
+SourceCharacter
+  = .
+
+WhiteSpace "whitespace"
+  = [\t\v\f \u00A0\uFEFF]
+
+LineTerminator
+  = [\n\r\u2028\u2029]
+
+Digit
+  = [0-9]
