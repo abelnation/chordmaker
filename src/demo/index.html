@@ -7,14 +7,11 @@
   <title>Chord Maker</title>
 
   <link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css" media="screen" title="no title" charset="utf-8">
-  <link rel="stylesheet" href="prettify/prettify.css" type="text/css" media="screen" title="no title" charset="utf-8">
   
   <script type="text/javascript" src="../js/lib/jquery-1.7.2.min.js"></script>
   <script type="text/javascript" src="../js/lib/raphael-min.js"></script>
-  <script type="text/javascript" src="../js/lib/underscore-min.js"></script>
-
-  <script type="text/javascript" src="prettify/prettify.js"></script>
-  <script type="text/javascript" src="bootstrap/../js/bootstrap.js"></script>
+  
+  <script type="text/javascript" src="./bootstrap/js/bootstrap.js"></script>
 
   <!-- @if TARGET == 'dev' -->
   <script type="text/javascript" src="../js/chordmaker.<!-- @echo VERSION -->.js?<!-- @echo RANDOM -->"></script>
@@ -24,68 +21,132 @@
   <!-- @endif -->  
 
   <script type="text/javascript">
+    function time_fn(fn, done_fn) {
+      var start = new Date().getTime();
+      fn();
+      var end = new Date().getTime();
+      var time = end-start;
+      done_fn(time);
+    }
     $(function() {
-      prettyPrint();
+      var factory = new GuitarNoteFactory({ numFrets: 15 });
+      var cf = new ChordFactory();
+      var fmaj_notes = [
+        new GuitarNote(0,1, { finger: 1 }),
+        new GuitarNote(1,3, { finger: 4 }),
+        new GuitarNote(2,3, { finger: 3 }),
+        new GuitarNote(3,2, { finger: 2 }),
+        new GuitarNote(4,1, { finger: 1 }),
+        new GuitarNote(5,1, { finger: 1 }),
+      ];
+      var model = new ChordModel({ label: "FMaj" });
+      model.addNotes(fmaj_notes);
 
-      // Example 1
-      var chord1 = Chord("chord-ex1", {
-        label: "F#M",
-        scale: 1,
-        notes: [
-          { 'string': 0, 'finger': "T", 'fret': 2, 'tonic': true, 'class': "group1" },
-          { 'string': 1, 'open': true },
-          { 'string': 2, 'finger': "2", 'fret': 4, 'class': "group1" },
-          { 'string': 3, 'finger': "3", 'fret': 2 },
-          { 'string': 4, 'muted': true },
-          { 'string': 5, 'finger': "2", 'fret': 2, 'class': "group1" }
-        ]}
+      time_fn(
+        function() { 
+          new ChordView("chord-ex1-1", ChordView.DEFAULT_OPTIONS, model);
+        }, 
+        function(time) {
+          $("#chord-ex1-1").append("<p>"+time + "ms</p>");
+        });
+      new ChordView("chord-ex1-2",
+        { finger_position: ChordView.FINGER_ONNOTE }, model);
+      new ChordView("chord-ex1-3", ChordView.OPTIONS_COMPACT, model);
+      new ChordView("chord-ex1-4", ChordView.OPTIONS_COMPACT, model);
+      
+      var cmaj_notes = [
+        new GuitarNote(0,3, { finger: 1 }),
+        new GuitarNote(1,3, { finger: 1 }),
+        new GuitarNote(2,5, { finger: 3 }),
+        new GuitarNote(3,5, { finger: 3 }),
+        new GuitarNote(4,5, { finger: 3 }),
+        new GuitarNote(5,3, { finger: 1 }),
+      ];
+      var amaj_notes = [
+        new GuitarNote(0,0, { finger: 1 }),
+        new GuitarNote(1,0, { finger: 1 }),
+        new GuitarNote(2,2, { finger: 3 }),
+        new GuitarNote(3,2, { finger: 3 }),
+        new GuitarNote(4,2, { finger: 3 }),
+        new GuitarNote(5,0, { finger: 1 }),
+      ];
+      model_2 = new ChordModel({ label: "C", notes: cmaj_notes });
+      model_3 = new ChordModel({ label: "A", notes: amaj_notes });
+      new ChordView("chord-ex1-5", { base_fret: 3, num_frets: 6 }, model_2);
+      new ChordView("chord-ex1-6", ChordView.OPTIONS_COMPACT, model_2);
+      new ChordView("chord-ex1-7", ChordView.OPTIONS_COMPACT, model_3);
+
+      new ChordView("chord-ex2-1", {
+          //show_fingers: false,
+          orientation: ChordView.NUT_LEFT,
+          num_frets: 12
+        }, 
+        new ChordModel({ 
+          notes: factory.notesForScale("g", "major") }
+        )
       );
-      chord1.addNotes([
-        { 'string': 2, 'finger': "2", 'fret': 5, 'class': "group1" }
-      ], "red");
-
-      // Example 2
-      var chord2 = Chord("chord-ex2", {
-        label: "GbM",
-        base_fret: 2,
-        scale: 1,
-        notes: [
-          { 'string': 0, 'finger': "T", 'fret': 1 },
-          { 'string': 1, 'finger': "3", 'fret': 3 },
-          { 'string': 2, 'finger': "4", 'fret': 3 },
-          { 'string': 3, 'finger': "2", 'fret': 2 },
-          { 'string': 4, 'finger': "1", 'fret': 1 },
-          { 'string': 5, 'finger': "1", 'fret': 1 }
-        ]}
+      new ChordView("chord-ex2-2", { 
+          orientation: ChordView.NUT_LEFT,
+          num_frets: 8 
+        }, 
+        new ChordModel({
+          label: "Maj6",
+          notes: factory.notesForArpeggio("g", "maj6") }
+        )
       );
-      $("#chord-ex2 .chord-note").hover(
-        function(e) { $(this).attr("fill", "red"); },
-        function(e) { $(this).attr("fill", "black"); }
+      new ChordView("chord-ex2-3", { 
+          scale: 1.0, 
+          orientation: ChordView.NUT_LEFT, 
+          num_frets: 8
+        }, 
+        new ChordModel({
+          label: "WholeTone",
+          notes: factory.notesForScale("g", "wholetone") }
+        )
       );
+      
+      $(".parse").each(function(i) {
+        var chordStr = $(this).html();
+        var chordId = $(this).attr("id");
+        cf.chordFromString(chordId, chordStr);
+      });
 
-      // Example 3 - LongNeck
-      var chord2 = Chord("chord-ex3", {
-        label: "GMaj7",
-        num_frets: 19,
-        fret_gap: 40,
-        scale: 1,
-        orientation: "left",
-        notes: [
-          { 'string': 0, 'frets': [2,3,7,10,14] },
-          { 'string': 1, 'frets': [2,5,9,10,14] },
-          { 'string': 2, 'frets': [4,5,9,12] },
-          { 'string': 3, 'frets': [4,7,11,12] },
-          { 'string': 4, 'frets': [3,7,8,12] },
-          { 'string': 5, 'frets': [2,3,7,10,14,15] }
-        ]}
-      );
+      var chordKey = "e";
+      var chordType = "";
+      var instrument = "guitar";
+      var tuning = "EADGBe";
+      var container = $("#C-chords");
+      for(var i = 0; i < Voicings.getNumVariations(instrument, tuning, chordType, false); i++) {
+        var chordId = 'C-chord-' + i;
+        container.append('<div id="' + chordId + '" class="chord"></div>');
+        new ChordView(
+          chordId, 
+          ChordView.DEFAULT_OPTIONS, 
+          Voicings.chordModelFromVoicing(instrument, tuning, chordType, chordKey, i, false));
+      }
 
-      // Make Chords with String Examples
-      ChordMaker.makeChordFromString("chord-ex2.1", "0,2,T|1,4,2|2,7,1|3,2,1(color=black)", 0.5);
-      ChordMaker.makeChordFromString("chord-ex2.2", "0,2,T|1,4,2|2,2,1|3,2,1", 0.5);
-      ChordMaker.makeChordFromString("chord-ex2.3", "0,2,T|1,4,2|2,2,1|3,2,1", 0.5);
+      container = $("#C7-chords");
+      chordType = "7";
+      for(var i = 0; i < Voicings.getNumVariations(instrument, tuning, chordType, false); i++) {
+        var chordId = 'C7-chord-' + i;
+        container.append('<div id="' + chordId + '" class="chord"></div>');
+        new ChordView(
+          chordId, 
+          ChordView.DEFAULT_OPTIONS, 
+          Voicings.chordModelFromVoicing(instrument, tuning, chordType, chordKey, i, false));
+      }
 
-      ChordMaker.parseChordsInPage();
+      container = $("#CM-chords");
+      chordType = "M";
+      for(var i = 0; i < Voicings.getNumVariations(instrument, tuning, chordType); i++) {
+        var chordId = 'CM-chord-' + i;
+        container.append('<div id="' + chordId + '" class="chord"></div>');
+        new ChordView(
+          chordId, 
+          ChordView.DEFAULT_OPTIONS, 
+          Voicings.chordModelFromVoicing(instrument, tuning, chordType, chordKey, i));
+      }
+      
     });
 
   </script>
@@ -94,235 +155,124 @@
     .example {
       text-align: center;
     }
-    pre.prettyprint { padding: 8.5px; }
+    svg {
+      /* border: thin solid #ccc; */
+    }
+    .chord {
+      display: inline-block;
+    }
+
   </style>
 
 </head>
 <body>
-  <div class="navbar navbar-fixed-top">
-    <div class="navbar-inner">
-      <div class="container">
-        <a href="#" class="brand">ChordMaker</a>
-        <ui class="nav">
-          <li class="active"><a href="#" class="">Home</a></li>
-          <li><a href="gypsy.html">Gypsy</a></li>
-          <li><a href="#">Download</a></li>
-        </ui>
-      </div>
-    </div>
-  </div>
-
   <div class="container" style="padding-top: 60px;">
-
-    <h1 style="margin-bottom: 20px;">Chord Maker</h1>
-
-    <section id="API">
-      <div class="page-header">
-        <h2>Chord Maker API</h2>
-      </div>
-
+    <h1 style="margin-bottom: 20px;">Chord Maker Visual Tests</h1>
+    <section id="model sharing">
+      <h2>Share same model</h2>
       <div class="row">
-        <div class="span4">
-          <div id="chord-ex1" class="example"></div>
+        <div class="span2">
+          <div id="chord-ex1-1" class="example chord"></div>
         </div>
-        <div class="span8">
-          <pre class="prettyprint lang-js">
-  // Example 1
-  var chord1 = Chord("chord-ex1", {
-    label: "F#M",
-    base_fret: 0,
-    scale: 1,
-    notes: [
-      { 'string': 0, 'finger': "T", 'fret': 2, 'tonic': true, 'class': "group1" },
-      { 'string': 1, 'open': true },
-      { 'string': 2, 'finger': "2", 'fret': 4, 'class': "group1" },
-      { 'string': 3, 'finger': "3", 'fret': 2 },
-      { 'string': 4, 'muted': true },
-      { 'string': 5, 'finger': "2", 'fret': 2, 'class': "group1" }
-    ]}
-  );
-  chord1.addNotes([
-    { 'string': 2, 'finger': "2", 'fret': 5, 'class': "group1" }
-  ], "red");
-          </pre>
+        <div class="span2">
+          <div id="chord-ex1-2" class="example chord"></div>
         </div>
-      </div>
-
-      <div class="row">
-        <div class="span4">
-          <div id="chord-ex2" class="example"></div>
+        <div class="span2">
+          <div id="chord-ex1-3" class="example chord"></div>
         </div>
-        <div class="span8">
-          <pre class="prettyprint lang-js">
-  // Example 2
-  // Use jQuery to grab certain elements from the graphic and
-  // assign events
-  var chord2 = Chord("chord-ex2", {
-    label: "GbM",
-    base_fret: 2,
-    scale: 1,
-    notes: [
-      { 'string': 0, 'finger': "T", 'fret': 1 },
-      { 'string': 1, 'finger': "3", 'fret': 3 },
-      { 'string': 2, 'finger': "4", 'fret': 3 },
-      { 'string': 3, 'finger': "2", 'fret': 2 },
-      { 'string': 4, 'finger': "1", 'fret': 1 },
-      { 'string': 5, 'finger': "1", 'fret': 1 }
-    ]}
-  );
-  $("#chord-ex2 .chord-note").hover(
-    function(e) { $(this).attr("fill", "red"); },
-    function(e) { $(this).attr("fill", "black"); }
-  );
-          </pre>
+        <div class="span2">
+          <div id="chord-ex1-4" class="example chord"></div>
         </div>
-      </div>
-
-      <div class="row">
-        <div class="span12">
-          <div id="chord-ex3" class="example"></div>
+        <div class="span2">
+          <div id="chord-ex1-5" class="example chord"></div>
         </div>
-      </div>
-      <div class="row">
-        <div class="span12">
-          <pre class="prettyprint lang-js">
-  // Example 3 - LongNeck
-  var chord2 = Chord("chord-ex3", {
-    label: "GMaj7",
-    num_frets: 17,
-    fret_gap: 40,
-    orientation: "left",
-    scale: 1,
-    notes: [
-      { 'string': 0, 'frets': [2,3,7,10,14] },
-      { 'string': 1, 'frets': [2,5,9,10,14] },
-      { 'string': 2, 'frets': [4,5,9,12] },
-      { 'string': 3, 'frets': [4,7,11,12] },
-      { 'string': 4, 'frets': [3,7,8,12] },
-      { 'string': 5, 'frets': [2,3,7,10,14,15] }
-    ]}
-  );
-          </pre>
+        <div class="span2">
+          <div id="chord-ex1-6" class="example chord"></div>
+          <div id="chord-ex1-7" class="example chord"></div>
         </div>
       </div>
     </section>
-
-    <div class="row">
-      <div class="span12">
-        <div id="chord-ui"></div>
-      </div>
-    </div>
-
-    <section id="with-string">
-      <div class="page-header">
-        <h2>Make Chords with a String</h2>
-      </div>
-
+    <section>
+      <h2>Using Notefactory</h2>
       <div class="row">
-        <div class="span4">
-          <div id="chord-ex2.1" class="example"></div>
+        <div class="span3">
+          G Major Scale
+          <div id="chord-ex2-1" class="example chord"></div>
         </div>
-        <div class="span8">
-          <pre class="prettyprint lang-js">
-  // javscript
-  ChordMaker.makeChordFromString("chord-ex2.1", "2,T|4,2|7,1|2,1|(color=black)", 0.5);
-
-  // html
-  &lt;div id="chord-ex2.1"&gt;&lt;/div&gt;
-          </pre>
+        <div class="span3">
+          G Maj6 Arpeggio
+          <div id="chord-ex2-2" class="example chord"></div>
         </div>
-      </div>
-
-      <div class="row">
-        <div class="span4">
-          <div id="chord-ex2.2" class="example"></div>
-        </div>
-        <div class="span8">
-          <pre class="prettyprint lang-js">
-  // javscript
-  ChordMaker.makeChordFromString("chord-ex2.2", "2,T,T|4,2|2,1|2,1,T", 0.5);
-
-  // html
-  &lt;div id="chord-ex2.2"&gt;&lt;/div&gt;
-          </pre>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="span4">
-          <div id="chord-ex2.3" class="example"></div>
-        </div>
-        <div class="span8">
-          <pre class="prettyprint lang-js">
-  // javscript
-  ChordMaker.makeChordFromString("chord-ex2.3", "2,T|4,2|7,1|2,1|(color=black)", 0.5);
-
-  // html
-  &lt;div id="chord-ex2.3"&gt;&lt;/div&gt;
-          </pre>
+        <div class="span6">
+          Whole Tone
+          <div id="chord-ex2-3" class="example chord" style="text-align: left;"></div>
         </div>
       </div>
     </section>
-
-    <section id="auto-parse">
-      <div class="page-header">
-        <h2>Auto-Parse Div Content</h2>
-      </div>
-
+    <section>
+      <h2>Using inline chord strings</h2>
       <div class="row">
-        <div class="span4">
-          <div class="chord example">
-            0,2,T
-            1,4,2 (color=black)
-            2,7,1
-            3,2,1 (color=red)
+        <div class="span3">
+          <div id="chord-ex3-1" class="example parse chord">
+            [label="C"]
+            0:{x x}
+            1:{3 3}
+            2:{2 2}
+            3:{0 0}
+            4:{1 1}
+            5:{3 4}
           </div>
         </div>
-        <div class="span8">
-          <pre class="prettyprint lang-js">
-  // javscript
-  ChordMaker.parseChordsInPage();
-
-  // html
-  &lt;div class="chord"&gt;
-    0,2,T
-    1,4,2 (color=black)
-    2,7,1
-    3,2,1 (color=red)
-  &lt;/div&gt;
-          </pre>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="span4">
-          <div class="chord example">
-            0,1,1 (color=black)
-            1,3,4 (color=white)
-            2,3,3
-            3,2,2
-            4,1,1
-            5,1,1 (color=black)
+        <div class="span3">
+          <div id="chord-ex3-2" class="example parse chord">
+            [base_fret=5,label="C7/Bb"]
+            0:{6 2}
+            1:{x x}
+            2:{5 1}
+            3:{5 1} (color: black;)
+            4:{5 1}
+            5:{x x}
           </div>
         </div>
-        <div class="span8">
-          <pre class="prettyprint lang-js">
-  // javscript
-  ChordMaker.parseChordsInPage();
-
-  // html
-  &lt;div class="chord"&gt;
-    0,1,1 (color=black)
-    1,3,4 (color=white)
-    2,3,3
-    3,2,2
-    4,1,1
-    5,1,1 (color=black)
-  &lt;/div&gt;
-          </pre>
+        <div class="span6">
+          <div id="chord-ex3-3" class="example parse chord" style="text-align: left;">
+            [orientation="left",num_frets=7,scale=0.8,fret_gap=25]
+            0: 2,3(color:black;)
+            1: 2,5
+            2: 4,5(color: black;)
+            3: 4,7
+            4: 7,8(color: black;)
+            5: 7,10
+          </div>
         </div>
       </div>
-
+      <div class="row">
+        <div class="span12">
+          <div id="chord-ex3-4" class="example parse chord" style="text-align: left;">
+            [base_fret=1,orientation="left",num_frets=17,scale=0.8,fret_gap=50]
+            0: 7,10
+            1: 9,10(color: black;)
+            2: 9,12
+            3: 11,12(color: black;)
+            4: 12,15
+            5: 14,15(color: black;)
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <h2>Using Voicings</h2>
+      <div class="row">
+        <div id="CM-chords" class="span12">
+          <h2>Major</h2>
+        </div>
+        <div id="C7-chords" class="span12">
+          <h2>Dominant 7</h2>
+        </div>
+        <div id="C-chords" class="span12">
+          <h2>All Chords</h2>
+        </div>
+      </div>
     </section>
   </div>
 
