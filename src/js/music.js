@@ -280,7 +280,7 @@ Vex.Flow.Music.prototype.getNoteValue = function(noteString) {
 
   //     music.getNoteValue("c#") -> 1
 
-  var value = Vex.Flow.Music.noteValues[noteString];
+  var value = Vex.Flow.Music.noteValues[noteString.toLowerCase()];
   if (value == null) {
     throw new Vex.RERR("BadArguments", "Invalid note name: " + noteString);
   }
@@ -378,7 +378,7 @@ Vex.Flow.Music.prototype.getScaleTones = function(keyValue, intervals) {
   return tones;
 };
 
-// **getScaleTones** Returns the interval of a note, given a diatonic scale.  
+// **getIntervalBetween** Distance between two notes
 Vex.Flow.Music.prototype.getIntervalBetween = function(note1, note2, direction) {
   // - `note1` : integer
   // - `note2` : integer

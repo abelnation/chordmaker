@@ -1,6 +1,10 @@
 /* ChordParser Grammar
  * -------------------
  *
+ * - TODO: stringStr config strings
+ * - TODO: allow for whitespace in strings
+ * - TODO: better syntax
+ *
  */
  
 /* Possible config string followed by any number of string descriptors */

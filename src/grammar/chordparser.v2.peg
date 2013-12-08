@@ -1,0 +1,260 @@
+/*
+ * Chord parser based on the example css parser at:
+ * https://github.com/dmajda/pegjs/blob/master/examples/css.pegjs
+ */
+
+/* Test Set */
+/*
+        [  base_fret= 12 , num=2.33 ,label    = 'CM/E', num2 = 23e-2, banana = "test" ]
+
+
+23: 4,x,  t, 34,M, -23, -4
+
+3: 1,2(color:black;),3
+ 
+3: 4,5
+
+   7: x, 4,3 , 2    , 1
+
+ 12: {4 T}, { x 4 }  
+
+   7: x, 4,3 , 2    , 1
+
+0:{3 1}
+
+  4 : {5 2}
+ 
+8: 2,{3 T},4( color : black  ; banana: rama ; tomato: 23 ; baz: "hello" ),4,5, {5 x}(color: black;)
+ 
+*/
+
+/* ===== Syntactical Elements ===== */
+
+start
+  = __ config:config? __ strings:strings __ _ {
+      return {
+        config: (config?config:{}),
+        strings: strings
+      };
+    }
+
+config
+  = _ "[" pairs:config_pairs "]" { return pairs; }
+
+config_pairs
+  = head:config_pair tail:(_ "," config_pair)* {
+      var result = {};
+      result[head.key] = head.value;
+      for (var i = 0; i < tail.length; i++) {
+        var pair = tail[i][2];
+        result[pair.key] = pair.value;
+      }
+      return result;
+    }
+
+config_pair
+  = _ key:identifier _ "=" _ val:value _ {
+      return { 
+        key: key,
+        value: val
+      };
+    }
+
+strings
+  = __ head:string_def tail:((_ nl)+ string_def)* __ {
+      var result = {};
+      result[head.string] = {
+        string: head.string,
+        frets: head.frets
+      };
+      for (var i = 0; i < tail.length; i++) {
+        var str = tail[i][1];
+        if(!result[str.string]) {
+          result[str.string] = {
+            string: str.string,
+            frets: str.frets
+          };
+        } else {
+          for (var j = 0; j < str.frets.length; j++) {
+            result[str.string].frets.push(str.frets[j]);
+          }
+        }
+      }
+      return result;
+    }
+
+string_def
+  = _ string:integer _ ":" _ frets:fret_markers _ {
+      return {
+        string: string,
+        frets: frets
+      }
+    }
+
+fret_markers
+  = head:fret_marker tail:(_ "," _ fret_marker)* {
+      var result = [head];
+      for (var i = 0; i < tail.length; i++) {
+        result.push(tail[i][3]);
+      }
+      return result;
+    }
+
+fret_marker
+  = fret:(integer / [TtXxMm]) _ config:fret_config? { 
+      if (config !== "") { return { fret: fret, config: (config==""?{}:config) }; }
+      else { return { fret: fret }; }
+    }
+  / "{" _ fret:(integer / [XxMm]) _ finger:(integer / [TtXxMm]) _ "}" _ config:fret_config? {
+      if (config !== "") { return { fret: fret, finger: ""+finger, config: (config==""?{}:config) }; }
+      else { return { fret: fret, finger: ""+finger }; }
+    }
+
+fret_config
+  = "(" _ ")" { return {}; }
+  / "(" _ pairs:fret_config_pairs _ ")" { return pairs; }
+
+fret_config_pairs
+  = head:fret_config_pair tail:(_ ";" _ fret_config_pair)* ";"? {
+      var result = {};
+      result[head.key] = head.value;
+      for (var i = 0; i < tail.length; i++) {
+        var pair = tail[i][3];
+        result[pair.key] = pair.value;
+      }
+      return result;
+    }
+
+fret_config_pair
+  = key:identifier _ ":" _ value:(value / identifier) _ { 
+      return { key: key, value: value };
+    }
+
+value
+  = string
+  / number
+  / "true" _  { return true;  }
+  / "false" _ { return false; }
+  /* 
+   * / "null" _  { return null;  }
+   * / object
+   * / array
+   */
+
+/* ===== Lexical Elements ===== */
+
+h
+  = [0-9a-fA-F]
+
+unicode
+  = "\\" digits:(h h? h? h? h? h?) ("\r\n" / [ \t\r\n\f])? {
+      return String.fromCharCode(parseInt(digits.join(""), 16));
+    }
+
+escape
+  = unicode
+  / "\\" char_:[^\r\n\f0-9a-fA-F] { return char_; }
+
+string1
+  = '"' chars:([^\n\r\f\\"] / "\\" nl:nl { return nl } / escape)* '"' {
+      return chars.join("");
+    }
+
+string2
+  = "'" chars:([^\n\r\f\\'] / "\\" nl:nl { return nl } / escape)* "'" {
+      return chars.join("");
+    }
+
+string "string"
+  = string1
+  / string2
+
+identifier
+  = dash:"-"? nmstart:nmstart nmchars:nmchar* {
+      return (dash !== null ? dash : "") + nmstart + nmchars.join("");
+    }
+
+nmstart
+  = [_a-zA-Z]
+
+nmchar
+  = [_a-zA-Z0-9-]
+
+chars
+  = chars:char+ { return chars.join(""); }
+
+char
+  // In the original JSON grammar: "any-Unicode-character-except-"-or-\-or-control-character"
+  = [^"\\\0-\x1F\x7f]
+  / '\\"'  { return '"';  }
+  / "\\\\" { return "\\"; }
+  / "\\/"  { return "/";  }
+  / "\\b"  { return "\b"; }
+  / "\\f"  { return "\f"; }
+  / "\\n"  { return "\n"; }
+  / "\\r"  { return "\r"; }
+  / "\\t"  { return "\t"; }
+  / "\\u" digits:(hexDigit hexDigit hexDigit hexDigit) {
+      return String.fromCharCode(parseInt("0x" + digits.join("")));
+    }
+
+integer "integer"
+  = parts:(int) _          { return parseFloat(parts); }
+
+number "number"
+  = parts:(int frac exp) _ { return parseFloat(parts.join("")); }
+  / parts:(int frac) _     { return parseFloat(parts.join("")); }
+  / parts:(int exp) _      { return parseFloat(parts.join("")); }
+  / parts:(int) _          { return parseFloat(parts); }
+
+int
+  = left:digit19 rest:digits { return left + rest; }
+  / digit
+  / "-" left:digit19 rest:digits { return "-" + left + rest; }
+  / "-" digit:digit { return "-" + digit; }
+
+frac
+  = "." digits:digits { return "." + digits; }
+
+exp
+  = e digits:digits { return "e" + digits; }
+
+digits
+  = digits:digit+ { return digits.join(""); }
+
+e
+  = e:[eE] sign:[+-]? { return e + sign; }
+
+/*
+ * The following rules are not present in the original JSON gramar, but they are
+ * assumed to exist implicitly.
+ *
+ * FIXME: Define them according to ECMA-262, 5th ed.
+ */
+
+digit
+  = [0-9]
+
+digit19
+  = [1-9]
+
+hexDigit
+  = [0-9a-fA-F]
+
+/* ===== Whitespace ===== */
+_ "linespace"
+  = sp*
+
+__ "whitespace"
+  = (_ nl)*
+
+// Whitespace is undefined in the original JSON grammar, so I assume a simple
+// conventional definition consistent with ECMA-262, 5th ed.
+whitespace
+  = [ \t\n\r\f]
+
+sp
+  = [ \t]
+
+nl
+  = [\n\r\f]

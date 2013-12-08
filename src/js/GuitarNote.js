@@ -16,9 +16,10 @@ function GuitarNote(string, fret, options) {
 GuitarNote.DEFAULT_OPTIONS = {
   muted: false,
   finger: null,
-  tonic: false,
 };
-GuitarNote.MUTE_ANNOTATION = "x";
+GuitarNote.DEF_MUTE_ANNOTATION = "x";
+GuitarNote.MUTE_ANNOTATION = "xXmM";
+GuitarNote.THUMB_ANNOTATION = "tT";
 
 GuitarNote.prototype = {
   /**
@@ -30,57 +31,69 @@ GuitarNote.prototype = {
 
   _init: function(string, fret, options) {
     // Create config dict, filling in defaults where not provided
-    _.defaults(options, GuitarNote.DEFAULT_OPTIONS);
+    this.options = options;
+    _.defaults(this.options, GuitarNote.DEFAULT_OPTIONS);
+
     if (string === undefined || string === null ||
         !_.isNumber(string) || string < 0) {
       throw TypeError("Please provide a valid string number >= 0: " + string);
     }
-    if (!options.muted && (fret === undefined || fret === null ||
-        !_.isNumber(fret) || fret < 0)) {
-      throw TypeError("Please provide a valid fret number >= 0");
+    if (!this.options.muted && (fret === undefined || fret === null)) {
+      throw TypeError("Please provide a valid fret: " + fret);
+    } else if (!this.options.muted && !_.isNumber(fret) && !this.isMuteAnnotation(fret)) {
+      throw TypeError("Please provide a valid fret: " + fret);
+    } else if (_.isNumber(fret) && fret < 0) {
+      throw TypeError("Fret number must be >= 0: " + fret);
     }
-    if (options.finger &&
-        (!_.isNumber(options.finger) ||
-        options.finger < 1 || options.finger > 5)) {
-      throw TypeError("Invalid finger number: " + options.finger);
-    }
-    if (options.finger && options.muted) {
-      throw TypeError("Note cannot have a finger annotation and be muted at same time.");
+    
+    if (this.isMuteAnnotation(fret) ||
+        this.options.finger && this.isMuteAnnotation(this.options.finger)) {
+      this.options.muted = true;
     }
 
     this.string = string;
     this.fret = fret;
-    this.muted = options.muted;
-    this.finger = options.finger;
+    this.finger = this.options.finger;
   },
 
   isOpen: function() {
     return this.fret === 0;
   },
+  isMuted: function() {
+    return this.options.muted ? true : false;
+  },
+
   getKey: function() {
-    if (this.muted) {
-      return this.string + " " + GuitarNote.MUTE_ANNOTATION;
+    if (this.isMuted()) {
+      return this.string + " " + GuitarNote.DEF_MUTE_ANNOTATION;
     } else {
       return this.string + " " + this.fret;
     }
   },
   equals: function(note) {
-    if ( this.string !== note.string ||
+    if ( !note ||
+        this.string !== note.string ||
         this.fret !== note.fret ||
-        this.muted !== note.muted ||
-        this.finger !== note.finger ||
-        this.tonic !== note.tonic ) {
+        this.finger !== note.finger) {
+      return false;
+    } else if (this.isMuted() != note.isMuted()) {
       return false;
     }
     
     return true;
   },
 
+  isMuteAnnotation: function(str) {
+    return (GuitarNote.MUTE_ANNOTATION.indexOf(str) !== -1);
+  },
+  isThumbAnnotation: function(str) {
+    return (GuitarNote.THUMB_ANNOTATION.indexOf(str) !== -1);
+  },
   toString: function() {
     // TODO: implement
     var result = "String: " + this.string + ", Fret: " + this.fret;
-    if (this.muted) {
-      result += ", Finger: " + GuitarNote.MUTE_ANNOTATION;
+    if (this.isMuted()) {
+      result += ", Finger: " + GuitarNote.DEF_MUTE_ANNOTATION;
     } else if (this.finger) {
       result += ", Finger: " + this.finger;
     }

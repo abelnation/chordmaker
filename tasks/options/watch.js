@@ -24,7 +24,6 @@ module.exports = {
       'concat:dev',
       'uglify:dev',
       'test',
-      'groc',
     ],
   },
   peg: {

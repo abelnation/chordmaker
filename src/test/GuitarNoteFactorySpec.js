@@ -4,7 +4,6 @@ describe("GuitarNoteFactory", function() {
   
   it("errors if provided invalid tuning", function() {
     expect(function() { new GuitarNoteFactory({ tuning: "EABbCDE" }); }).toThrow();
-    expect(function() { new GuitarNoteFactory({ tuning: "" }); }).toThrow();
     expect(function() { new GuitarNoteFactory({ tuning: "WERT" }); }).toThrow();
     expect(function() { new GuitarNoteFactory({ tuning: 234 }); }).toThrow();
   });

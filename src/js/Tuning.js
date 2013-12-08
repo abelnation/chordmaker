@@ -1,3 +1,8 @@
+// Tuning
+// ------
+
+/* global Vex */
+
 function Tuning(tuningStr) {
   // This first guard ensures that the callee has invoked our Class' constructor function
   // with the `new` keyword - failure to do this will result in the `this` keyword referring 
@@ -18,6 +23,9 @@ Tuning.prototype = {
    */
   constructor: Tuning,
   _init: function(tuningStr) {
+    if (!tuningStr) {
+      tuningStr = Tuning.defaultTuning;
+    }
     if (!Tuning.isValidTuningString(tuningStr)) {
       throw TypeError("Invalid tuningStr: " + tuningStr);
     }
@@ -28,6 +36,13 @@ Tuning.prototype = {
 
   getNumStrings: function() {
     return this.notes.length;
+  },
+  noteValForString: function(stringNum) {
+    var music = new Vex.Flow.Music();
+    return music.getNoteValue(this.noteNameForString(stringNum));
+  },
+  noteNameForString: function(stringNum) {
+    return this.notes[stringNum];
   },
 
   equals: function(tuning) {
@@ -99,3 +114,4 @@ Tuning.instruments = {
     // TODO: fill in
   },
 };
+Tuning.defaultTuning = Tuning.instruments["guitar"]["default"];

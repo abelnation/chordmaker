@@ -4,7 +4,7 @@ module.exports = {
   },
   src: {
     files: {
-        src: "<%= jshint.src.src %>"
+        src: [ "<%= jshint.src.src %>", '!<%= paths.src %>/js/Voicings.js' ]
     }
   },
   test: {

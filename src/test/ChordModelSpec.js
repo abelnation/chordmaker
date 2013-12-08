@@ -5,18 +5,9 @@ describe("ChordModel", function() {
   it("constructor validates arguments", function() {
     expect(function() { new ChordModel({ tuning: "INVALID" }); }).toThrow();
 
-    expect(function() { new ChordModel({ numFrets: "INVALID" }); }).toThrow();
-    expect(function() { new ChordModel({ numFrets: { foo: "bar" } }); }).toThrow();
-    expect(function() { new ChordModel({ numFrets: [ 1234 ] }); }).toThrow();
-    expect(function() { new ChordModel({ numFrets: -234 }); }).toThrow();
-
-    expect(function() { new ChordModel({ numFrets: 5, baseFret: 8 }); }).toThrow();
-    expect(function() { new ChordModel({ numFrets: 5, baseFret: -23 }); }).toThrow();
-
     expect(function() { new ChordModel({ label: 1234 }); }).toThrow();
     expect(function() { new ChordModel({ label: { foo: "bar" } }); }).toThrow();
     expect(function() { new ChordModel({ label: [ 1234 ] }); }).toThrow();
-    
   });
 
   it("addNote requires valid note", function() {
@@ -146,13 +137,13 @@ describe("ChordModel", function() {
 
     // Test option inequality
     expect((new ChordModel({ "notes": notes })).equals(
-            new ChordModel({ "notes": notes, baseFret: 3 }))).toBe(false);
-    expect((new ChordModel({ "notes": notes })).equals(
-            new ChordModel({ "notes": notes, numFrets: 8 }))).toBe(false);
-    expect((new ChordModel({ "notes": notes })).equals(
             new ChordModel({ "notes": notes, label: "banana" }))).toBe(false);
     expect((new ChordModel({ "notes": notes })).equals(
             new ChordModel({ "notes": notes, tuning: "GBDA" }))).toBe(false);
+  });
+
+  it("transpose", function() {
+    throw Error("Need to implement test");
   });
 
 });

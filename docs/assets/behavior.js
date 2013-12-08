@@ -25,12 +25,49 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "slug": "chordmaker",
             "isFileHeader": true
           },
-          "depth": 1
+          "depth": 1,
+          "children": [
+            {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "Usage",
+                "slug": "usage"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "Dev Setup",
+                "slug": "dev-setup"
+              },
+              "depth": 2
+            }
+          ]
         },
         "title": "ChordMaker"
       },
       "depth": 1,
-      "outline": []
+      "outline": [
+        {
+          "type": "heading",
+          "data": {
+            "level": 2,
+            "title": "Usage",
+            "slug": "usage"
+          },
+          "depth": 2
+        }, {
+          "type": "heading",
+          "data": {
+            "level": 2,
+            "title": "Dev Setup",
+            "slug": "dev-setup"
+          },
+          "depth": 2
+        }
+      ]
     }, {
       "type": "folder",
       "data": {
@@ -67,6 +104,52 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               },
               "depth": 3,
               "outline": []
+            }, {
+              "type": "file",
+              "data": {
+                "language": {
+                  "nameMatchers": [".js"],
+                  "pygmentsLexer": "javascript",
+                  "multiLineComment": ["/*", "*", "*/"],
+                  "singleLineComment": ["//"],
+                  "ignorePrefix": "}",
+                  "foldPrefix": "^",
+                  "name": "JavaScript"
+                },
+                "sourcePath": "/Users/aallison/Workspace/chordmaker/src/js/ChordFactory.js",
+                "projectPath": "src/js/ChordFactory.js",
+                "targetPath": "src/js/ChordFactory",
+                "pageTitle": "src/js/ChordFactory",
+                "title": "ChordFactory"
+              },
+              "depth": 3,
+              "outline": [
+                {
+                  "type": "heading",
+                  "data": {
+                    "level": 2,
+                    "title": "ChordFactory",
+                    "slug": "chordfactory"
+                  },
+                  "depth": 2
+                }, {
+                  "type": "heading",
+                  "data": {
+                    "level": 2,
+                    "title": "Options",
+                    "slug": "options"
+                  },
+                  "depth": 2
+                }, {
+                  "type": "heading",
+                  "data": {
+                    "level": 2,
+                    "title": "ChordFactory Class",
+                    "slug": "chordfactory-class"
+                  },
+                  "depth": 2
+                }
+              ]
             }, {
               "type": "file",
               "data": {
@@ -284,7 +367,17 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                 "title": "Tuning"
               },
               "depth": 3,
-              "outline": []
+              "outline": [
+                {
+                  "type": "heading",
+                  "data": {
+                    "level": 2,
+                    "title": "Tuning",
+                    "slug": "tuning"
+                  },
+                  "depth": 2
+                }
+              ]
             }, {
               "type": "file",
               "data": {
@@ -305,6 +398,44 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               },
               "depth": 3,
               "outline": []
+            }, {
+              "type": "file",
+              "data": {
+                "language": {
+                  "nameMatchers": [".js"],
+                  "pygmentsLexer": "javascript",
+                  "multiLineComment": ["/*", "*", "*/"],
+                  "singleLineComment": ["//"],
+                  "ignorePrefix": "}",
+                  "foldPrefix": "^",
+                  "name": "JavaScript"
+                },
+                "sourcePath": "/Users/aallison/Workspace/chordmaker/src/js/Voicings.js",
+                "projectPath": "src/js/Voicings.js",
+                "targetPath": "src/js/Voicings",
+                "pageTitle": "src/js/Voicings",
+                "title": "Voicings"
+              },
+              "depth": 3,
+              "outline": [
+                {
+                  "type": "heading",
+                  "data": {
+                    "level": 2,
+                    "title": "Voicings",
+                    "slug": "voicings"
+                  },
+                  "depth": 2
+                }, {
+                  "type": "heading",
+                  "data": {
+                    "level": 2,
+                    "title": "Chord Data",
+                    "slug": "chord-data"
+                  },
+                  "depth": 2
+                }
+              ]
             }, {
               "type": "file",
               "data": {
