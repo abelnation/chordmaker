@@ -5,10 +5,47 @@ $(function() {
   
   var chordList = Voicings.getChordList(instrument, tuning);
   var music = new Vex.Flow.Music();
+  
   var matchExact = false;
+  var scalesMatchExact = false;
+  var arpeggiosMatchExact = false;
 
   var factory = new GuitarNoteFactory({ numFrets: 15 });
 
+  function generateArpeggioListing(chordKey, type) {
+    var i;
+    var j;
+    var numRendered = 0;
+    var container = $("#arpeggio-container");
+
+    container.empty();
+    for (var chordType in Vex.Flow.Music.arpeggios) {
+      // var chordType = chordList[i];
+      
+      if (arpeggiosMatchExact && type && chordType !== type) {
+        continue;
+      } else if (!arpeggiosMatchExact && type && chordType.indexOf(type) === -1) {
+        continue;
+      }
+
+      var chordId;
+      var section_container = $('<section class="chord-section"><h3>' + chordKey.toUpperCase() + chordType + '</h3></section>');
+      container.append(section_container);
+
+      chordId = "catalogue-arpeggio-" + numRendered;
+      section_container.append('<div id="' + chordId + '" class="chord"></div>');
+
+      var options = { scale: 0.85 };
+      _.defaults(options, ChordView.OPTIONS_NECK);
+      new ChordView(chordId, options, new ChordModel({
+          notes: factory.notesForArpeggio(chordKey, chordType) }
+        )
+      );
+      numRendered++;
+      container.append(section_container);
+    }
+  }
+  
   function generateScaleListing(chordKey, scale) {
     var i;
     var j;
@@ -17,9 +54,9 @@ $(function() {
 
     container.empty();
     for (var scaleName in Vex.Flow.Music.scales) {
-      if (matchExact && scale && scaleName !== scale) {
+      if (scalesMatchExact && scale && scaleName !== scale) {
         continue;
-      } else if (!matchExact && scale && scaleName.indexOf(scale) === -1) {
+      } else if (!scalesMatchExact && scale && scaleName.indexOf(scale) === -1) {
         continue;
       }
 
@@ -110,6 +147,22 @@ $(function() {
     }
   }
 
+  function updateArpeggios() {
+
+    var key = $("#arpeggio-inputChordKey").val().toLowerCase();
+    var type = $("#arpeggio-inputChordType").val().toLowerCase();
+
+    console.log("update: " + key + type);
+
+    if (!key) { return; }
+    if (type === "" || (
+      _.has(Vex.Flow.Music.noteValues, key) 
+      // && _.indexOf(chordList, type) !== -1)
+      )) {
+      generateArpeggioListing(key, type);
+    }
+  }
+
   function toTitleCase(str)
   {
     return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
@@ -130,6 +183,13 @@ $(function() {
     updateScales();
   });
 
+  $("#arpeggio-inputChordKey").on("input", updateArpeggios);
+  $("#arpeggio-inputChordType").on("input", updateArpeggios);
+  $("#arpeggio-inputChordMatchExactly").on("change", function() {
+    arpeggiosMatchExact = $("#arpeggio-inputChordMatchExactly").attr("checked")?true:false;
+    updateArpeggios();
+  });
+
   $(".tab-link").click(function(e) {
     e.preventDefault();
     console.log("tab");
@@ -138,5 +198,6 @@ $(function() {
 
   generateChordListing("c", "M");
   generateScaleListing("c", "major");
+  generateArpeggioListing("c", "maj");
 
 });
