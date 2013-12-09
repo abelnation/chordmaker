@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-  <!-- 0.7245411686599255 -->
+  <!-- 0.9845988543238491 -->
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,36 +40,83 @@
       <div class="col-md-3">
         <div class="bs-sidebar hidden-print " data-spy="affix" role="complementary">
           <ul class="nav bs-sidenav chordnav">
-            <!-- <li>
-              <a href="#chord-calculator">Chord Calculator</a>
-            </li> -->
+            <li class="active">
+              <a href="#chord-calculator" data-toggle="tab" class="tab-link">Chords</a>
+              <ul class="nav"><li>
+                <form role="form" style="padding: 0 20px;">
+                  <div class="form-group">
+                    <label for="inputChordKey">Key</label>
+                    <input type="text" class="form-control" id="inputChordKey" placeholder="Enter key">
+                  </div>
+                  <div class="form-group">
+                    <label for="inputChordType">Chord</label>
+                    <input type="text" class="form-control" id="inputChordType" placeholder="Enter type">
+                  </div>
+                  <div class="checkbox" style="">
+                    <label>
+                      <input id="inputChordMatchExactly" type="checkbox"> Match exactly
+                    </label>
+                  </div>
+                </form>
+              </li></ul>
+            </li>
             <li>
-              <form role="form" style="padding: 0 20px;">
-                <div class="form-group">
-                  <label for="inputChordKey">Key</label>
-                  <input type="text" class="form-control" id="inputChordKey" placeholder="Enter key">
-                </div>
-                <div class="form-group">
-                  <label for="inputChordType">Chord</label>
-                  <input type="text" class="form-control" id="inputChordType" placeholder="Enter type">
-                </div>
-                <div class="checkbox" style="">
-                  <label>
-                    <input id="inputChordMatchExactly" type="checkbox"> Match exactly
-                  </label>
-                </div>
-              </form>
+              <a href="#scale-calculator" data-toggle="tab" class="tab-link">Scales</a>
+              <ul class="nav"><li class="active">
+                <form role="form" style="padding: 0 20px;">
+                  <div class="form-group">
+                    <label for="scale-inputChordKey">Key</label>
+                    <input type="text" class="form-control" id="scale-inputChordKey" placeholder="Enter key">
+                  </div>
+                  <div class="form-group">
+                    <label for="scale-inputChordType">Scale</label>
+                    <input type="text" class="form-control" id="scale-inputChordType" placeholder="Enter type">
+                  </div>
+                  <div class="checkbox" style="">
+                    <label>
+                      <input id="scale-inputChordMatchExactly" type="checkbox"> Match exactly
+                    </label>
+                  </div>
+                </form>
+              </li></ul>
+            </li>
+            <li>
+              <a href="#arpeggio-calculator" data-toggle="tab" class="tab-link">Arpeggios</a>
+              <ul class="nav"><li class="active">
+                <form role="form" style="padding: 0 20px;">
+                  <div class="form-group">
+                    <label for="arpeggio-inputChordKey">Key</label>
+                    <input type="text" class="form-control" id="arpeggio-inputChordKey" placeholder="Enter key">
+                  </div>
+                  <div class="form-group">
+                    <label for="arpeggio-inputChordType">Chord</label>
+                    <input type="text" class="form-control" id="arpeggio-inputScaleType" placeholder="Enter type">
+                  </div>
+                  <div class="checkbox" style="">
+                    <label>
+                      <input id="arpeggio-inputChordMatchExactly" type="checkbox"> Match exactly
+                    </label>
+                  </div>
+                </form>
+              </li></ul>
             </li>
           </ul>
         </div>
       </div>
 
-      <div class="col-md-9">
-        <section id="chord-calculator">
-          <div class="row">
-            <div id="chord-catalogue" class="text-center"></div>
-          </div>
-        </section>
+      <div class="col-md-9 tab-content">
+        <div class="tab-pane active" id="chord-calculator">
+          <h2>Chords</h2>
+          <div id="chord-container" class="calculator-container"> </div>
+        </div>
+        <div class="tab-pane" id="scale-calculator">
+          <h2>Scales</h2>
+          <div id="scale-container" class="calculator-container"> </div>
+        </div>
+        <div class="tab-pane" id="arpeggio-calculator">
+          <h2>Arpeggios</h2>
+          <div id="arpeggio-container" class="calculator-container"> </div>
+        </div>
       </div>
     </div>
   </div>

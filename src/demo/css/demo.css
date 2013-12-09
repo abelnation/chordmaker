@@ -1,11 +1,16 @@
 body {
   padding: 0;
+  padding-bottom: 200px;
 }
 .container {
   padding: 0;
 }
 .example {
   text-align: center;
+}
+.calculator-container {
+  min-height: 400px;
+  overflow-y: scroll;
 }
 svg {
   /* border: thin solid #ccc; */

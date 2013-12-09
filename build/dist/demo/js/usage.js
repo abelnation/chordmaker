@@ -140,4 +140,18 @@ $(function() {
   time_fn(showChordVoicingExamples, function(time) {
     $("#voicings").append("<p><small>"+time+"ms</small></p>"); 
   });
+
+  // Setup scrollspy
+  var $window = $(window);
+  var $body   = $(document.body);
+  $body.scrollspy({
+    target: '.bs-sidebar',
+    offset: 40
+  });
+  $window.on('load', function () {
+    $body.scrollspy('refresh')
+  });
+  $window.on('load', function () {
+    $body.scrollspy('refresh')
+  })
 });
