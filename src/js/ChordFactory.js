@@ -91,7 +91,6 @@ ChordFactory.prototype = {
     }
 
     var model = this._chordModelFromParseResult(parseResult);
-    console.log(model);
     var view = this._chordViewFromParseResultAndModel(element, model, parseResult);
     return view;
   },
