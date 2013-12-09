@@ -5,7 +5,13 @@ svg {
   /* border: thin solid #ccc; */
 }
 .chord {
+  position: relative;
   display: inline-block;
+  left: 15px;
+}
+.row {
+  overflow-x: scroll;
+  margin-right: 0;
 }
 
 /*

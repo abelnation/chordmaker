@@ -91,7 +91,6 @@ ChordFactory.prototype = {
     }
 
     var model = this._chordModelFromParseResult(parseResult);
-    0;
     var view = this._chordViewFromParseResultAndModel(element, model, parseResult);
     return view;
   },
@@ -1644,55 +1643,55 @@ Voicings.voicings = {
   "guitar": {
     "eadgbe" : [
       // Major Chords
-      { "key":"c", "label": "M",      "notes": [3,3,5,5,5,"x"],       "fingers": [1,1,3,3,3,"x"],     "bass": 7  },
-      { "key":"c", "label": "M",      "notes": [8,10,10,9,8,8],       "fingers": ["T",3,4,2,1,1],                },
-      { "key":"c", "label": "M",      "notes": [12,"x",10,12,13,"x"], "fingers": [2,"x",1,3,4,"x"],   "bass": 4  },
-      { "key":"c", "label": "M",      "notes": [12,"x",14,12,13,"x"], "fingers": ["T","x",3,1,2,"x"], "bass": 4  },
-      { "key":"c", "label": "M6",     "notes": [3,3,5,5,5,5],         "fingers": [1,1,3,3,3,3],       "bass": 7  },
-      { "key":"c", "label": "M6",     "notes": [8,7,5,5,5,5],         "fingers": [4,3,1,1,1,1],                  },
-      { "key":"c", "label": "M6",     "notes": [8,"x",10,9,10,8],     "fingers": ["T","x",3,2,4,1],              },
-      { "key":"c", "label": "M6/9",   "notes": [3,3,2,2,3,3],         "fingers": [2,2,1,1,3,4],       "bass": 7  },
-      { "key":"c", "label": "M6/9",   "notes": [8,7,7,7,8,8],         "fingers": [2,1,1,1,3,4],                  },
-      { "key":"c", "label": "M6/9",   "notes": [8,10,10,9,10,10],     "fingers": ["T",2,2,1,3,3],                },
-        
-      // 7 Chords
-      { "key":"c", "label": "7",      "notes": [3,3,5,3,5,3],         "fingers": [1,1,3,1,4,1],                  },
-      { "key":"c", "label": "7",      "notes": [8,"x",8,9,8,"x"],     "fingers": ["T","x",1,3,2,"x"],            },
-      { "key":"c", "label": "7",      "notes": [8,10,8,9,8,8],        "fingers": [1,3,1,2,1,1],                  },
-      { "key":"c", "label": "7",      "notes": [3,3,2,3,1,"x"],       "fingers": [3,3,2,4,1,"x"],     "bass": 7  },
-      { "key":"c", "label": "7",      "notes": [8,10,10,9,11],        "fingers": ["T",2,2,1,4,"x"],              },
-      { "key":"c", "label": "7",      "notes": [6,"x",5,5,5,"x"],     "fingers": [2,"x",1,1,1,"x"],   "bass": 10 },
-      { "key":"c", "label": "7",      "notes": [3,3,5,3,5,6],         "fingers": [1,1,2,1,3,4,"x"],   "bass": 7  },
-      { "key":"c", "label": "7",      "notes": [8,"x",8,9,8,8],       "fingers": ["T","x",1,4,2,3],              },
-      { "key":"c", "label": "7(b9)",  "notes": [3,3,2,3,2,"x"],       "fingers": [2,2,1,3,1,"x"],     "bass": 7  },
-      { "key":"c", "label": "7(b9)",  "notes": [12,"x",14,12,14,"x"], "fingers": ["T","x",2,1,3,"x"], "bass": 4  },
-  
-      // Minor
-      { "key":"c", "label": "m",      "notes": [3,3,5,5,4,3],         "fingers": [1,1,3,4,2,1],       "bass": 7  },
-      { "key":"c", "label": "m",      "notes": [8,10,10,8,8,8],       "fingers": ["T",3,4,1,1,1],                },
-      { "key":"c", "label": "m",      "notes": [11,"x",10,12,13],     "fingers": [2,"x",1,3,4,"x"],   "bass": 3  },
-      { "key":"c", "label": "m",      "notes": [11,"x",13,12,13,"x"], "fingers": ["T","x",2,1,3,"x"], "bass": 3  },
-      { "key":"c", "label": "m6",     "notes": [8,"x",7,8,8,8],       "fingers": [2,"x",1,3,3,3],                },
-      { "key":"c", "label": "m6",     "notes": ["x",12,13,12,13,"x"], "fingers": ["x",1,3,2,4,"x"],   "bass": 9  },
-      { "key":"c", "label": "m6",     "notes": [3,3,5,5,4,5],         "fingers": [1,1,3,1,2,1],       "bass": 7  },
-      { "key":"c", "label": "m6",     "notes": [8,10,10,8,10,"x"],    "fingers": ["T",2,2,1,3,"x"],              },
-      { "key":"c", "label": "m6",     "notes": [8,"x",10,8,10,"x"],   "fingers": ["T","x",3,1,4,"x"],            },
-      { "key":"c", "label": "m6/9",   "notes": [8,10,10,8,10,10],     "fingers": ["T",2,2,1,3,3],                },
+      { "key":"c", "label": "M",      "notes": [3,3,5,5,5,"x"],       "fingers": [1,1,3,3,3,"x"],     "bass": 7,  "tags": "gypsy", },
+      { "key":"c", "label": "M",      "notes": [8,10,10,9,8,8],       "fingers": ["T",3,4,2,1,1],                 "tags": "gypsy", },
+      { "key":"c", "label": "M",      "notes": [12,"x",10,12,13,"x"], "fingers": [2,"x",1,3,4,"x"],   "bass": 4,  "tags": "gypsy", },
+      { "key":"c", "label": "M",      "notes": [12,"x",14,12,13,"x"], "fingers": ["T","x",3,1,2,"x"], "bass": 4,  "tags": "gypsy", },
+      { "key":"c", "label": "M6",     "notes": [3,3,5,5,5,5],         "fingers": [1,1,3,3,3,3],       "bass": 7,  "tags": "gypsy", },
+      { "key":"c", "label": "M6",     "notes": [8,7,5,5,5,5],         "fingers": [4,3,1,1,1,1],                   "tags": "gypsy", },
+      { "key":"c", "label": "M6",     "notes": [8,"x",10,9,10,8],     "fingers": ["T","x",3,2,4,1],               "tags": "gypsy", },
+      { "key":"c", "label": "M6/9",   "notes": [3,3,2,2,3,3],         "fingers": [2,2,1,1,3,4],       "bass": 7,  "tags": "gypsy", },
+      { "key":"c", "label": "M6/9",   "notes": [8,7,7,7,8,8],         "fingers": [2,1,1,1,3,4],                   "tags": "gypsy", },
+      { "key":"c", "label": "M6/9",   "notes": [8,10,10,9,10,10],     "fingers": ["T",2,2,1,3,3],                 "tags": "gypsy", },
 
-      // Diminished
-      { "key":"c", "label": "*7",     "notes": ["x",3,4,2,4,"x"],     "fingers": ["x",2,3,1,4,"x"],              },
-      { "key":"c", "label": "*7",     "notes": [8,"x",7,8,7,"x"],     "fingers": [2,"x",1,3,1,"x"],              },
+      // 7 "Chords
+      { "key":"c", "label": "7",      "notes": [3,3,5,3,5,3],         "fingers": [1,1,3,1,4,1],                   "tags": "gypsy", },
+      { "key":"c", "label": "7",      "notes": [8,"x",8,9,8,"x"],     "fingers": ["T","x",1,3,2,"x"],             "tags": "gypsy", },
+      { "key":"c", "label": "7",      "notes": [8,10,8,9,8,8],        "fingers": [1,3,1,2,1,1],                   "tags": "gypsy", },
+      { "key":"c", "label": "7",      "notes": [3,3,2,3,1,"x"],       "fingers": [3,3,2,4,1,"x"],     "bass": 7,  "tags": "gypsy", },
+      { "key":"c", "label": "7",      "notes": [8,10,10,9,11],        "fingers": ["T",2,2,1,4,"x"],               "tags": "gypsy", },
+      { "key":"c", "label": "7",      "notes": [6,"x",5,5,5,"x"],     "fingers": [2,"x",1,1,1,"x"],   "bass": 10, "tags": "gypsy", },
+      { "key":"c", "label": "7",      "notes": [3,3,5,3,5,6],         "fingers": [1,1,2,1,3,4,"x"],   "bass": 7,  "tags": "gypsy", },
+      { "key":"c", "label": "7",      "notes": [8,"x",8,9,8,8],       "fingers": ["T","x",1,4,2,3],               "tags": "gypsy", },
+      { "key":"c", "label": "7(b9)",  "notes": [3,3,2,3,2,"x"],       "fingers": [2,2,1,3,1,"x"],     "bass": 7,  "tags": "gypsy", },
+      { "key":"c", "label": "7(b9)",  "notes": [12,"x",14,12,14,"x"], "fingers": ["T","x",2,1,3,"x"], "bass": 4,  "tags": "gypsy", },
 
-      // Minor 7
-      { "key":"c", "label": "m7",     "notes": [8,"x",8,8,8,8],       "fingers": [2,"x",3,3,3,3],                },
-      { "key":"c", "label": "m7",     "notes": [3,3,5,3,4,3],         "fingers": [1,1,3,1,2,1],       "bass": 7  },
-      { "key":"c", "label": "m7",     "notes": [3,"x",1,3,4,"x"],     "fingers": [3,"x",1,3,4,"x"],   "bass": 7  },
-      { "key":"c", "label": "m7",     "notes": [8,10,8,8,8,8],        "fingers": ["T",3,1,1,1,1],                },
-      { "key":"c", "label": "m7(b5)", "notes": ["x",3,4,3,4,"x"],     "fingers": ["x",1,3,2,4,"x"],              },
-      { "key":"c", "label": "m7(b5)", "notes": [8,"x",8,8,7,"x"],     "fingers": [2,"x",3,4,1,"x"],              },
-      { "key":"c", "label": "m7(b5)", "notes": [11,"x",10,11,11,11],  "fingers": [2,"x",1,3,3,3],     "bass": 3  },
-      { "key":"c", "label": "m7(b5)", "notes": [11,13,13,11,13,"x"],  "fingers": ["T",2,2,1,3,"x"],   "bass": 3  },
-      { "key":"c", "label": "m7(b5)", "notes": [8,"x",8,8,7,8],       "fingers": ["T","x",2,2,1,3],              },
+      // "Minor
+      { "key":"c", "label": "m",      "notes": [3,3,5,5,4,3],         "fingers": [1,1,3,4,2,1],       "bass": 7,  "tags": "gypsy", },
+      { "key":"c", "label": "m",      "notes": [8,10,10,8,8,8],       "fingers": ["T",3,4,1,1,1],                 "tags": "gypsy", },
+      { "key":"c", "label": "m",      "notes": [11,"x",10,12,13],     "fingers": [2,"x",1,3,4,"x"],   "bass": 3,  "tags": "gypsy", },
+      { "key":"c", "label": "m",      "notes": [11,"x",13,12,13,"x"], "fingers": ["T","x",2,1,3,"x"], "bass": 3,  "tags": "gypsy", },
+      { "key":"c", "label": "m6",     "notes": [8,"x",7,8,8,8],       "fingers": [2,"x",1,3,3,3],                 "tags": "gypsy", },
+      { "key":"c", "label": "m6",     "notes": ["x",12,13,12,13,"x"], "fingers": ["x",1,3,2,4,"x"],   "bass": 9,  "tags": "gypsy", },
+      { "key":"c", "label": "m6",     "notes": [3,3,5,5,4,5],         "fingers": [1,1,3,1,2,1],       "bass": 7,  "tags": "gypsy", },
+      { "key":"c", "label": "m6",     "notes": [8,10,10,8,10,"x"],    "fingers": ["T",2,2,1,3,"x"],               "tags": "gypsy", },
+      { "key":"c", "label": "m6",     "notes": [8,"x",10,8,10,"x"],   "fingers": ["T","x",3,1,4,"x"],             "tags": "gypsy", },
+      { "key":"c", "label": "m6/9",   "notes": [8,10,10,8,10,10],     "fingers": ["T",2,2,1,3,3],                 "tags": "gypsy", },
+
+      // "Diminished
+      { "key":"c", "label": "*7",     "notes": ["x",3,4,2,4,"x"],     "fingers": ["x",2,3,1,4,"x"],               "tags": "gypsy", },
+      { "key":"c", "label": "*7",     "notes": [8,"x",7,8,7,"x"],     "fingers": [2,"x",1,3,1,"x"],               "tags": "gypsy", },
+
+      // Minor "7
+      { "key":"c", "label": "m7",     "notes": [8,"x",8,8,8,8],       "fingers": [2,"x",3,3,3,3],                 "tags": "gypsy", },
+      { "key":"c", "label": "m7",     "notes": [3,3,5,3,4,3],         "fingers": [1,1,3,1,2,1],       "bass": 7,  "tags": "gypsy", },
+      { "key":"c", "label": "m7",     "notes": [3,"x",1,3,4,"x"],     "fingers": [3,"x",1,3,4,"x"],   "bass": 7,  "tags": "gypsy", },
+      { "key":"c", "label": "m7",     "notes": [8,10,8,8,8,8],        "fingers": ["T",3,1,1,1,1],                 "tags": "gypsy", },
+      { "key":"c", "label": "m7(b5)", "notes": ["x",3,4,3,4,"x"],     "fingers": ["x",1,3,2,4,"x"],               "tags": "gypsy", },
+      { "key":"c", "label": "m7(b5)", "notes": [8,"x",8,8,7,"x"],     "fingers": [2,"x",3,4,1,"x"],               "tags": "gypsy", },
+      { "key":"c", "label": "m7(b5)", "notes": [11,"x",10,11,11,11],  "fingers": [2,"x",1,3,3,3],     "bass": 3,  "tags": "gypsy", },
+      { "key":"c", "label": "m7(b5)", "notes": [11,13,13,11,13,"x"],  "fingers": ["T",2,2,1,3,"x"],   "bass": 3,  "tags": "gypsy", },
+      { "key":"c", "label": "m7(b5)", "notes": [8,"x",8,8,7,8],       "fingers": ["T","x",2,2,1,3],               "tags": "gypsy", },
     ]
   },
   "banjo": {},
@@ -1702,7 +1701,7 @@ Voicings.voicings = {
       // 5th in the bass
       { "key":"c", "label": "M",    "notes": [3,3,5,5,5,"x"],       "fingers": [1,1,3,3,3,"x"],     "bass": 7 },
       { "key":"c", "label": "M",    "notes": [8,10,10,9,8,8],       "fingers": ["T",3,4,2,1,1],               },
-      { "key":"c", "label": "M",    "notes": [12,"x",10,12,13,"x"], "fingers": [2,"x",1,3,4,"x"],   "bass": 4 },
+      { "key":"c", "label": "M",    "notes": [12,"x",10,12,13,"x"], "fingers": [2,"x",1,3,4,"x"],   "bass": 4,},
       { "key":"c", "label": "M6",   "notes": [3,3,5,5,5,5],         "fingers": [1,1,3,3,3,3],       "bass": 7 },
       { "key":"c", "label": "M6",   "notes": [8,8,10,10,9,10],      "fingers": ["T","x",3,1,2,"x"],           },
       { "key":"c", "label": "M6/9", "notes": [8,10,10,9,10,10],     "fingers": ["T",2,2,1,3,3],               },
