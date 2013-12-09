@@ -1,3 +1,9 @@
+body {
+  padding: 0;
+}
+.container {
+  padding: 0;
+}
 .example {
   text-align: center;
 }
@@ -7,7 +13,7 @@ svg {
 .chord {
   position: relative;
   display: inline-block;
-  left: 15px;
+  left: 13px;
 }
 .row {
   overflow-x: scroll;
