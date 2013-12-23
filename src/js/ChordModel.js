@@ -8,7 +8,7 @@ function ChordModel(options) {
   // - `options` : config object
 
   // This first guard ensures that the callee has invoked our Class' constructor function
-  // with the `new` keyword - failure to do this will result in the `this` keyword referring 
+  // with the `new` keyword - failure to do this will result in the `this` keyword referring
   // to the callee's scope (typically the window global) which will result in the following fields
   // (name and _age) leaking into the global namespace and not being set on this object.
   if (!(this instanceof ChordModel)) {
@@ -43,13 +43,13 @@ ChordModel.DEFAULT_OPTIONS = {
 ChordModel.prototype = {
   /**
    * Whenever you replace an Object's Prototype, you need to repoint
-   * the base Constructor back at the original constructor Function, 
+   * the base Constructor back at the original constructor Function,
    * otherwise `instanceof` calls will fail.
    */
   constructor: ChordModel,
   _init: function(options) {
     // Create config dict, filling in defaults where not provided
-    
+
     _.defaults(options, ChordModel.DEFAULT_OPTIONS);
 
     this.tuningStr = options.tuning;
@@ -73,7 +73,7 @@ ChordModel.prototype = {
       throw TypeError("label must be a string");
     }
     this.label = options.label;
-    
+
     this.notes = {};
     if (options.notes) {
       this.addNotes(options.notes);
@@ -127,12 +127,12 @@ ChordModel.prototype = {
 
     // TODO: notify listeners
     this.notes[note.getKey()] = note;
-    if (_.isNumber(note.fret) && this.min_fret == -1 || note.fret < this.min_fret) { this.min_fret = note.fret; }
-    if (_.isNumber(note.fret) && this.max_fret == -1 || note.fret > this.max_fret) { this.max_fret = note.fret; }
+    if (_.isNumber(note.fret) && note.fret !== 0 && (this.min_fret == -1 || note.fret < this.min_fret)) { this.min_fret = note.fret; }
+    if (_.isNumber(note.fret) && note.fret !== 0 && (this.max_fret == -1 || note.fret > this.max_fret)) { this.max_fret = note.fret; }
   },
   removeNote: function(note) {
     var key = this._keyForNote(note);
-    
+
     // TODO: notify listeners
     delete this.notes[key];
   },
@@ -165,7 +165,7 @@ ChordModel.prototype = {
   },
 
   // **transposeByInterval** : Move all frets to a new key
-  // This method causes side effects on the object. 
+  // This method causes side effects on the object.
   // Frets and key will be changed.
   transposeToKey: function(key, originalKey) {
     // - `key` : key to transpose to

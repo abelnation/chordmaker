@@ -192,7 +192,6 @@ $(function() {
 
   $(".tab-link").click(function(e) {
     e.preventDefault();
-    console.log("tab");
     $(this).tab('show');
   });
 

@@ -4,7 +4,7 @@ function loadConfig(path) {
   var glob = require('glob');
   var object = {};
   var key;
- 
+
   glob.sync('*', {cwd: path}).forEach(function(option) {
     key = option.replace(/\.js$/,'');
     object[key] = require(path + option);
@@ -37,7 +37,7 @@ module.exports = function (grunt) {
   grunt.util._.extend(config, loadConfig('./tasks/options/'));
   grunt.initConfig(config);
 
-  grunt.registerTask('dev', ['jshint:src', 'jscs:src', 'copy:dev', 'preprocess:dev', /* 'sass:dev', */ 'concat:dev', 'uglify:dev', 'test', 'groc' ]);
+  grunt.registerTask('dev', ['jshint:src', 'jscs:src', 'clean:devjscompiled', 'copy:dev', 'preprocess:dev', /* 'sass:dev', */ 'concat:dev', 'uglify:dev', 'test', 'groc' ]);
   grunt.registerTask('dist', ['clean:dist', 'jshint:src', 'jscs:src', 'copy:dist', 'preprocess:dist', 'strip:dist', /* 'sass:dist',*/ 'concat:dist', 'uglify:dist', 'clean:scrub_dist', 'groc', 'dev' ]);
   grunt.registerTask('test', ['jshint:test', 'jscs:test', 'copy:devtest', 'connect:test', 'jasmine:testlocalserver']);
 

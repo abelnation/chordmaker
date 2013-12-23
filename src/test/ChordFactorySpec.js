@@ -1,7 +1,7 @@
 /* global ChordFactory */
 
 describe("ChordFactory", function() {
-  
+
   var cf;
 
   beforeEach(function() {
@@ -12,7 +12,7 @@ describe("ChordFactory", function() {
   });
 
   it("Running on valid examples without inline configs does not throw exceptions", function() {
-    
+
     // If exception is thrown, test fails (even without expect calls)
     cf.chordFromString("#chord-1-1", $("#chord-1-1").html());
     cf.chordFromString("#chord-1-2", $("#chord-1-2").html());

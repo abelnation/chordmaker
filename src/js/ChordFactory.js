@@ -8,7 +8,7 @@ function ChordFactory(options) {
   // - `options` : config object
 
   // This first guard ensures that the callee has invoked our Class' constructor function
-  // with the `new` keyword - failure to do this will result in the `this` keyword referring 
+  // with the `new` keyword - failure to do this will result in the `this` keyword referring
   // to the callee's scope (typically the window global) which will result in the following fields
   // (name and _age) leaking into the global namespace and not being set on this object.
   if (!(this instanceof ChordFactory)) {
@@ -31,7 +31,7 @@ ChordFactory.DEFAULT_OPTIONS = {
 
 ChordFactory.prototype = {
   // Whenever you replace an Object's Prototype, you need to repoint
-  // the base Constructor back at the original constructor Function, 
+  // the base Constructor back at the original constructor Function,
   // otherwise `instanceof` calls will fail.
   constructor: ChordFactory,
 
@@ -43,6 +43,18 @@ ChordFactory.prototype = {
   },
 
   // **parseChord** parses a chord string and returns a ChordView
+  chordFromDiv: function(element) {
+    var elem = $(element);
+    if (elem.length === 0) { return; }
+    var chordStr = elem.html();
+    var chordId = elem.attr("id");
+    if (!chordId) {
+      chordId = "chord-" + Math.round(Math.random() * 1000000000);
+      elem.attr("id", chordId);
+    }
+    this.chordFromString(elem, chordStr);
+  },
+
   chordFromString: function(element, chordStr) {
     // - element : string or DOM element to insert chord into
     // - chordStr : string, of the format
@@ -72,7 +84,7 @@ ChordFactory.prototype = {
     //      4: 12
     //      5: 10,15(color:black;)
 
-    if (!element) {
+    if (!element || (_.isString(element) && element === "")) {
       throw TypeError("Must provide a valid DOM element or id string: " + element);
     } else if (_.isUndefined(chordStr)) {
       throw TypeError("chordStr not provided: " + chordStr);
@@ -80,7 +92,7 @@ ChordFactory.prototype = {
       throw TypeError("empty chordStr provided");
     }
 
-    // console.log(chordStr);    
+    // console.log(chordStr);
     var parseResult;
     try {
       parseResult = this.parser.parse(chordStr);
@@ -88,6 +100,13 @@ ChordFactory.prototype = {
       console.log(chordStr);
       console.log(e);
       throw e;
+    }
+
+    // Pre-fab styles get over-ridden by options specified in chord string
+    var style_val = $(element).attr("data-style");
+    if (_.has(ChordView.OPTIONS, style_val)) {
+      _.defaults(parseResult.config, ChordView.OPTIONS[style_val]);
+      console.log(parseResult.config);
     }
 
     var model = this._chordModelFromParseResult(parseResult);
@@ -107,7 +126,6 @@ ChordFactory.prototype = {
     var options = {
       notes: [ ],
     };
-    var kv;
     var i;
     var j;
 
@@ -141,9 +159,6 @@ ChordFactory.prototype = {
 
   _chordViewFromParseResultAndModel: function(element, model, parseResult) {
     var options = {};
-    var kv;
-    var i;
-    var j;
 
     // handle config string
     if (parseResult.config) {
@@ -152,7 +167,7 @@ ChordFactory.prototype = {
 
     return new ChordView(element, options, model);
   },
-  
+
   // **_isNumber** detects if string `n` is a number
   _isNumber: function(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);

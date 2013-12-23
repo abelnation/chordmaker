@@ -10,7 +10,7 @@ module.exports = {
   demo: {
     files: ['<%= paths.src %>/demo/**'],
     tasks: [
-      'copy:devdemo', 
+      'copy:devdemo',
       'preprocess:dev',
     ]
   },
@@ -20,7 +20,7 @@ module.exports = {
       'jshint:src',
       'jscs:src',
       'clean:devjscompiled',
-      'copy:devjs', 
+      'copy:devjs',
       'concat:dev',
       'uglify:dev',
       'test',
@@ -31,7 +31,7 @@ module.exports = {
     tasks: [
       'peg',
       'clean:devjscompiled',
-      'copy:devjs', 
+      'copy:devjs',
       'concat:dev',
       'uglify:dev',
       'test',

@@ -1,11 +1,11 @@
 // Tuning
 // ------
 
-/* global Vex */
+/* global Aex */
 
 function Tuning(tuningStr) {
   // This first guard ensures that the callee has invoked our Class' constructor function
-  // with the `new` keyword - failure to do this will result in the `this` keyword referring 
+  // with the `new` keyword - failure to do this will result in the `this` keyword referring
   // to the callee's scope (typically the window global) which will result in the following fields
   // (name and _age) leaking into the global namespace and not being set on this object.
   if (!(this instanceof Tuning)) {
@@ -18,7 +18,7 @@ function Tuning(tuningStr) {
 Tuning.prototype = {
   /**
    * Whenever you replace an Object's Prototype, you need to repoint
-   * the base Constructor back at the original constructor Function, 
+   * the base Constructor back at the original constructor Function,
    * otherwise `instanceof` calls will fail.
    */
   constructor: Tuning,
@@ -38,7 +38,7 @@ Tuning.prototype = {
     return this.notes.length;
   },
   noteValForString: function(stringNum) {
-    var music = new Vex.Flow.Music();
+    var music = new Aex.Flow.Music();
     return music.getNoteValue(this.noteNameForString(stringNum));
   },
   noteNameForString: function(stringNum) {

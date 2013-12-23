@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <!-- <!-- @echo RANDOM --> -->
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Chord Maker</title>
+
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css" charset="utf-8">
+  <link rel="stylesheet" href="bootstrap/css/bootstrap-responsive.css" type="text/css" charset="utf-8">
+  
+  <link rel="stylesheet" href="css/demo.css" type="text/css" charset="utf-8">
+</head>
+<body>
+  <nav class="navbar navbar-default" role="navigation">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#chordmaker-navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">ChordMaker</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="chordmaker-navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="index.html">Usage</a></li>
+        <li><a href="catalogue.html">Catalogue</a></li>
+        <li class="active"><a href="parser.html">Parser</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </nav>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="bs-sidebar hidden-print " data-spy="affix" role="complementary">
+          <ul class="nav bs-sidenav chordnav">
+            <li>
+              <a href="#share-models"><i class="icon-chevron-right"></i>Parser</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-md-9">
+        <div class="page-header">
+          <h1 style="margin-bottom: 20px;">Chord Parser</h1>  
+        </div>
+        <section>
+          
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="./js/jquery-1.7.2.min.js"></script>
+  <script type="text/javascript" src="./js/raphael-min.js"></script>
+  <script type="text/javascript" src="./bootstrap/js/bootstrap.js"></script>
+  
+  <!-- @if TARGET == 'dev' -->
+  <script type="text/javascript" src="../js/chordmaker.<!-- @echo VERSION -->.js?<!-- @echo RANDOM -->"></script>
+  <!-- @endif -->
+  <!-- @if TARGET == 'dist' -->
+  <script type="text/javascript" src="../js/chordmaker.min.js"></script>
+  <!-- @endif -->  
+
+  <script type="text/javascript" src="js/parser.js"></script>
+</body>
+</html>

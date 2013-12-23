@@ -1,8 +1,8 @@
-/* global Vex, Raphael, ChordModel, GuitarNote */
+/* global Aex, Raphael, ChordModel, GuitarNote */
 
 function ChordView(container, options, model) {
   // This first guard ensures that the callee has invoked our Class' constructor function
-  // with the `new` keyword - failure to do this will result in the `this` keyword referring 
+  // with the `new` keyword - failure to do this will result in the `this` keyword referring
   // to the callee's scope (typically the window global) which will result in the following fields
   // (name and _age) leaking into the global namespace and not being set on this object.
   if (!(this instanceof ChordView)) {
@@ -10,7 +10,7 @@ function ChordView(container, options, model) {
   }
   if (!options) { options = {}; }
   if (!model) { model = new ChordModel(); }
-  
+
   this._init(container, options, model);
 }
 
@@ -41,7 +41,7 @@ ChordView.NOTE_GRADIENTS = {
   'green': '90-#0f0:5-#0f0:95'
 };
 
-// Positions on neck of neck marker dots  
+// Positions on neck of neck marker dots
 // TODO: only applicable for guitar
 ChordView.NECK_MARKERS = [
   [ 5, 1 ],
@@ -55,7 +55,7 @@ ChordView.NECK_MARKERS = [
 // Render Options
 // --------------
 
-// Render attributes are configurable via the ChordView's options object.  
+// Render attributes are configurable via the ChordView's options object.
 // Render options tend to contain measurement, color, and boolean values.
 
 // Default options for a standard chord diagram.  These can be over-ridden
@@ -101,7 +101,7 @@ ChordView.DEFAULT_OPTIONS = {
   tonic_color: 'black',
 
   neck_marker_radius: 8,
-  neck_marker_color: "#999",
+  neck_marker_color: "#eee",
 
   // Nut (zero-th fret) marker
   nut_height: 5,
@@ -110,7 +110,7 @@ ChordView.DEFAULT_OPTIONS = {
   grid_x: 0,
   grid_y: 0,
   grid_stroke_width: 1.5,
-  
+
   grid_padding_bottom: 20,
   grid_padding_right: 20,
   grid_padding_left: 20,
@@ -133,7 +133,7 @@ ChordView.DEFAULT_OPTIONS = {
 
 // Pre-set for compact tiny format
 ChordView.OPTIONS_COMPACT = {
-  scale: 0.25,
+  scale: 0.3,
   show_tuning: false,
   show_fingers: false,
   note_stroke_width: 1.0,
@@ -154,37 +154,58 @@ ChordView.OPTIONS_NECK = {
   num_frets: 15,
 };
 
+ChordView.OPTIONS = {
+  "default": ChordView.DEFAULT_OPTIONS,
+  "compact": ChordView.OPTIONS_COMPACT,
+  "neck": ChordView.OPTIONS_NECK
+};
+
 // ChordView Class
 // ---------------
 
 ChordView.prototype = {
   /**
    * Whenever you replace an Object's Prototype, you need to repoint
-   * the base Constructor back at the original constructor Function, 
+   * the base Constructor back at the original constructor Function,
    * otherwise `instanceof` calls will fail.
    */
   constructor: ChordView,
 
   _init: function(container, options, model) {
-    if (!_.isString(container) && !_.isElement(container)) {
+    if (_.isString(container)) {
+      this.containerId = container.replace("#", "");
+    } else if (container instanceof jQuery) {
+      this.containerId = container.attr("id");
+    } else if (_.isElement(container)) {
+      this.containerId = $(container).attr("id");
+    } else {
       throw TypeError("container must be a DOM elem or DOM ID string.");
     }
 
-    // Create fresh copy of options object in case they have passed in one of 
+    // Create fresh copy of options object in case they have passed in one of
     // the static pre-set options objects
     this.options = {};
-    _.defaults(this.options, options);
+    if (_.isString(options)) {
+      if (!_.has(ChordView.OPTIONS, options)) {
+        throw TypeError("Invalid options string: " + options);
+      }
+      _.defaults(this.options, ChordView.OPTIONS[options]);
+    } else if (_.isObject(options)) {
+      _.defaults(this.options, options);
+    }
     _.defaults(this.options, ChordView.DEFAULT_OPTIONS);
-    
+
     this.model = model;
 
     this.options.grid_x = this.options.grid_padding_left;
     this.options.grid_y = this.options.anno_font_size + 4;
+
     if (this.options.orientation === ChordView.NUT_TOP && this.model.getLabel() !== "") {
       this.options.grid_y += this.options.label_height;
     }
 
     // Scaling is done by scaling all the constant factors in the render code
+    console.log("scale: " + this.options.scale);
     if (this.options.scale != 1) {
       this._scaleSize();
     }
@@ -207,9 +228,6 @@ ChordView.prototype = {
     this.width = this.options.grid_x + this.model.getNumStrings() * this.options.string_gap + this.options.base_fret_label_width + this.options.grid_padding_right;
     this.height = this.options.grid_y + this.options.num_frets * this.options.fret_gap + this.options.tuning_label_font_size + this.options.grid_padding_bottom;
 
-    if (_.isString(container)) {
-      container = document.getElementById(container.replace("#",""));
-    }
     if (window.jQuery) {
       $(container).html("");
     } else if (_.isElement(container)) {
@@ -217,11 +235,41 @@ ChordView.prototype = {
     } else {
       console.log(container);
     }
+
+    // var ratio = 1.0;
+    // console.log("Width: " + this.width);
+    // console.log("Height: " + this.height);
+    // console.log("Container Width: " + $(container).parent().width());
+    // console.log("Orientation: " + this.options.orientation);
+    // if (this.options.orientation == ChordView.NUT_LEFT &&
+    //     this.height > $(container).parent().width()) {
+
+    //   ratio = $(container).parent().width() / this.height;
+    //   console.log("Auto-scaling to: " + ratio);
+    //   this._scaleSize(ratio);
+    // } else if (this.options.orientation == ChordView.NUT_TOP &&
+    //     this.width > $(container).parent().width()) {
+
+    //   ratio = $(container).parent().width() / this.width;
+    //   console.log("Container Width: " + $(container).parent().width());
+    //   console.log("Auto-scaling to: " + ratio);
+    //   this._scaleSize(ratio);
+    // }
+
     this.r = null;
-    this.r = Raphael(container, this.width, this.height);
-    
+    console.log(this.containerId);
+    this.r = Raphael(this.containerId, this.width, this.height);
+
     this._render();
     this._setOrientation(this.options.orientation);
+
+    var svgWidth = $("#"+this.containerId).width();
+    var parentWidth = $("#"+this.containerId).parent().width();
+    if (svgWidth > parentWidth) {
+      console.log("shrinking container to fit");
+      $("#"+this.containerId).css("width", "" + parentWidth + "px");
+    }
+
   },
 
   getCode: function() {
@@ -256,7 +304,7 @@ ChordView.prototype = {
         ideal_num_frets + (ideal_base_fret - this.options.base_fret)
       );
     }
-    
+
   },
 
   _render: function() {
@@ -386,7 +434,7 @@ ChordView.prototype = {
 
     var y = this.options.grid_y + ((neck_marker[0] - (this.options.base_fret - 1)) * this.options.fret_gap) - (this.options.fret_gap / 2);
     var marker_style = {
-      fill: "90-#bbb:5-#ccc:95",
+      fill: this.options.neck_marker_color,
       stroke: "none"
     };
 
@@ -487,7 +535,7 @@ ChordView.prototype = {
 
     var x = this.options.grid_x + (note.string * this.options.string_gap) + 0.5;
     var y = this.options.grid_y + ((note.fret - this.options.base_fret + 1) * this.options.fret_gap) - (this.options.fret_gap / 2) + 0.5;
-    
+
     var note_style = {
       fill: this._colorValueForName(this.options.note_color)
     };
@@ -564,7 +612,6 @@ ChordView.prototype = {
     } else {
       throw TypeError("Invalid finger_position: " + this.options.finger_position);
     }
-    
 
     var glyph = this.r.text(x, y, ""+note.finger).attr({ 'font-size': this.options.anno_font_size });
     this.noteGlyphs[note.getKey()]['finger-annotation'] = glyph;

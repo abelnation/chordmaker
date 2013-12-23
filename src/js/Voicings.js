@@ -1,10 +1,10 @@
 // Voicings
 // --------
 
-/* global Vex, GuitarNote, Tuning, ChordModel */
+/* global Aex, GuitarNote, Tuning, ChordModel */
 
-// Library of both open and closed chord voicings for various 
-// instruments. 
+// Library of both open and closed chord voicings for various
+// instruments.
 
 function Voicings() {
   throw new Error("Voicings is a singleton. Do not call the constructor");
@@ -12,7 +12,7 @@ function Voicings() {
 
 // Chord Data
 // ----------
-// Chord data is defined here.  
+// Chord data is defined here.
 Voicings.voicings = {
   // - `key` : root of the chord
   // - `label` : type of chord (e.g. "M", "M7")
@@ -112,16 +112,16 @@ Voicings.chordModelFromVoicing = function(instrument, tuning, chord, key, variat
   // - `instrument` : string (e.g. "guitar")
   // - `tuning` : string (e.g. "EADGBe")
   // - `chord` : string (e.g. "M", "m7", "M6/9(b7)")
-  // - `key` : string (e.g. "d#", "gb") 
+  // - `key` : string (e.g. "d#", "gb")
   // - `variation` : integer (to choose a different variation of the chord)
   // - `matchExact` : boolean (default true)
-  //   (match chord string exactly or substring match e.g. "M" returns "M","M6","M6/9" 
+  //   (match chord string exactly or substring match e.g. "M" returns "M","M6","M6/9"
   //   if `matchExact` set to false)
 
   // Optional args default values
   if (variation === undefined) { variation = 0; }
   if (matchExact === undefined) { matchExact = true; }
-  var music = new Vex.Flow.Music();
+  var music = new Aex.Flow.Music();
 
   // Get voicing data
   var chordData = Voicings._getChordVoicingData(instrument, tuning, chord, variation, matchExact);
@@ -160,7 +160,7 @@ Voicings.chordModelFromVoicing = function(instrument, tuning, chord, key, variat
     notes.push(note);
   }
   var model = new ChordModel({ notes: notes, tuning: tuning, key: key, label: chordLabel });
-  
+
   // Transpose chord
   var dist_down = music.getIntervalBetween(chord_key_value, key_value, -1);
   var dist_up = music.getIntervalBetween(chord_key_value, key_value, 1);
@@ -180,7 +180,7 @@ Voicings.getNumVariations = function(instrument, tuning, chord, matchExact) {
   // - `tuning` : string (e.g. "EADGBe")
   // - `chord` : string (e.g. "M", "m7", "M6/9(b7)")
   // - `matchExact` : boolean (default true)
-  //   (match chord string exactly or substring match e.g. "M" returns "M","M6","M6/9" 
+  //   (match chord string exactly or substring match e.g. "M" returns "M","M6","M6/9"
   //   if `matchExact` set to false)
 
   // default mat
@@ -227,7 +227,7 @@ Voicings._getChordVoicingData = function(instrument, tuning, chord, variation, m
 Voicings._bassNoteForKeyAndOffset = function(key, offset) {
   if(!offset) { return ""; }
 
-  var music = new Vex.Flow.Music();
+  var music = new Aex.Flow.Music();
   var keyValue = music.getNoteValue(key.toLowerCase());
   var bassValue = music.getRelativeNoteValue(keyValue, offset, 1);
   var bassNoteName = music.getCanonicalNoteName(bassValue);

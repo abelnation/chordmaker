@@ -1,8 +1,8 @@
-/* global GuitarNote, Tuning, Vex */
+/* global GuitarNote, Tuning, Aex */
 
 function GuitarNoteFactory(options) {
   // This first guard ensures that the callee has invoked our Class' constructor function
-  // with the `new` keyword - failure to do this will result in the `this` keyword referring 
+  // with the `new` keyword - failure to do this will result in the `this` keyword referring
   // to the callee's scope (typically the window global) which will result in the following fields
   // (name and _age) leaking into the global namespace and not being set on this ob ect.
   if (!(this instanceof GuitarNoteFactory)) {
@@ -32,13 +32,13 @@ GuitarNoteFactory.DEFAULT_OPTIONS = {
 //     ],
 //     "b": []
 //   }
-  
+
 // }
 
 GuitarNoteFactory.prototype = {
   /**
    * Whenever you replace an Object's Prototype, you need to repoint
-   * the base Constructor back at the original constructor Function, 
+   * the base Constructor back at the original constructor Function,
    * otherwise `instanceof` calls will fail.
    */
   constructor: GuitarNoteFactory,
@@ -46,7 +46,7 @@ GuitarNoteFactory.prototype = {
   _init: function(options) {
     // Create config dict, filling in defaults where not provided
     _.defaults(options, GuitarNoteFactory.DEFAULT_OPTIONS);
-    
+
     if (!options.numFrets || !_.isNumber(options.numFrets) || options.numFrets < 0) {
       throw TypeError("numFrets must be valid number >= 0");
     }
@@ -58,7 +58,7 @@ GuitarNoteFactory.prototype = {
 
     if (this.numFrets < this.maxFret) { this.maxFret = this.numFrets; }
 
-    this.music = new Vex.Flow.Music();
+    this.music = new Aex.Flow.Music();
   },
 
   notesForNotesValues: function(notesValues) {
@@ -72,7 +72,7 @@ GuitarNoteFactory.prototype = {
 
       if (!_.isNumber(noteVal)) {
         throw TypeError("noteValue must be a number: " + noteVal);
-      } else if (noteVal < 0 || noteVal >= Vex.Flow.Music.NUM_TONES) {
+      } else if (noteVal < 0 || noteVal >= Aex.Flow.Music.NUM_TONES) {
         throw TypeError("noteValue must be 0 <= noteVal < 12: " + noteVal);
       }
 
@@ -99,7 +99,7 @@ GuitarNoteFactory.prototype = {
     for (var i = 0; i < noteTokens.length; i++) {
       var noteStr = noteTokens[i].toLowerCase();
       if (noteStr === "") { continue; }
-      if (!_.has(Vex.Flow.Music.noteValues, noteStr)) {
+      if (!_.has(Aex.Flow.Music.noteValues, noteStr)) {
         throw TypeError("Invalid noteStr in notesStr: " + noteStr + " in " + notesStr);
       }
 
@@ -113,16 +113,16 @@ GuitarNoteFactory.prototype = {
     if (_.isUndefined(key) || _.isNull(key) || !_.isString(key) || key === "") {
       throw TypeError("Key is required.");
     }
-    if (!key || !_.has(Vex.Flow.Music.noteValues, key)) {
+    if (!key || !_.has(Aex.Flow.Music.noteValues, key)) {
       throw TypeError("Invalid key: " + key);
     }
-    if (!scale || !_.isString(scale) || !_.has(Vex.Flow.Music.scales, scale)) {
+    if (!scale || !_.isString(scale) || !_.has(Aex.Flow.Music.scales, scale)) {
       throw TypeError("Invalid scale: " + scale);
     }
 
     var keyStr = key.toLowerCase();
     var keyVal = this.music.getNoteValue(keyStr);
-    var scaleIntervals = Vex.Flow.Music.scales[scale];
+    var scaleIntervals = Aex.Flow.Music.scales[scale];
 
     var noteValues = [];
     var curValue = keyVal;
@@ -139,16 +139,16 @@ GuitarNoteFactory.prototype = {
     if (_.isUndefined(key) || _.isNull(key) || !_.isString(key) || key === "") {
       throw TypeError("Key is required.");
     }
-    if (!key || !_.has(Vex.Flow.Music.noteValues, key)) {
+    if (!key || !_.has(Aex.Flow.Music.noteValues, key)) {
       throw TypeError("Invalid key: " + key);
     }
-    if (!arpeggio || !_.isString(arpeggio) || !_.has(Vex.Flow.Music.arpeggios, arpeggio)) {
+    if (!arpeggio || !_.isString(arpeggio) || !_.has(Aex.Flow.Music.arpeggios, arpeggio)) {
       throw TypeError("Invalid scale: " + arpeggio);
     }
 
     var keyStr = key.toLowerCase();
     var keyVal = this.music.getNoteValue(keyStr);
-    var arpeggioIntervals = Vex.Flow.Music.arpeggios[arpeggio];
+    var arpeggioIntervals = Aex.Flow.Music.arpeggios[arpeggio];
 
     var noteValues = [];
     var curValue = keyVal;
