@@ -4,7 +4,7 @@ $(function() {
   var tuning = "EADGBe";
   
   var chordList = Voicings.getChordList(instrument, tuning);
-  var music = new Vex.Flow.Music();
+  var music = new Aex.Flow.Music();
   
   var matchExact = false;
   var scalesMatchExact = false;
@@ -19,7 +19,7 @@ $(function() {
     var container = $("#arpeggio-container");
 
     container.empty();
-    for (var chordType in Vex.Flow.Music.arpeggios) {
+    for (var chordType in Aex.Flow.Music.arpeggios) {
       // var chordType = chordList[i];
       
       if (arpeggiosMatchExact && type && chordType !== type) {
@@ -53,7 +53,7 @@ $(function() {
     var container = $("#scale-container");
 
     container.empty();
-    for (var scaleName in Vex.Flow.Music.scales) {
+    for (var scaleName in Aex.Flow.Music.scales) {
       if (scalesMatchExact && scale && scaleName !== scale) {
         continue;
       } else if (!scalesMatchExact && scale && scaleName.indexOf(scale) === -1) {
@@ -124,7 +124,7 @@ $(function() {
 
     if (!key) { return; }
     if (type === "" || (
-      _.has(Vex.Flow.Music.noteValues, key) 
+      _.has(Aex.Flow.Music.noteValues, key) 
       // && _.indexOf(chordList, type) !== -1)
       )) {
       generateChordListing(key, type);
@@ -136,11 +136,12 @@ $(function() {
     var key = $("#scale-inputChordKey").val().toLowerCase();
     var scale = $("#scale-inputChordType").val().toLowerCase();
 
+    if (!key) { return; }
+
     console.log("update: " + key + scale);
 
-    if (!key) { return; }
     if (scale === "" || (
-      _.has(Vex.Flow.Music.noteValues, key)
+      _.has(Aex.Flow.Music.noteValues, key)
       // && _.indexOf(Vex.Flow.Music.scales, scale) !== -1)
       )) {
       generateScaleListing(key, scale);
