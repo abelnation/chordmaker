@@ -1,0 +1,6 @@
+        "upload-<%= task_label %>": {
+            options: {
+                failOnError: true,
+            },
+            command: "python ./script/upload_to_mobstor.py -p <%= product_name %> -v <%= variant_name %>",
+        },

@@ -1,22 +1,20 @@
 {
-  "requireCurlyBraces": [ "if", "else", "for", "while", "do" ],
-  "requireSpaceAfterKeywords": [ "if", "else", "for", "while", "do", "switch", "return" ],
-  "requireSpacesInFunctionExpression": {
-      "beforeOpeningCurlyBrace": true
-  },
-  "disallowSpacesInFunctionExpression": {
-      "beforeOpeningRoundBrace": true
-  },
-  
-  "disallowMultipleVarDecl": true,
-  "requireSpacesInsideObjectBrackets": "all",
-  "requireSpacesInsideArrayBrackets": "allButNested",
-  "disallowLeftStickedOperators": [ "?", "-", "/", "*", "=", "==", "===", "!=", "!==", ">", ">=", "<", "<=" ],
-  "disallowRightStickedOperators": [ "?", "/", "*", ":", "=", "==", "===", "!=", "!==", ">", ">=", "<", "<="],
-  "requireRightStickedOperators": [ "!" ],
-  "requireLeftStickedOperators": [ "," ],
-  "disallowKeywords": [ "with" ],
-  "disallowMultipleLineBreaks": true,
-  "disallowKeywordsOnNewLine": [ "else" ],
-  "requireLineFeedAtFileEnd": true
+    "requireCurlyBraces": [ "if", "else", "for", "while", "do" ],
+    "requireSpaceAfterKeywords": [ "if", "else", "for", "while", "do", "switch", "return" ],
+    "requireSpacesInFunctionExpression": {
+        "beforeOpeningCurlyBrace": true
+    },
+    "disallowSpacesInFunctionExpression": {
+        "beforeOpeningRoundBrace": true
+    },
+    "requireSpacesInsideObjectBrackets": "all",
+    "requireSpacesInsideArrayBrackets": "allButNested",
+    "disallowLeftStickedOperators": [ "?", "-", "/", "*", "=", "==", "===", "!=", "!==", ">", ">=", "<", "<=" ],
+    "disallowRightStickedOperators": [ "?", "/", "*", ":", "=", "==", "===", "!=", "!==", ">", ">=", "<", "<="],
+    "requireRightStickedOperators": [ "!" ],
+    "requireLeftStickedOperators": [ "," ],
+    "disallowKeywords": [ "with" ],
+    "disallowMultipleLineBreaks": true,
+    "disallowKeywordsOnNewLine": [ "else" ],
+    "requireLineFeedAtFileEnd": true
 }

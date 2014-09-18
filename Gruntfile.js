@@ -1,45 +1,46 @@
 'use strict';
 
-function loadConfig(path) {
-  var glob = require('glob');
-  var object = {};
-  var key;
+var _ = require("underscore");
+var timer = require("grunt-timer");
 
-  glob.sync('*', {cwd: path}).forEach(function(option) {
-    key = option.replace(/\.js$/,'');
-    object[key] = require(path + option);
-  });
+function loadConfig(grunt, path) {
+    var glob = require('glob');
+    var object = {};
+    var key;
 
-  return object;
+    glob.sync('*', {cwd: path}).forEach(function(option) {
+        key = option.replace(/\.js$/,'');
+        object[key] = require(path + option)(grunt);
+    });
+
+    return object;
 }
 
 module.exports = function (grunt) {
-  // Project configuration.
-  require('load-grunt-tasks')(grunt);
 
-  grunt.loadTasks('tasks');
+    // Project configuration.
+    require("load-grunt-tasks")(grunt);
 
-  var config = {
-    "name": "chordmaker",
-    pkg: grunt.file.readJSON('package.json'),
-    env: process.env,
-    paths: {
-      src: "./src",
-      dist: "./build/dist",
-      dev: "./build/dev",
-      docs: "./docs"
-    },
-    banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
-      '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
-      '<%= pkg.homepage ? "* " + pkg.homepage + "\\n" : "" %>' +
-      ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n',
-  };
-  grunt.util._.extend(config, loadConfig('./tasks/options/'));
-  grunt.initConfig(config);
+    // Enable task timer
+    timer.init(grunt, { friendlyTime: true });
 
-  grunt.registerTask('dev', ['jshint:src', 'jscs:src', 'clean:devjscompiled', 'copy:dev', 'preprocess:dev', /* 'sass:dev', */ 'concat:dev', /*'uglify:dev',*/ 'test', 'groc' ]);
-  grunt.registerTask('dist', ['clean:dist', 'jshint:src', 'jscs:src', 'copy:dist', 'preprocess:dist', 'strip:dist', /* 'sass:dist',*/ 'concat:dist', 'uglify:dist', 'clean:scrub_dist', 'groc', 'dev' ]);
-  grunt.registerTask('test', ['jshint:test', 'jscs:test', 'copy:devtest', 'connect:test', 'jasmine:testlocalserver']);
+    // Load rest of tasks from ./grunt/tasks/*.js
+    grunt.loadTasks('grunt/tasks');
 
-  grunt.registerTask('default', ['dev']);
+    var getBanner = require("./grunt/helpers/bannerHelper")(grunt);
+    var pkg = grunt.file.readJSON('package.json');
+
+    var config = {
+        pkg: pkg,
+        name: "<% pkg.title || pkg.name %>",
+        banner: getBanner(),
+        paths: pkg.paths,
+        env: process.env,
+    };
+
+    // Load task config objects from ./grunt/options/*.js
+    grunt.util._.extend(config, loadConfig(grunt, './grunt/options/'));
+    grunt.initConfig(config);
+
+    grunt.registerTask('default', [ 'build' ]);
 };
