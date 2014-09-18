@@ -8,7 +8,7 @@ function ChordFactory(options) {
   // - `options` : config object
 
   // This first guard ensures that the callee has invoked our Class' constructor function
-  // with the `new` keyword - failure to do this will result in the `this` keyword referring 
+  // with the `new` keyword - failure to do this will result in the `this` keyword referring
   // to the callee's scope (typically the window global) which will result in the following fields
   // (name and _age) leaking into the global namespace and not being set on this object.
   if (!(this instanceof ChordFactory)) {
@@ -31,7 +31,7 @@ ChordFactory.DEFAULT_OPTIONS = {
 
 ChordFactory.prototype = {
   // Whenever you replace an Object's Prototype, you need to repoint
-  // the base Constructor back at the original constructor Function, 
+  // the base Constructor back at the original constructor Function,
   // otherwise `instanceof` calls will fail.
   constructor: ChordFactory,
 
@@ -43,6 +43,18 @@ ChordFactory.prototype = {
   },
 
   // **parseChord** parses a chord string and returns a ChordView
+  chordFromDiv: function(element) {
+    var elem = $(element);
+    if (elem.length === 0) { return; }
+    var chordStr = elem.html();
+    var chordId = elem.attr("id");
+    if (!chordId) {
+      chordId = "chord-" + Math.round(Math.random() * 1000000000);
+      elem.attr("id", chordId);
+    }
+    this.chordFromString(elem, chordStr);
+  },
+
   chordFromString: function(element, chordStr) {
     // - element : string or DOM element to insert chord into
     // - chordStr : string, of the format
@@ -72,7 +84,7 @@ ChordFactory.prototype = {
     //      4: 12
     //      5: 10,15(color:black;)
 
-    if (!element) {
+    if (!element || (_.isString(element) && element === "")) {
       throw TypeError("Must provide a valid DOM element or id string: " + element);
     } else if (_.isUndefined(chordStr)) {
       throw TypeError("chordStr not provided: " + chordStr);
@@ -80,7 +92,7 @@ ChordFactory.prototype = {
       throw TypeError("empty chordStr provided");
     }
 
-    // console.log(chordStr);    
+    // console.log(chordStr);
     var parseResult;
     try {
       parseResult = this.parser.parse(chordStr);
@@ -88,6 +100,13 @@ ChordFactory.prototype = {
       0;
       0;
       throw e;
+    }
+
+    // Pre-fab styles get over-ridden by options specified in chord string
+    var style_val = $(element).attr("data-style");
+    if (_.has(ChordView.OPTIONS, style_val)) {
+      _.defaults(parseResult.config, ChordView.OPTIONS[style_val]);
+      0;
     }
 
     var model = this._chordModelFromParseResult(parseResult);
@@ -107,7 +126,6 @@ ChordFactory.prototype = {
     var options = {
       notes: [ ],
     };
-    var kv;
     var i;
     var j;
 
@@ -141,9 +159,6 @@ ChordFactory.prototype = {
 
   _chordViewFromParseResultAndModel: function(element, model, parseResult) {
     var options = {};
-    var kv;
-    var i;
-    var j;
 
     // handle config string
     if (parseResult.config) {
@@ -152,7 +167,7 @@ ChordFactory.prototype = {
 
     return new ChordView(element, options, model);
   },
-  
+
   // **_isNumber** detects if string `n` is a number
   _isNumber: function(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
@@ -173,7 +188,7 @@ function ChordModel(options) {
   // - `options` : config object
 
   // This first guard ensures that the callee has invoked our Class' constructor function
-  // with the `new` keyword - failure to do this will result in the `this` keyword referring 
+  // with the `new` keyword - failure to do this will result in the `this` keyword referring
   // to the callee's scope (typically the window global) which will result in the following fields
   // (name and _age) leaking into the global namespace and not being set on this object.
   if (!(this instanceof ChordModel)) {
@@ -208,13 +223,13 @@ ChordModel.DEFAULT_OPTIONS = {
 ChordModel.prototype = {
   /**
    * Whenever you replace an Object's Prototype, you need to repoint
-   * the base Constructor back at the original constructor Function, 
+   * the base Constructor back at the original constructor Function,
    * otherwise `instanceof` calls will fail.
    */
   constructor: ChordModel,
   _init: function(options) {
     // Create config dict, filling in defaults where not provided
-    
+
     _.defaults(options, ChordModel.DEFAULT_OPTIONS);
 
     this.tuningStr = options.tuning;
@@ -238,7 +253,7 @@ ChordModel.prototype = {
       throw TypeError("label must be a string");
     }
     this.label = options.label;
-    
+
     this.notes = {};
     if (options.notes) {
       this.addNotes(options.notes);
@@ -292,12 +307,12 @@ ChordModel.prototype = {
 
     // TODO: notify listeners
     this.notes[note.getKey()] = note;
-    if (_.isNumber(note.fret) && this.min_fret == -1 || note.fret < this.min_fret) { this.min_fret = note.fret; }
-    if (_.isNumber(note.fret) && this.max_fret == -1 || note.fret > this.max_fret) { this.max_fret = note.fret; }
+    if (_.isNumber(note.fret) && note.fret !== 0 && (this.min_fret == -1 || note.fret < this.min_fret)) { this.min_fret = note.fret; }
+    if (_.isNumber(note.fret) && note.fret !== 0 && (this.max_fret == -1 || note.fret > this.max_fret)) { this.max_fret = note.fret; }
   },
   removeNote: function(note) {
     var key = this._keyForNote(note);
-    
+
     // TODO: notify listeners
     delete this.notes[key];
   },
@@ -330,7 +345,7 @@ ChordModel.prototype = {
   },
 
   // **transposeByInterval** : Move all frets to a new key
-  // This method causes side effects on the object. 
+  // This method causes side effects on the object.
   // Frets and key will be changed.
   transposeToKey: function(key, originalKey) {
     // - `key` : key to transpose to
@@ -720,7 +735,7 @@ ChordView.DEFAULT_OPTIONS = {
   tonic_color: 'black',
 
   neck_marker_radius: 8,
-  neck_marker_color: "#999",
+  neck_marker_color: "#eee",
 
   // Nut (zero-th fret) marker
   nut_height: 5,
@@ -735,6 +750,7 @@ ChordView.DEFAULT_OPTIONS = {
   grid_padding_left: 20,
 
   // Chord label
+  show_label: true,
   label_font_size: 36,
   label_y_offset: 20,
   label_height: 40,
@@ -752,7 +768,7 @@ ChordView.DEFAULT_OPTIONS = {
 
 // Pre-set for compact tiny format
 ChordView.OPTIONS_COMPACT = {
-  scale: 0.25,
+  scale: 0.3,
   show_tuning: false,
   show_fingers: false,
   note_stroke_width: 1.0,
@@ -773,6 +789,12 @@ ChordView.OPTIONS_NECK = {
   num_frets: 15,
 };
 
+ChordView.OPTIONS = {
+  "default": ChordView.DEFAULT_OPTIONS,
+  "compact": ChordView.OPTIONS_COMPACT,
+  "neck": ChordView.OPTIONS_NECK
+};
+
 // ChordView Class
 // ---------------
 
@@ -785,25 +807,40 @@ ChordView.prototype = {
   constructor: ChordView,
 
   _init: function(container, options, model) {
-    if (!_.isString(container) && !_.isElement(container)) {
+    if (_.isString(container)) {
+      this.containerId = container.replace("#", "");
+    } else if (container instanceof jQuery) {
+      this.containerId = container.attr("id");
+    } else if (_.isElement(container)) {
+      this.containerId = $(container).attr("id");
+    } else {
       throw TypeError("container must be a DOM elem or DOM ID string.");
     }
 
     // Create fresh copy of options object in case they have passed in one of
     // the static pre-set options objects
     this.options = {};
-    _.defaults(this.options, options);
+    if (_.isString(options)) {
+      if (!_.has(ChordView.OPTIONS, options)) {
+        throw TypeError("Invalid options string: " + options);
+      }
+      _.defaults(this.options, ChordView.OPTIONS[options]);
+    } else if (_.isObject(options)) {
+      _.defaults(this.options, options);
+    }
     _.defaults(this.options, ChordView.DEFAULT_OPTIONS);
 
     this.model = model;
 
     this.options.grid_x = this.options.grid_padding_left;
     this.options.grid_y = this.options.anno_font_size + 4;
+
     if (this.options.orientation === ChordView.NUT_TOP && this.model.getLabel() !== "") {
       this.options.grid_y += this.options.label_height;
     }
 
     // Scaling is done by scaling all the constant factors in the render code
+    0;
     if (this.options.scale != 1) {
       this._scaleSize();
     }
@@ -826,9 +863,6 @@ ChordView.prototype = {
     this.width = this.options.grid_x + this.model.getNumStrings() * this.options.string_gap + this.options.base_fret_label_width + this.options.grid_padding_right;
     this.height = this.options.grid_y + this.options.num_frets * this.options.fret_gap + this.options.tuning_label_font_size + this.options.grid_padding_bottom;
 
-    if (_.isString(container)) {
-      container = document.getElementById(container.replace("#",""));
-    }
     if (window.jQuery) {
       $(container).html("");
     } else if (_.isElement(container)) {
@@ -836,11 +870,41 @@ ChordView.prototype = {
     } else {
       0;
     }
+
+    // var ratio = 1.0;
+    // console.log("Width: " + this.width);
+    // console.log("Height: " + this.height);
+    // console.log("Container Width: " + $(container).parent().width());
+    // console.log("Orientation: " + this.options.orientation);
+    // if (this.options.orientation == ChordView.NUT_LEFT &&
+    //     this.height > $(container).parent().width()) {
+
+    //   ratio = $(container).parent().width() / this.height;
+    //   console.log("Auto-scaling to: " + ratio);
+    //   this._scaleSize(ratio);
+    // } else if (this.options.orientation == ChordView.NUT_TOP &&
+    //     this.width > $(container).parent().width()) {
+
+    //   ratio = $(container).parent().width() / this.width;
+    //   console.log("Container Width: " + $(container).parent().width());
+    //   console.log("Auto-scaling to: " + ratio);
+    //   this._scaleSize(ratio);
+    // }
+
     this.r = null;
-    this.r = Raphael(container, this.width, this.height);
+    0;
+    this.r = Raphael(this.containerId, this.width, this.height);
 
     this._render();
     this._setOrientation(this.options.orientation);
+
+    var svgWidth = $("#"+this.containerId).width();
+    var parentWidth = $("#"+this.containerId).parent().width();
+    if (svgWidth > parentWidth) {
+      0;
+      $("#"+this.containerId).css("width", "" + parentWidth + "px");
+    }
+
   },
 
   getCode: function() {
@@ -894,7 +958,7 @@ ChordView.prototype = {
       this._drawBaseFret(this.options.base_fret);
     }
 
-    if (this.options.orientation === ChordView.NUT_TOP) {
+    if (this.options.orientation === ChordView.NUT_TOP && this.options.show_label) {
       this._drawLabel();
     }
     if (this.options.show_tuning) {
@@ -1005,7 +1069,7 @@ ChordView.prototype = {
 
     var y = this.options.grid_y + ((neck_marker[0] - (this.options.base_fret - 1)) * this.options.fret_gap) - (this.options.fret_gap / 2);
     var marker_style = {
-      fill: "90-#bbb:5-#ccc:95",
+      fill: this.options.neck_marker_color,
       stroke: "none"
     };
 
@@ -1042,19 +1106,19 @@ ChordView.prototype = {
   },
 
   _drawTuningLabel: function() {
+    var font_attr = {
+      'font-size': this.options.tuning_label_font_size
+    };
+
     this.neck.glyphs['tuning-labels'] = [];
+
     for (var i = 0; i < this.model.getNumStrings(); i++) {
       var note = this.model.getTuning().notes[i];
 
       var x = this.options.grid_x + (i * this.options.string_gap);
       var y = this.options.grid_y + this.neck.height + this.options.tuning_label_offset;
-      var annotation_style = {
-        fill: "black"
-      };
-
-      var glyph = this.r.text(x, y, "" + note).attr({
-        'font-size': this.options.tuning_label_font_size
-      });
+      
+      var glyph = this.r.text(x, y, "" + note).attr(font_attr);
       this.neck.glyphs['tuning-labels'].push(glyph);
     }
   },
@@ -1160,31 +1224,27 @@ ChordView.prototype = {
 
     var x;
     var y;
-    var annotation_style;
+    var annotation_style = {
+      fill: "black"
+    };
+    var font_style = {
+      'font-size': this.options.anno_font_size
+    };
 
     if (this.options.finger_position === ChordView.FINGER_TOP) {
       x = this.options.grid_x + (note.string * this.options.string_gap);
       y = this.options.grid_y - this.options.finger_anno_y;
-      annotation_style = {
-        fill: "black"
-      };
     } else if (this.options.finger_position === ChordView.FINGER_LEFT) {
       x = this.options.grid_x + (note.string * this.options.string_gap) - (this.options.note_radius * 2) + 0.5;
       y = this.options.grid_y + ((note.fret - this.options.base_fret+1) * this.options.fret_gap) - (this.options.fret_gap / 2) + 0.5;
-      annotation_style = {
-        fill: "black"
-      };
     } else if (this.options.finger_position === ChordView.FINGER_ONNOTE) {
       x = this.options.grid_x + (note.string * this.options.string_gap) + 0.5;
       y = this.options.grid_y + ((note.fret - this.options.base_fret+1) * this.options.fret_gap) - (this.options.fret_gap / 2) + 0.5;
-      annotation_style = {
-        fill: "black"
-      };
     } else {
       throw TypeError("Invalid finger_position: " + this.options.finger_position);
     }
 
-    var glyph = this.r.text(x, y, ""+note.finger).attr({ 'font-size': this.options.anno_font_size });
+    var glyph = this.r.text(x, y, ""+note.finger).attr(font_style);
     this.noteGlyphs[note.getKey()]['finger-annotation'] = glyph;
     return glyph;
   },
@@ -1642,18 +1702,56 @@ Voicings.voicings = {
   "guitar": {
     "eadgbe" : [
       // Major Chords
-      { "key":"c", "label": "M",      "notes": [3,3,5,5,5,"x"],       "fingers": [1,1,3,3,3,"x"],     "bass": 7,  "tags": "gypsy", },
-      { "key":"c", "label": "M",      "notes": [8,10,10,9,8,8],       "fingers": ["T",3,4,2,1,1],                 "tags": "gypsy", },
-      { "key":"c", "label": "M",      "notes": [12,"x",10,12,13,"x"], "fingers": [2,"x",1,3,4,"x"],   "bass": 4,  "tags": "gypsy", },
-      { "key":"c", "label": "M",      "notes": [12,"x",14,12,13,"x"], "fingers": ["T","x",3,1,2,"x"], "bass": 4,  "tags": "gypsy", },
-      { "key":"c", "label": "M6",     "notes": [3,3,5,5,5,5],         "fingers": [1,1,3,3,3,3],       "bass": 7,  "tags": "gypsy", },
-      { "key":"c", "label": "M6",     "notes": [8,7,5,5,5,5],         "fingers": [4,3,1,1,1,1],                   "tags": "gypsy", },
-      { "key":"c", "label": "M6",     "notes": [8,"x",10,9,10,8],     "fingers": ["T","x",3,2,4,1],               "tags": "gypsy", },
-      { "key":"c", "label": "M6/9",   "notes": [3,3,2,2,3,3],         "fingers": [2,2,1,1,3,4],       "bass": 7,  "tags": "gypsy", },
-      { "key":"c", "label": "M6/9",   "notes": [8,7,7,7,8,8],         "fingers": [2,1,1,1,3,4],                   "tags": "gypsy", },
-      { "key":"c", "label": "M6/9",   "notes": [8,10,10,9,10,10],     "fingers": ["T",2,2,1,3,3],                 "tags": "gypsy", },
+      { "key":"c", "label": "maj",      "notes": [3,3,5,5,5,"x"],       "fingers": [1,1,3,3,3,"x"],     "bass": 7,  "tags": "gypsy", },
+      { "key":"c", "label": "maj",      "notes": [8,10,10,9,8,8],       "fingers": ["T",3,4,2,1,1],                 "tags": "gypsy", },
+      { "key":"c", "label": "maj",      "notes": [12,"x",10,12,13,"x"], "fingers": [2,"x",1,3,4,"x"],   "bass": 4,  "tags": "gypsy", },
+      { "key":"c", "label": "maj",      "notes": [12,"x",14,12,13,"x"], "fingers": ["T","x",3,1,2,"x"], "bass": 4,  "tags": "gypsy", },
+      
+      // Maj7
+      { "key":"c", "label": "maj7",     "notes": ["x",3,5,4,5,"x"],     "fingers": ["x",1,3,2,4,"x"],               "tags": "jazz", },
+      { "key":"c", "label": "maj7",     "notes": ["x",3,5,4,5,3],       "fingers": ["x",1,3,2,4,1],                 "tags": "jazz", },
+      { "key":"c", "label": "maj7",     "notes": ["x",3,2,4,5,"x"],     "fingers": ["x",2,1,3,4,"x"],               "tags": "jazz", },
+      { "key":"c", "label": "maj7",     "notes": ["x",3,5,5,5,7],       "fingers": ["x",1,3,3,3,4],                 "tags": "jazz", },
+      { "key":"g", "label": "maj7",     "notes": [3,"x",4,4,3,"x"],     "fingers": [1,"x",3,4,2,"x"],               "tags": "jazz", },
+      { "key":"g", "label": "maj7",     "notes": [3,5,"x",4,7,"x"],     "fingers": [1,3,"x",2,4,"x"],               "tags": "jazz", },
+      { "key":"g", "label": "maj7",     "notes": [7,"x",5,7,7,"x"],     "fingers": [2,"x",1,3,4,"x"],   "bass": 4,  "tags": "jazz", },
+      { "key":"g", "label": "maj7",     "notes": ["x",10,9,7,7,7],      "fingers": ["x",4,3,1,1,1],                 "tags": "jazz", },
+      { "key":"c", "label": "maj7",     "notes": ["x","x",10,9,8,7],    "fingers": ["x","x",4,3,2,1],               "tags": "jazz", },
+      { "key":"g", "label": "maj7",     "notes": ["x",2,4,4,3,"x"],     "fingers": ["x",1,3,4,2,"x"],   "base": 4,  "tags": "jazz", },
+      
+      // 6
+      { "key":"g", "label": "6",     "notes": [3,"x",2,4,3,"x"],     "fingers": [2,"x",1,4,3,"x"],               "tags": "jazz", },
+      { "key":"g", "label": "6",     "notes": [3,5,"x",4,5,"x"],     "fingers": [1,3,"x",2,4,"x"],               "tags": "jazz", },
+      { "key":"g", "label": "6",     "notes": ["x",7,5,7,5,"x"],     "fingers": ["x",3,1,4,1,"x"],   "base": 9,  "tags": "jazz", },
+      { "key":"g", "label": "6",     "notes": ["x",7,5,4,3,"x"],     "fingers": ["x",4,3,2,1,"x"],   "base": 9,  "tags": "jazz", },
+      { "key":"g", "label": "6",     "notes": ["x",7,5,4,3,3],       "fingers": ["x",4,3,2,1,1],     "base": 9,  "tags": "jazz", },
+      { "key":"g", "label": "6",     "notes": ["x",7,9,9,8,7],       "fingers": ["x",1,3,4,2,1],     "base": 9,  "tags": "jazz", },
+      { "key":"g", "label": "6",     "notes": ["x",7,9,7,8,"x"],     "fingers": ["x",1,3,1,2,"x"],   "base": 9,  "tags": "jazz", },
+      { "key":"c", "label": "6",     "notes": ["x",4,3,3,6,"x"],     "fingers": ["x",2,1,1,4,"x"],               "tags": "jazz", },
+      { "key":"c", "label": "6",     "notes": ["x",3,5,5,5,5],       "fingers": ["x",1,3,3,3,3],                 "tags": "jazz", },
+      { "key":"d", "label": "6",     "notes": ["x",5,4,4,3,"x"],     "fingers": ["x",4,2,3,1,"x"],               "tags": "jazz", },
+      { "key":"c", "label": "6",     "notes": [3,3,5,5,5,5],         "fingers": [1,1,3,3,3,3],       "bass": 7,  "tags": "gypsy", },
+      { "key":"c", "label": "6",     "notes": [8,7,5,5,5,5],         "fingers": [4,3,1,1,1,1],                   "tags": "gypsy", },
+      { "key":"c", "label": "6",     "notes": [8,"x",10,9,10,8],     "fingers": ["T","x",3,2,4,1],               "tags": "gypsy", },
+      
+      // 9
+      { "key":"f", "label": "maj9",     "notes": [5,7,5,5,5,8],         "fingers": [1,3,1,1,1,4],    "bass": 4,  "tags": "jazz", },
+      { "key":"f", "label": "maj9",     "notes": [5,7,5,5,8,"x"],       "fingers": [1,3,1,1,4,"x"],  "bass": 4,  "tags": "jazz", },
+      { "key":"c", "label": "maj9",     "notes": ["x",3,2,4,3,"x"],     "fingers": ["x",2,1,4,3],                "tags": "jazz", },
+      { "key":"a", "label": "maj9",     "notes": ["x",4,6,4,5,"x"],     "fingers": ["x",1,3,1,2,"x"],"bass": 4,  "tags": "jazz", },
+      { "key":"a", "label": "maj9",     "notes": ["x",4,6,4,5,7],       "fingers": ["x",1,3,1,2,4],  "bass": 4,  "tags": "jazz", },
 
-      // 7 "Chords
+      // 6/9
+      { "key":"c", "label": "6/9",   "notes": ["x",3,2,2,3,3],       "fingers": ["x",2,1,1,3,3],                 "tags": "jazz", },
+      { "key":"g", "label": "6/9",   "notes": [3,"x",2,2,3,3],       "fingers": [2,"x",1,1,3,3],                 "tags": "jazz", },
+      { "key":"d", "label": "6/9",   "notes": ["x",2,2,2,3,"x"],     "fingers": ["x",1,1,1,2,"x"],   "bass": 9,  "tags": "jazz", },
+      { "key":"c", "label": "6/9",   "notes": [3,3,2,2,3,3],         "fingers": [2,2,1,1,3,4],       "bass": 7,  "tags": "gypsy", },
+      { "key":"c", "label": "6/9",   "notes": [8,7,7,7,8,8],         "fingers": [2,1,1,1,3,4],                   "tags": "gypsy", },
+      { "key":"c", "label": "6/9",   "notes": [8,10,10,9,10,10],     "fingers": ["T",2,2,1,3,3],                 "tags": "gypsy", },
+
+      // dominant 7 Chords
+      { "key":"f", "label": "7",      "notes": ["x","x",5,4,5,3],     "fingers": ["x","x",3,2,4,1],               "tags": "jazz", },
+      { "key":"f", "label": "7",      "notes": ["x",5,7,7,7,8],       "fingers": ["x",1,3,3,3,4],                 "tags": "jazz", },
       { "key":"c", "label": "7",      "notes": [3,3,5,3,5,3],         "fingers": [1,1,3,1,4,1],                   "tags": "gypsy", },
       { "key":"c", "label": "7",      "notes": [8,"x",8,9,8,"x"],     "fingers": ["T","x",1,3,2,"x"],             "tags": "gypsy", },
       { "key":"c", "label": "7",      "notes": [8,10,8,9,8,8],        "fingers": [1,3,1,2,1,1],                   "tags": "gypsy", },
@@ -1662,35 +1760,90 @@ Voicings.voicings = {
       { "key":"c", "label": "7",      "notes": [6,"x",5,5,5,"x"],     "fingers": [2,"x",1,1,1,"x"],   "bass": 10, "tags": "gypsy", },
       { "key":"c", "label": "7",      "notes": [3,3,5,3,5,6],         "fingers": [1,1,2,1,3,4,"x"],   "bass": 7,  "tags": "gypsy", },
       { "key":"c", "label": "7",      "notes": [8,"x",8,9,8,8],       "fingers": ["T","x",1,4,2,3],               "tags": "gypsy", },
-      { "key":"c", "label": "7(b9)",  "notes": [3,3,2,3,2,"x"],       "fingers": [2,2,1,3,1,"x"],     "bass": 7,  "tags": "gypsy", },
-      { "key":"c", "label": "7(b9)",  "notes": [12,"x",14,12,14,"x"], "fingers": ["T","x",2,1,3,"x"], "bass": 4,  "tags": "gypsy", },
+
+      // 7(b5)
+      { "key":"b", "label": "7(b5)",  "notes": [7,"x",7,8,6,"x"],     "fingers": [2,"x",3,4,1,"x"],               "tags": "jazz", },
+      { "key":"d", "label": "7(b5)",  "notes": [4,"x",4,5,3,"x"],     "fingers": [2,"x",3,4,1,"x"],   "bass": 6,  "tags": "jazz", },
+
+      // 7(#5)
+      { "key":"a", "label": "7(#5)",  "notes": [5,"x",5,6,6,"x"],     "fingers": [1,"x",2,3,4,"x"],               "tags": "jazz", },
+      { "key":"a", "label": "7(#5)",  "notes": [5,"x",5,6,6,"x"],     "fingers": ["T","x",1,2,2,"x"],             "tags": "jazz", },
+      { "key":"d", "label": "7(#5)",  "notes": ["x",5,4,5,"x",6],     "fingers": ["x",2,1,3,"x",4],               "tags": "jazz", },
+
+      // 7(b9)
+      { "key":"bb", "label": "7(b9)", "notes": [6,"x",6,7,6,7],       "fingers": ["T","x",1,3,2,4],               "tags": "jazz", },
+      { "key":"e", "label": "7(b9)",  "notes": ["x",7,6,7,6,"x"],     "fingers": ["x",2,1,3,1,"x"],               "tags": "jazz", },
+      { "key":"c", "label": "7(b9)",  "notes": [3,3,2,3,2,"x"],       "fingers": [2,2,1,3,1,"x"],     "bass": 7,  "tags": "gypsy jazz", },
+      { "key":"c", "label": "7(b9)",  "notes": [12,"x",14,12,14,"x"], "fingers": ["T","x",2,1,3,"x"], "bass": 4,  "tags": "gypsy jazz", },
+
+      // dominant 9 Chords
+      { "key":"c", "label": "9",      "notes": ["x",3,2,3,3,"x"],     "fingers": ["x",2,1,3,3,"x"],               "tags": "jazz", },
+      { "key":"c", "label": "9",      "notes": ["x",3,2,3,3,3],       "fingers": ["x",2,1,3,3,3],                 "tags": "jazz", },
+      { "key":"g", "label": "9",      "notes": [3,5,3,4,3,5],         "fingers": [1,3,1,2,1,4],                   "tags": "jazz", },
+      { "key":"g", "label": "9",      "notes": ["x",2,3,2,3,"x"],     "fingers": ["x",1,3,2,4,"x"],   "bass": 4,  "tags": "jazz", },
+
+      // dominant 11 Chords
+      { "key":"d", "label": "11",     "notes": [5,"x",5,5,3,"x"],     "fingers": [2,"x",3,4,1,"x"],   "bass": 7,  "tags": "jazz", },
+      { "key":"g", "label": "11",     "notes": ["x",5,3,5,3,3],       "fingers": ["x",3,1,4,1,1],     "bass": 7,  "tags": "jazz", },
+      { "key":"c", "label": "11",     "notes": ["x",3,5,3,6,"x"],     "fingers": ["x",1,3,1,4,"x"],               "tags": "jazz", },
+
+      // dominant 13 Chords
+      { "key":"a", "label": "13",     "notes": [5,"x",5,6,7,"x"],     "fingers": [1,"x",2,3,4,"x"],               "tags": "jazz", },
+      { "key":"a", "label": "13",     "notes": [5,"x",5,6,7,"x"],     "fingers": ["T","x",1,2,4,"x"],             "tags": "jazz", },
+      { "key":"a", "label": "13",     "notes": ["x",10,9,6,7,"x"],    "fingers": ["x",4,3,1,2,"x"],   "bass": 11, "tags": "jazz", },
+      { "key":"d", "label": "13",     "notes": ["x",5,4,5,5,7],       "fingers": ["x",2,1,3,3,4],                 "tags": "jazz", },
+      { "key":"d", "label": "13",     "notes": ["x","x",10,9,7,7],    "fingers": ["x","x",4,3,1,1],   "bass": 11, "tags": "jazz", },
 
       // "Minor
       { "key":"c", "label": "m",      "notes": [3,3,5,5,4,3],         "fingers": [1,1,3,4,2,1],       "bass": 7,  "tags": "gypsy", },
       { "key":"c", "label": "m",      "notes": [8,10,10,8,8,8],       "fingers": ["T",3,4,1,1,1],                 "tags": "gypsy", },
       { "key":"c", "label": "m",      "notes": [11,"x",10,12,13],     "fingers": [2,"x",1,3,4,"x"],   "bass": 3,  "tags": "gypsy", },
       { "key":"c", "label": "m",      "notes": [11,"x",13,12,13,"x"], "fingers": ["T","x",2,1,3,"x"], "bass": 3,  "tags": "gypsy", },
+      
+      // Minor 7
+      { "key":"c", "label": "m7",     "notes": [8,"x",8,8,8,"x"],     "fingers": [2,"x",3,3,3,"x"],               "tags": "jazz", },
+      { "key":"e", "label": "m7",     "notes": ["x",7,5,7,5,"x"],     "fingers": ["x",3,1,4,1,"x"],               "tags": "jazz", },
+      { "key":"e", "label": "m7",     "notes": ["x",7,9,7,8,"x"],     "fingers": ["x",1,3,1,2,"x"],               "tags": "jazz", },
+      { "key":"e", "label": "m7",     "notes": ["x",7,9,7,8,7],       "fingers": ["x",1,3,1,2,1],                 "tags": "jazz", },
+      { "key":"e", "label": "m7",     "notes": ["x",7,9,7,8,10],      "fingers": ["x",1,3,1,2,4],                 "tags": "jazz", },
+      { "key":"e", "label": "m7",     "notes": ["x",7,5,7,8,"x"],     "fingers": ["x",2,1,3,4,"x"],               "tags": "jazz", },
+      { "key":"b", "label": "m7",     "notes": [7,9,7,7,7,10],        "fingers": [1,3,1,1,1,4],                   "tags": "jazz", },
+      { "key":"b", "label": "m7",     "notes": [7,9,7,7,10,"x"],      "fingers": [1,3,1,1,4,"x"],                 "tags": "jazz", },
+      { "key":"c", "label": "m7",     "notes": [8,"x",8,8,8,8],       "fingers": [2,"x",3,3,3,3],                 "tags": "gypsy jazz", },
+      { "key":"c", "label": "m7",     "notes": [3,3,5,3,4,3],         "fingers": [1,1,3,1,2,1],       "bass": 7,  "tags": "gypsy", },
+      { "key":"c", "label": "m7",     "notes": [3,"x",1,3,4,"x"],     "fingers": [3,"x",1,3,4,"x"],   "bass": 7,  "tags": "gypsy", },
+      { "key":"c", "label": "m7",     "notes": [8,10,8,8,8,8],        "fingers": ["T",3,1,1,1,1],                 "tags": "gypsy", },
+      
+      // Minor 7(b5)
+      { "key":"c", "label": "m7(b5)", "notes": ["x",3,4,3,4,"x"],     "fingers": ["x",1,3,2,4,"x"],               "tags": "gypsy", },
+      { "key":"c", "label": "m7(b5)", "notes": [8,"x",8,8,7,"x"],     "fingers": [2,"x",3,4,1,"x"],               "tags": "gypsy", },
+      { "key":"c", "label": "m7(b5)", "notes": [11,"x",10,11,11,11],  "fingers": [2,"x",1,3,3,3],     "bass": 3,  "tags": "gypsy", },
+      { "key":"c", "label": "m7(b5)", "notes": [11,13,13,11,13,"x"],  "fingers": ["T",2,2,1,3,"x"],   "bass": 3,  "tags": "gypsy", },
+      { "key":"c", "label": "m7(b5)", "notes": [8,"x",8,8,7,8],       "fingers": ["T","x",2,2,1,3],               "tags": "gypsy", },
+
+      // Minor 6
+      { "key":"c", "label": "m6",     "notes": [5,6,7,8,8,8],         "fingers": [1,2,3,4,4,4],       "bass": 9,  "tags": "jazz", },
+      { "key":"c", "label": "m6",     "notes": [5,"x",5,5,4,"x"],     "fingers": [2,"x",3,4,1,"x"],   "bass": 9,  "tags": "jazz", },
+      { "key":"c", "label": "m6",     "notes": [5,"x",4,5,5,"x"],     "fingers": [2,"x",1,3,3,"x"],               "tags": "jazz", },
       { "key":"c", "label": "m6",     "notes": [8,"x",7,8,8,8],       "fingers": [2,"x",1,3,3,3],                 "tags": "gypsy", },
-      { "key":"c", "label": "m6",     "notes": ["x",12,13,12,13,"x"], "fingers": ["x",1,3,2,4,"x"],   "bass": 9,  "tags": "gypsy", },
+      { "key":"c", "label": "m6",     "notes": ["x",12,13,12,13,"x"], "fingers": ["x",1,3,2,4,"x"],   "bass": 9,  "tags": "gypsy jazz", },
       { "key":"c", "label": "m6",     "notes": [3,3,5,5,4,5],         "fingers": [1,1,3,1,2,1],       "bass": 7,  "tags": "gypsy", },
       { "key":"c", "label": "m6",     "notes": [8,10,10,8,10,"x"],    "fingers": ["T",2,2,1,3,"x"],               "tags": "gypsy", },
       { "key":"c", "label": "m6",     "notes": [8,"x",10,8,10,"x"],   "fingers": ["T","x",3,1,4,"x"],             "tags": "gypsy", },
+
+      // Minor 9
+      { "key":"d", "label": "m9",     "notes": ["x",5,3,5,5,5],         "fingers": ["x",2,1,3,4,4],               "tags": "jazz", },
+      { "key":"d", "label": "m9",     "notes": ["x",5,3,5,5,"x"],       "fingers": ["x",2,1,3,4,"x"],             "tags": "jazz", },
+      { "key":"a", "label": "m9",     "notes": [5,"x",5,5,5,7],         "fingers": [2,"x",3,3,3,4],               "tags": "jazz", },
+      { "key":"g", "label": "m9",     "notes": ["x","x",8,7,6,5],       "fingers": ["x","x",4,3,2,1], "bass": 4,  "tags": "jazz", },
+      { "key":"d", "label": "m9",     "notes": ["x",8,7,5,5,"x"],       "fingers": ["x",4,3,1,1,"x"], "bass": 4,  "tags": "jazz", },
+      
       { "key":"c", "label": "m6/9",   "notes": [8,10,10,8,10,10],     "fingers": ["T",2,2,1,3,3],                 "tags": "gypsy", },
 
       // "Diminished
       { "key":"c", "label": "*7",     "notes": ["x",3,4,2,4,"x"],     "fingers": ["x",2,3,1,4,"x"],               "tags": "gypsy", },
       { "key":"c", "label": "*7",     "notes": [8,"x",7,8,7,"x"],     "fingers": [2,"x",1,3,1,"x"],               "tags": "gypsy", },
 
-      // Minor "7
-      { "key":"c", "label": "m7",     "notes": [8,"x",8,8,8,8],       "fingers": [2,"x",3,3,3,3],                 "tags": "gypsy", },
-      { "key":"c", "label": "m7",     "notes": [3,3,5,3,4,3],         "fingers": [1,1,3,1,2,1],       "bass": 7,  "tags": "gypsy", },
-      { "key":"c", "label": "m7",     "notes": [3,"x",1,3,4,"x"],     "fingers": [3,"x",1,3,4,"x"],   "bass": 7,  "tags": "gypsy", },
-      { "key":"c", "label": "m7",     "notes": [8,10,8,8,8,8],        "fingers": ["T",3,1,1,1,1],                 "tags": "gypsy", },
-      { "key":"c", "label": "m7(b5)", "notes": ["x",3,4,3,4,"x"],     "fingers": ["x",1,3,2,4,"x"],               "tags": "gypsy", },
-      { "key":"c", "label": "m7(b5)", "notes": [8,"x",8,8,7,"x"],     "fingers": [2,"x",3,4,1,"x"],               "tags": "gypsy", },
-      { "key":"c", "label": "m7(b5)", "notes": [11,"x",10,11,11,11],  "fingers": [2,"x",1,3,3,3],     "bass": 3,  "tags": "gypsy", },
-      { "key":"c", "label": "m7(b5)", "notes": [11,13,13,11,13,"x"],  "fingers": ["T",2,2,1,3,"x"],   "bass": 3,  "tags": "gypsy", },
-      { "key":"c", "label": "m7(b5)", "notes": [8,"x",8,8,7,8],       "fingers": ["T","x",2,2,1,3],               "tags": "gypsy", },
     ]
   },
   "banjo": {},

@@ -12,6 +12,8 @@ $(function() {
 
   var factory = new GuitarNoteFactory({ numFrets: 15 });
 
+  var chord_cache = {};
+
   function generateArpeggioListing(chordKey, type) {
     var i;
     var j;
@@ -86,7 +88,9 @@ $(function() {
     var numRendered = 0;
     var container = $("#chord-container");
 
-    container.empty();
+    // container.empty();
+    container.children().detach().remove();
+    
     for (i = 0; i < chordList.length; i++) {
       var chordType = chordList[i];
       
@@ -102,13 +106,21 @@ $(function() {
       container.append(section_container);
 
       for (j = 0; j< numChords; j++) {
-        chordId = "catalogue-chord-" + numRendered;
-        section_container.append('<div id="' + chordId + '" class="chord"></div>');
+        var chord_cache_key = (chordKey + "-" + chordType + "-" + j).replace("\/","_").replace("(","").replace(")","").replace("#","s");
 
-        new ChordView(
-          chordId, 
-          ChordView.DEFAULT_OPTIONS, 
-          Voicings.chordModelFromVoicing(instrument, tuning, chordType, chordKey, j));  
+        if (chord_cache_key in chord_cache) {
+          section_container.append(chord_cache[chord_cache_key]);
+        } else {
+          // add to cache
+          var elem = $('<div id="' + chord_cache_key + '" class="chord"></div>');
+          chord_cache[chord_cache_key] = elem;
+          section_container.append(elem);
+
+          new ChordView(
+            chord_cache_key,
+            ChordView.DEFAULT_OPTIONS,
+            Voicings.chordModelFromVoicing(instrument, tuning, chordType, chordKey, j));
+        }
 
         numRendered++;
       }
@@ -196,7 +208,7 @@ $(function() {
     $(this).tab('show');
   });
 
-  generateChordListing("c", "M");
+  generateChordListing("c", "");
   generateScaleListing("c", "major");
   generateArpeggioListing("c", "maj");
 

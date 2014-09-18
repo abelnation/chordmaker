@@ -116,6 +116,7 @@ ChordView.DEFAULT_OPTIONS = {
   grid_padding_left: 20,
 
   // Chord label
+  show_label: true,
   label_font_size: 36,
   label_y_offset: 20,
   label_height: 40,
@@ -323,7 +324,7 @@ ChordView.prototype = {
       this._drawBaseFret(this.options.base_fret);
     }
 
-    if (this.options.orientation === ChordView.NUT_TOP) {
+    if (this.options.orientation === ChordView.NUT_TOP && this.options.show_label) {
       this._drawLabel();
     }
     if (this.options.show_tuning) {
@@ -471,19 +472,19 @@ ChordView.prototype = {
   },
 
   _drawTuningLabel: function() {
+    var font_attr = {
+      'font-size': this.options.tuning_label_font_size
+    };
+
     this.neck.glyphs['tuning-labels'] = [];
+
     for (var i = 0; i < this.model.getNumStrings(); i++) {
       var note = this.model.getTuning().notes[i];
 
       var x = this.options.grid_x + (i * this.options.string_gap);
       var y = this.options.grid_y + this.neck.height + this.options.tuning_label_offset;
-      var annotation_style = {
-        fill: "black"
-      };
-
-      var glyph = this.r.text(x, y, "" + note).attr({
-        'font-size': this.options.tuning_label_font_size
-      });
+      
+      var glyph = this.r.text(x, y, "" + note).attr(font_attr);
       this.neck.glyphs['tuning-labels'].push(glyph);
     }
   },
@@ -589,31 +590,27 @@ ChordView.prototype = {
 
     var x;
     var y;
-    var annotation_style;
+    var annotation_style = {
+      fill: "black"
+    };
+    var font_style = {
+      'font-size': this.options.anno_font_size
+    };
 
     if (this.options.finger_position === ChordView.FINGER_TOP) {
       x = this.options.grid_x + (note.string * this.options.string_gap);
       y = this.options.grid_y - this.options.finger_anno_y;
-      annotation_style = {
-        fill: "black"
-      };
     } else if (this.options.finger_position === ChordView.FINGER_LEFT) {
       x = this.options.grid_x + (note.string * this.options.string_gap) - (this.options.note_radius * 2) + 0.5;
       y = this.options.grid_y + ((note.fret - this.options.base_fret+1) * this.options.fret_gap) - (this.options.fret_gap / 2) + 0.5;
-      annotation_style = {
-        fill: "black"
-      };
     } else if (this.options.finger_position === ChordView.FINGER_ONNOTE) {
       x = this.options.grid_x + (note.string * this.options.string_gap) + 0.5;
       y = this.options.grid_y + ((note.fret - this.options.base_fret+1) * this.options.fret_gap) - (this.options.fret_gap / 2) + 0.5;
-      annotation_style = {
-        fill: "black"
-      };
     } else {
       throw TypeError("Invalid finger_position: " + this.options.finger_position);
     }
 
-    var glyph = this.r.text(x, y, ""+note.finger).attr({ 'font-size': this.options.anno_font_size });
+    var glyph = this.r.text(x, y, ""+note.finger).attr(font_style);
     this.noteGlyphs[note.getKey()]['finger-annotation'] = glyph;
     return glyph;
   },
