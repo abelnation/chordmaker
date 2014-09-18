@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <!-- 0.9661385368090123 -->
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Chord Maker</title>
+
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.css" type="text/css" charset="utf-8">
+  <!-- <link rel="stylesheet" href="bootstrap/css/bootstrap-responsive.css" type="text/css" charset="utf-8"> -->
+  
+  <link rel="stylesheet" href="css/demo.css" type="text/css" charset="utf-8">
+</head>
+<body>
+  <nav class="navbar navbar-default" role="navigation">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#chordmaker-navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">ChordMaker</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="chordmaker-navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="index.html">Usage</a></li>
+        <li><a href="catalogue.html">Catalogue</a></li>
+        <li><a href="parser.html">Parser</a></li>
+        <li><a href="quiz.html" class="active">Quiz</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </nav>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="bs-sidebar hidden-print " data-spy="affix" role="complementary">
+          <ul class="nav bs-sidenav chordnav">
+            <li class="active">
+              <a href="#chord-quiz" data-toggle="tab" class="tab-link">Chords</a>
+              <ul class="nav"><li>
+                <form id="quiz-chord-selector" role="form" style="padding: 0 20px;">
+                  <!-- -->
+                </form>
+              </li></ul>
+            </li>
+            <li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-md-9 tab-content">
+        <div class="tab-pane active" id="chord-quiz">
+          <h2>Chord Quiz</h2>
+          <div id="chord-quiz-container" class="quiz-container">
+            <div id="quiz-chord-container" style="min-height: 300px; border: thin solid #f0f0f0; background-color: #ffffff; margin-bottom: 20px; text-align: center;">
+              <div id="quiz-chord-diagram" style="display: inline-block;"></div>
+              <p id="quiz-chord-answer" style="text-align: center;"></p>
+            </div>
+            <div id="quiz-input">
+              <form role="form" style="max-width: 300px;">
+                <div class="form-group">
+                  <label for="quiz-chord-answer">Answer</label>
+                  <input type="text" class="form-control" id="quiz-chord-answer-input" placeholder="Enter your answer" autocomplete="off">
+                </div>
+              </form>
+            </div>
+            <div class="form-group">
+              <button type="button" class="btn btn-warning" type="button" class="form-control" id="quiz-chord-show-answer" >Show Answer</button>
+
+              <button type="button" class="btn btn-info" type="button" class="form-control" id="quiz-chord-show-next" >Next</button>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="./js/jquery-1.7.2.min.js"></script>
+  <script type="text/javascript" src="./js/jquery.color.js"></script>
+  <script type="text/javascript" src="./js/raphael-min.js"></script>
+  <script type="text/javascript" src="./bootstrap/js/bootstrap.js"></script>
+  
+  <script type="text/javascript" src="../js/chordmaker.min.js"></script>
+  <script type="text/javascript" src="js/quiz.js"></script>
+</body>
+</html>

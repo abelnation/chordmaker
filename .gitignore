@@ -2,3 +2,4 @@ node_modules
 build/dev
 _SpecRunner.html
 .grunt
+chordmaker.tar.gz
