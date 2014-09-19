@@ -11,7 +11,7 @@ module.exports = function(grunt) {
     // e.g. grunt jasmine:variant:<product_name>:<variant_name>
     testlocalserver: {
       src: [
-        '<%= paths.dev %>/js/chordmaker.<%= pkg.version %>.js',
+        '<%= paths.dev %>/js/chordmaker.js',
       ],
       options: {
         specs: '<%= paths.dev %>/test/*Spec.js',
@@ -22,7 +22,7 @@ module.exports = function(grunt) {
         ],
         // helpers: '<%= paths.dev %>/test/**/*Helper.js',
         keepRunner: true,
-        version: '1.3.0',
+        version: '2.0.1',
       }
     }
 
