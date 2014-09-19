@@ -1,3 +1,9 @@
+## 0.1.6 (2014-09-18)
+
+  - CHANGELOG updated for v0.1.5 release
+  - Adding v0.1.5 release files
+  - release 0.1.6
+
 ## 0.1.5 (2014-09-18)
 
   - CHANGELOG updated for v0.1.4 release
