@@ -1,14 +1,13 @@
 #!/bin/sh
 
-echo "Bumping version..."
 if [[ -n `git diff --name-only --cached | grep "src/js/.*\.js$"` ]]; then
     echo "javascript updated. bumping minor version"
     grunt bump:patch
 elif [[ -n `git diff --name-only --cached | grep "src/.*$"` ]]; then
     echo "non-js src updated. bumping patch version"
     grunt bump:build
-# else
-#    echo "non-src changes. bumping build version"
+else
+    echo "non-src changes. not bumping version"
 #    grunt bump:build
 fi
 
