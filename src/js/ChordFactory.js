@@ -1,4 +1,4 @@
-/* global _, Chords, ChordParserPEG, ChordModel, GuitarNote, Tuning, ChordView */
+/* global _, Chords, ChordParserPEG */
 
 // ChordFactory
 // ------------
@@ -7,6 +7,8 @@
   // Dependencies
   var ChordView = exports.ChordView;
   var ChordModel = exports.ChordModel;
+  var GuitarNote = exports.GuitarNote;
+  var Tuning = exports.Tuning;
 
   // Class Definition
   var ChordFactory = function(options) {
