@@ -1,8 +1,12 @@
 $(function() {
 
+  var Voicings = Chords.Voicings;
+  var ChordView = Chords.ChordView;
+  var GuitarNoteFactory = Chords.GuitarNoteFactory;
+
   var instrument = "guitar";
   var tuning = "EADGBe";
-  
+
   var chordList = Voicings.getChordList(instrument, tuning);
   var selectedChords = {
     "maj": true,
@@ -19,8 +23,8 @@ $(function() {
     // "m7": true,
     // "m7(b5)": true,
   };
-  var music = new Aex.Flow.Music();
-  
+  var music = new Chords.Theory();
+
   var matchExact = false;
 
   var chordViewOptions = {};
@@ -52,8 +56,8 @@ $(function() {
           <label> \
             <input id="chord-select-' + i + '" \
               type="checkbox" \
-              data-chord-type="' + chordList[i] + '"' + 
-              (isChecked ? ' checked' : '') + '>' + 
+              data-chord-type="' + chordList[i] + '"' +
+              (isChecked ? ' checked' : '') + '>' +
             chordList[i] + '\
           </label> \
         </div>');
@@ -97,8 +101,8 @@ $(function() {
     var numVariations = Voicings.getNumVariations(instrument, tuning, chord);
     var variationNumber = Math.floor(Math.random()*numVariations);
 
-    var keyIdx = Math.floor(Math.random() * Aex.Flow.Music.canonical_notes.length);
-    var key = Aex.Flow.Music.canonical_notes[keyIdx];
+    var keyIdx = Math.floor(Math.random() * Chords.Theory.canonical_notes.length);
+    var key = Chords.Theory.canonical_notes[keyIdx];
 
     curAnswer = {
       key: key.toUpperCase(),
@@ -120,7 +124,7 @@ $(function() {
 
   function checkAnswer() {
     console.log("checkAnswer");
-    
+
     var answerString = curAnswer.key + curAnswer.type;
 
     var inputAnswer = $("#quiz-chord-answer-input").val();
