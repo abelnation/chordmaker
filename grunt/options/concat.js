@@ -2,6 +2,7 @@ module.exports = function(grunt) {
   return {
     options: {
       separator: ';',
+      banner: '<%= banner %>',
     },
     dev: {
       src: [

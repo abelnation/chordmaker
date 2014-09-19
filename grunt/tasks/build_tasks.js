@@ -30,7 +30,7 @@ module.exports = function(grunt) {
                 /* 'sass:dist',*/
                 'concat:dist',
                 'uglify:dist',
-                'clean:scrub_dist',
+                // 'clean:scrub_dist',
                 'groc',
             ]);
         } else {

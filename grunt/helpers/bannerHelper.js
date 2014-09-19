@@ -14,7 +14,7 @@ module.exports = function(grunt) {
 
         // add contributors
         _.each(pkg.contributors, function(contributor) {
-            var contrib_str = _.template("//     <%= name %> (<%= username %>)")(contributor);
+            var contrib_str = _.template("//     <%= name %> (<%= email %>)")(contributor);
             banner.push(contrib_str);
         });
 
