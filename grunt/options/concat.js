@@ -35,7 +35,7 @@ module.exports = function(grunt) {
     },
     dist: {
       src: srcFiles,
-      dest: '<%= paths.dev %>/js/chordmaker.js',
+      dest: '<%= paths.dist %>/js/chordmaker.js',
     },
   };
 };
