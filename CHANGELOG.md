@@ -1,3 +1,8 @@
+## 0.1.5 (2014-09-18)
+
+  - CHANGELOG updated for v0.1.4 release
+  - release 0.1.5
+
 ## 0.1.4 (2014-09-18)
 
   - CHANGELOG updated for v0.2.0 release
