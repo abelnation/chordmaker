@@ -2,15 +2,15 @@ $(function() {
 
   var instrument = "guitar";
   var tuning = "EADGBe";
-  
-  var chordList = Voicings.getChordList(instrument, tuning);
-  var music = new Aex.Flow.Music();
-  
+
+  var chordList = Chrods.Voicings.getChordList(instrument, tuning);
+  var music = new Chords.Theory();
+
   var matchExact = false;
   var scalesMatchExact = false;
   var arpeggiosMatchExact = false;
 
-  var factory = new GuitarNoteFactory({ numFrets: 15 });
+  var factory = new Chords.GuitarNoteFactory({ numFrets: 15 });
 
   var chord_cache = {};
 
@@ -21,9 +21,9 @@ $(function() {
     var container = $("#arpeggio-container");
 
     container.empty();
-    for (var chordType in Aex.Flow.Music.arpeggios) {
+    for (var chordType in Chords.Theory.arpeggios) {
       // var chordType = chordList[i];
-      
+
       if (arpeggiosMatchExact && type && chordType !== type) {
         continue;
       } else if (!arpeggiosMatchExact && type && chordType.indexOf(type) === -1) {
@@ -38,8 +38,8 @@ $(function() {
       section_container.append('<div id="' + chordId + '" class="chord"></div>');
 
       var options = { scale: 0.85 };
-      _.defaults(options, ChordView.OPTIONS_NECK);
-      new ChordView(chordId, options, new ChordModel({
+      _.defaults(options, Chords.ChordView.OPTIONS_NECK);
+      new Chords.ChordView(chordId, options, new ChordModel({
           notes: factory.notesForArpeggio(chordKey, chordType) }
         )
       );
@@ -47,7 +47,7 @@ $(function() {
       container.append(section_container);
     }
   }
-  
+
   function generateScaleListing(chordKey, scale) {
     var i;
     var j;
@@ -70,10 +70,10 @@ $(function() {
       section_container.append('<div id="' + chordId + '" class="chord"></div>');
 
       var options = { scale: 0.85 };
-      _.defaults(options, ChordView.OPTIONS_NECK);
-      new ChordView(chordId, options, 
-        new ChordModel({ 
-          notes: factory.notesForScale(chordKey, scaleName) 
+      _.defaults(options, Chords.ChordView.OPTIONS_NECK);
+      new Chords.ChordView(chordId, options,
+        new Chords.ChordModel({
+          notes: factory.notesForScale(chordKey, scaleName)
         })
       );
 
@@ -90,10 +90,10 @@ $(function() {
 
     // container.empty();
     container.children().detach().remove();
-    
+
     for (i = 0; i < chordList.length; i++) {
       var chordType = chordList[i];
-      
+
       if (matchExact && type && chordType !== type) {
         continue;
       } else if (!matchExact && type && chordType.indexOf(type) === -1) {
@@ -116,10 +116,10 @@ $(function() {
           chord_cache[chord_cache_key] = elem;
           section_container.append(elem);
 
-          new ChordView(
+          new Chords.ChordView(
             chord_cache_key,
-            ChordView.DEFAULT_OPTIONS,
-            Voicings.chordModelFromVoicing(instrument, tuning, chordType, chordKey, j));
+            Chords.ChordView.DEFAULT_OPTIONS,
+            Chords.Voicings.chordModelFromVoicing(instrument, tuning, chordType, chordKey, j));
         }
 
         numRendered++;
@@ -136,7 +136,7 @@ $(function() {
 
     if (!key) { return; }
     if (type === "" || (
-      _.has(Aex.Flow.Music.noteValues, key) 
+      _.has(Chords.Theory.noteValues, key)
       // && _.indexOf(chordList, type) !== -1)
       )) {
       generateChordListing(key, type);
@@ -153,8 +153,8 @@ $(function() {
     console.log("update: " + key + scale);
 
     if (scale === "" || (
-      _.has(Aex.Flow.Music.noteValues, key)
-      // && _.indexOf(Vex.Flow.Music.scales, scale) !== -1)
+      _.has(Chords.Theory.noteValues, key)
+      // && _.indexOf(Chords.Theory.scales, scale) !== -1)
       )) {
       generateScaleListing(key, scale);
     }
@@ -169,7 +169,7 @@ $(function() {
 
     if (!key) { return; }
     if (type === "" || (
-      _.has(Vex.Flow.Music.noteValues, key) 
+      _.has(Chords.Theory.noteValues, key)
       // && _.indexOf(chordList, type) !== -1)
       )) {
       generateArpeggioListing(key, type);

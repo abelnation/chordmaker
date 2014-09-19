@@ -2,8 +2,8 @@ $(function() {
 
   var instrument = "guitar";
   var tuning = "EADGBe";
-  
-  var chordList = Voicings.getChordList(instrument, tuning);
+
+  var chordList = Chords.Voicings.getChordList(instrument, tuning);
   var selectedChords = {
     "maj": true,
     "maj7": true,
@@ -20,18 +20,18 @@ $(function() {
     "m7": true,
     "m7(b5)": true,
   };
-  var music = new Aex.Flow.Music();
-  
+  var music = new Chords.Theory();
+
   var matchExact = false;
 
   var chordViewOptions = {};
-  _.defaults(chordViewOptions, ChordView.DEFAULT_OPTIONS);
+  _.defaults(chordViewOptions, Chords.ChordView.DEFAULT_OPTIONS);
   chordViewOptions.show_label = false;
   chordViewOptions.scale = 1.0;
   chordViewOptions.show_fingers = false;
 
   var answerViewOptions = {};
-  _.defaults(answerViewOptions, ChordView.DEFAULT_OPTIONS);
+  _.defaults(answerViewOptions, Chords.ChordView.DEFAULT_OPTIONS);
   answerViewOptions.show_label = false;
   answerViewOptions.scale = 0.5;
   answerViewOptions.show_fingers = false;
@@ -47,7 +47,7 @@ $(function() {
     type: null,
   };
 
-  var factory = new GuitarNoteFactory({ numFrets: 15 });
+  var factory = new Chords.GuitarNoteFactory({ numFrets: 15 });
 
   function createChordSelectButtons() {
 
@@ -125,7 +125,7 @@ $(function() {
       } else {
         delete selectedChords[chordType];
       }
-      
+
       saveSettings();
 
       createChordSelectButtons();
@@ -185,23 +185,23 @@ $(function() {
       throw new Error("no chord type picked");
     }
 
-    var numVariations = Voicings.getNumVariations(instrument, tuning, chord);
+    var numVariations = Chords.Voicings.getNumVariations(instrument, tuning, chord);
     var variationNumber = Math.floor(Math.random()*numVariations);
 
-    var keyIdx = Math.floor(Math.random() * Aex.Flow.Music.canonical_notes.length);
-    var key = Aex.Flow.Music.canonical_notes[keyIdx];
+    var keyIdx = Math.floor(Math.random() * Chords.Theory.canonical_notes.length);
+    var key = Chords.Theory.canonical_notes[keyIdx];
 
     curAnswer = {
       key: key.toUpperCase(),
       type: chord
     };
 
-    var chordModel = Voicings.chordModelFromVoicing(instrument, tuning, chord, key, variationNumber, true);
+    var chordModel = Chords.Voicings.chordModelFromVoicing(instrument, tuning, chord, key, variationNumber, true);
 
     chordId = "quiz-chord-01";
     $("#quiz-chord-diagram").append('<div id="' + chordId + '" class="chord"></div>');
 
-    new ChordView(
+    new Chords.ChordView(
       chordId,
       chordViewOptions,
       chordModel);
