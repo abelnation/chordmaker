@@ -21,7 +21,7 @@ module.exports = function(grunt) {
 
         grunt.task.run([
             // create versioned copy of GGCookieUtil.js in release/ dir
-            'build:dist',
+            'build',
             'test',
 
             'shell:changelog_pre',
