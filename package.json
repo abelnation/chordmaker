@@ -59,7 +59,7 @@
     "grunt-shell": "~1.1.1",
     "grunt-strip": "~0.2.1",
     "grunt-timer": "^0.5.8",
-    "handlebars": "~1.0.12",
+    "handlebars": "~2.0.0",
     "load-grunt-tasks": "~0.6.0",
     "semver": "~3.0.1",
     "underscore": "^1.7.0",
