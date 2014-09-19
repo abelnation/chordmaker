@@ -1,7 +1,9 @@
-/* global GuitarNote */
+/* global Chords */
 
 describe("GuitarNote", function() {
-  
+
+  var GuitarNote = Chords.GuitarNote;
+
   it("errors if not provided enough arguments", function() {
     expect(function() { new GuitarNote(); }).toThrow();
     expect(function() { new GuitarNote(1); }).toThrow();
@@ -76,13 +78,13 @@ describe("GuitarNote", function() {
 
     gn = new GuitarNote(9, 0, { finger: 3 });
     expect(gn.getKey()).toEqual("9 0");
-    
+
     gn = new GuitarNote(2, null, { muted: true });
     expect(gn.getKey()).toEqual("2 " + GuitarNote.DEF_MUTE_ANNOTATION);
 
     gn = new GuitarNote(2, 5, { muted: true });
     expect(gn.getKey()).toEqual("2 " + GuitarNote.DEF_MUTE_ANNOTATION);
-    
+
   });
 
   it("equality tests equal and unequal cases", function() {
@@ -135,7 +137,7 @@ describe("GuitarNote", function() {
   it("equality is symmetric", function() {
     // identity
     expect((new GuitarNote(2, 3)).equals(new GuitarNote(2, 3))).toEqual(true);
-    
+
     expect((new GuitarNote(2, 3)).equals(new GuitarNote(2, 5))).toEqual(false);
     expect((new GuitarNote(2, 5)).equals(new GuitarNote(2, 3))).toEqual(false);
     expect((new GuitarNote(2, 5, { muted: true })).equals(new GuitarNote(2, 5))).toEqual(false);

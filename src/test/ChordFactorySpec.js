@@ -1,4 +1,4 @@
-/* global ChordFactory */
+/* global Chords */
 
 describe("ChordFactory", function() {
 
@@ -8,7 +8,7 @@ describe("ChordFactory", function() {
     jasmine.getFixtures().fixturesPath = 'build/dev/test/';
     jasmine.getFixtures().load("ChordFactoryFixture.html");
 
-    cf = new ChordFactory();
+    cf = new Chords.ChordFactory();
   });
 
   it("Running on valid examples without inline configs does not throw exceptions", function() {

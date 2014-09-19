@@ -16,11 +16,13 @@ module.exports = function(grunt) {
         '<%= paths.dev %>/js/ChordModel.js',
         '<%= paths.dev %>/js/ChordView.js',
         '<%= paths.dev %>/js/Voicings.js',
+
+        '<%= paths.dev %>/js/lib/chordparser-peg.js',
+        '<%= paths.dev %>/js/ChordParser.js',
+
         '<%= paths.dev %>/js/GuitarNoteFactory.js',
         '<%= paths.dev %>/js/TuningFactory.js',
         '<%= paths.dev %>/js/ChordFactory.js',
-
-        '<%= paths.dev %>/js/lib/underscore-min.js',
 
         // TODO: (aallison) Integrate parser
         // '<%= paths.dev %>/js/lib/chordparser-peg.js'
@@ -38,11 +40,13 @@ module.exports = function(grunt) {
         '<%= paths.dev %>/js/ChordModel.js',
         '<%= paths.dev %>/js/ChordView.js',
         '<%= paths.dev %>/js/Voicings.js',
+
+        '<%= paths.dev %>/js/lib/chordparser-peg.js',
+        '<%= paths.dev %>/js/ChordParser.js',
+
         '<%= paths.dev %>/js/GuitarNoteFactory.js',
         '<%= paths.dev %>/js/TuningFactory.js',
         '<%= paths.dev %>/js/ChordFactory.js',
-
-        '<%= paths.dev %>/js/lib/underscore-min.js',
 
         // TODO: (aallison) Integrate parser
         // '<%= paths.dev %>/js/lib/chordparser-peg.js'

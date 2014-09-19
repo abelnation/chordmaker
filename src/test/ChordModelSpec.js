@@ -1,6 +1,9 @@
-/* global ChordModel, GuitarNote */
+/* global Chords */
 
 describe("ChordModel", function() {
+
+  var ChordModel = Chords.ChordModel;
+  var GuitarNote = Chords.GuitarNote;
 
   it("constructor validates arguments", function() {
     expect(function() { new ChordModel({ tuning: "INVALID" }); }).toThrow();

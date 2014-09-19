@@ -1,6 +1,8 @@
-/* global Tuning, _ */
+/* global Chords */
 
 describe("Tuning", function() {
+
+  var Tuning = Chords.Tuning;
 
   it("isValidTuningString validates proper tuning strings", function() {
     expect(Tuning.isValidTuningString("EADGBe")).toBe(true);

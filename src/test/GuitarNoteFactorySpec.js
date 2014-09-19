@@ -1,6 +1,8 @@
-/* global GuitarNoteFactory */
+/* global Chords */
 
 describe("GuitarNoteFactory", function() {
+
+  var GuitarNoteFactory = Chords.GuitarNoteFactory;
 
   it("errors if provided invalid tuning", function() {
     expect(function() { new GuitarNoteFactory({ tuning: "EABbCDE" }); }).toThrow();

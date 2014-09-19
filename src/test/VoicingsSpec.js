@@ -1,6 +1,8 @@
-/* global Voicings, _ */
+/* global Chords */
 
 describe("Voicings", function() {
+
+  var Voicings = Chords.Voicings;
 
   it("Returns correct chord label list", function() {
     var list = Voicings.getChordList("test", "EADGBe");

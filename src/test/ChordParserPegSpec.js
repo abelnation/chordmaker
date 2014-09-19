@@ -1,6 +1,12 @@
-/* global ChordParserPEG, ChordModel, GuitarNote, Tuning, ChordFactory */
+/* global Chords */
 
 describe("ChordParserPeg", function() {
+
+  var ChordModel = Chords.ChordModel;
+  var GuitarNote = Chords.GuitarNote;
+  var Tuning = Chords.Tuning;
+  var ChordFactory = Chords.ChordFactory;
+  var ChordParserPEG = Chords.ChordParserPEG;
 
   var parser;
   var cf;

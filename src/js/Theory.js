@@ -247,7 +247,7 @@
         return {
           'root': root,
           'accidental': accidental
-        },
+        };
       } else {
         throw new Aex.RERR("BadArguments", "Invalid note name: " + noteString);
       }

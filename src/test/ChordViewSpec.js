@@ -1,6 +1,8 @@
-/* global ChordView, ChordModel, GuitarNote */
+/* global Chords */
 
 describe("ChordView", function() {
+
+  var ChordView = Chords.ChordView;
 
   beforeEach(function() {
     jasmine.getFixtures().fixturesPath = 'build/dev/test/';

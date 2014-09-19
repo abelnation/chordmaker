@@ -33,12 +33,7 @@ module.exports = function(grunt) {
     js: {
       files: ['<%= jshint.src.src %>'],
       tasks: [
-        'jshint:src',
-        'jscs:src',
-        'clean:devjscompiled',
-        'copy:devjs',
-        'concat:dev',
-        'uglify:dev',
+        'build:dev',
         'test',
       ],
     },

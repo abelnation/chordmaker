@@ -1,7 +1,10 @@
-/* global TuningFactory, Tuning */
+/* global Chords */
 
 describe("TuningFactory", function() {
-  
+
+  var TuningFactory = Chords.TuningFactory;
+  var Tuning = Chords.Tuning;
+
   it("fromInstrument errors if provided invalid arguments", function() {
     expect(function() { TuningFactory.fromInstrument(); }).toThrow();
     expect(function() { TuningFactory.fromInstrument("asdf"); }).toThrow();

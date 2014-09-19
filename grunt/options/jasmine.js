@@ -18,7 +18,8 @@ module.exports = function(grunt) {
         vendor: [
           '<%= paths.dev %>/js/lib/jasmine-jquery/jquery-2.0.3.min.js',
           '<%= paths.dev %>/js/lib/jasmine-jquery/jasmine-jquery.js',
-          '<%= paths.dev %>/js/lib/raphael-min.js'
+          '<%= paths.dev %>/js/lib/raphael-min.js',
+          '<%= paths.dev %>/js/lib/underscore-min.js',
         ],
         // helpers: '<%= paths.dev %>/test/**/*Helper.js',
         keepRunner: true,
