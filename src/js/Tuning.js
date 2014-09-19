@@ -119,4 +119,7 @@
     },
   });
 
+  _.extend(exports, {
+    Tuning: Tuning
+  });
 })(Chords);

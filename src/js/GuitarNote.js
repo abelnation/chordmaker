@@ -98,4 +98,8 @@
     },
   });
 
+  _.extend(exports, {
+    GuitarNote: GuitarNote
+  });
+
 })(Chords);
