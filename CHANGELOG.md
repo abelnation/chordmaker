@@ -1,3 +1,26 @@
+## 0.2.0 (2014-09-19)
+
+  - CHANGELOG updated for v0.1.6 release
+  - Adding v0.1.6 release files
+  - tweaking release task
+  - build task checks deps versions
+  - updated handlebars to latest version
+  - AMD wrapper integrated.  Still need to migrate files
+  - removing refs to versioned build file
+  - Theory ported to new scoping scheme
+  - Tuning updated for new scope scheme
+  - GuitarNote updated to new scope scheme
+  - GuitarNoteFactory updated to new scope scheme
+  - TuningFactory updated to new scope scheme
+  - Voicings updated to new scope scheme
+  - jasmine tests are back running
+  - updating demo pages to new API
+  - geting demo code up to date
+  - removing old music file
+  - doc strings added
+  - disabling chord parser functionality for release
+  - release 0.2.0
+
 ## 0.1.6 (2014-09-18)
 
   - CHANGELOG updated for v0.1.5 release
