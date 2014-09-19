@@ -2,10 +2,13 @@ module.exports = function(grunt) {
 
     grunt.registerTask('build', "Build ChordMaker Lib", function(target) {
         if (typeof target === "undefined") {
-          target = "dev"
+          target = "dev";
         }
 
-        grunt.task.run([ 'todos' ]);
+        grunt.task.run([
+          'todos',
+          'devUpdate',
+        ]);
 
         if (target === "dev") {
             grunt.task.run([
