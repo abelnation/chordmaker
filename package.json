@@ -1,7 +1,7 @@
 {
   "name": "chordmaker",
   "description": "Lib to render svg guitar chord and neck diagrams.",
-  "version": "0.1.3-0",
+  "version": "0.1.4",
   "homepage": "https://github.com/abelnation/chordmaker/",
   "author": {
     "name": "aallison",
