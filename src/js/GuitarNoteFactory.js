@@ -21,7 +21,7 @@ GuitarNoteFactory.DEFAULT_OPTIONS = {
   maxFret: 20,
 };
 
-// TODO: chord voicing library
+// TODO: (aallison) chord voicing library
 // GuitarNoteFactory.openChordVoicings = {
 //   "guitar": {
 //     "a": [0,0,2,2,2,0],

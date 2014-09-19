@@ -204,7 +204,7 @@ Aex.Flow.Music.prototype.isValidNoteValue = function(note) {
 Aex.Flow.Music.prototype.isValidIntervalValue = function(interval) {
   // - `interval` : integer
 
-  // TODO: Support Intervals greater than an octave
+  // TODO: (aallison) Support Intervals greater than an octave
   return this.isValidNoteValue(interval);
 };
 
@@ -252,7 +252,7 @@ Aex.Flow.Music.prototype.getKeyParts = function(keyString) {
   var key = keyString.toLowerCase();
 
   // Support Major, Minor, Melodic Minor, and Harmonic Minor key types.
-  // TODO: Integrate with scale dicts
+  // TODO: (aallison) Integrate with scale dicts
   var regex = /^([cdefgab])(b|#)?(mel|harm|m|M)?$/;
   var match = regex.exec(key);
 

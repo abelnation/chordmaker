@@ -1,7 +1,7 @@
 /* global Tuning, _ */
 
 describe("Tuning", function() {
-  
+
   it("isValidTuningString validates proper tuning strings", function() {
     expect(Tuning.isValidTuningString("EADGBe")).toBe(true);
     expect(Tuning.isValidTuningString("ABCDEFG")).toBe(true);
@@ -45,7 +45,7 @@ describe("Tuning", function() {
     expect(Tuning.isValidTuningString("*")).toBe(false);
     expect(Tuning.isValidTuningString("(")).toBe(false);
     expect(Tuning.isValidTuningString(")")).toBe(false);
-    // TODO: rest of symbols
+    // TODO: (aallison) rest of symbols
   });
 
   it("parseTuningString expects valid args", function() {

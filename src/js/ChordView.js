@@ -42,7 +42,7 @@ ChordView.NOTE_GRADIENTS = {
 };
 
 // Positions on neck of neck marker dots
-// TODO: only applicable for guitar
+// TODO: (aallison) only applicable for guitar
 ChordView.NECK_MARKERS = [
   [ 5, 1 ],
   [ 7, 2 ],
@@ -90,7 +90,7 @@ ChordView.DEFAULT_OPTIONS = {
   finger_anno_y: 10,
   finger_position: ChordView.FINGER_TOP,
   anno_font_size: 18,
-  // TODO: open annotations not really related to finger annotations
+  // TODO: (aallison) open annotations not really related to finger annotations
   open_note_radius: 6,
 
   // Note markers
@@ -225,7 +225,7 @@ ChordView.prototype = {
     this.noteGlyphs = {};
 
     this.transform_str = "";
-    // TODO: decomp out this calculation
+    // TODO: (aallison) decomp out this calculation
     this.width = this.options.grid_x + this.model.getNumStrings() * this.options.string_gap + this.options.base_fret_label_width + this.options.grid_padding_right;
     this.height = this.options.grid_y + this.options.num_frets * this.options.fret_gap + this.options.tuning_label_font_size + this.options.grid_padding_bottom;
 
@@ -274,7 +274,7 @@ ChordView.prototype = {
   },
 
   getCode: function() {
-    // TODO: implement
+    // TODO: (aallison) implement
     throw Error("Not implemented yet");
   },
   getModel: function() {
@@ -283,7 +283,7 @@ ChordView.prototype = {
 
   _scaleSize: function() {
     _.each(ChordView.DEFAULT_OPTIONS, function(num, key) {
-      // TODO: improve the fact that we're using negative numbers to distinguish values from consts
+      // TODO: (aallison) improve the fact that we're using negative numbers to distinguish values from consts
       if (_.indexOf(ChordView.UNSCALABLE, key) == -1 && _.isNumber(this.options[key])) {
 
         this.options[key] = this.options[key] * this.options.scale;
@@ -349,7 +349,7 @@ ChordView.prototype = {
       throw TypeError("Invalid orientation: " + orientation);
     }
 
-    // TODO: Deal correctly with chord label
+    // TODO: (aallison) Deal correctly with chord label
 
     if (orientation == ChordView.NUT_TOP) {
 
@@ -367,9 +367,9 @@ ChordView.prototype = {
       var translate_x = -(this.width - this.height) / 2;
       var translate_y = (this.height - this.width) / 2;
 
-      // TODO: explain this transformation
+      // TODO: (aallison) explain this transformation
       // don't include right padding for sideways layouts
-      // TODO: position base fret label differently depending on orientation
+      // TODO: (aallison) position base fret label differently depending on orientation
       this.transform_str = "r-90,0,0" + "t-" + (this.width - (this.options.base_fret_label_width + this.options.grid_padding_right)) + ",0";
 
       this.height = this.options.grid_x + this.model.getNumStrings() * this.options.string_gap;

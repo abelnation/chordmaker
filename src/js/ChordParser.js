@@ -8,7 +8,7 @@ function ChordParser(options) {
   // - `options` : config object
 
   // This first guard ensures that the callee has invoked our Class' constructor function
-  // with the `new` keyword - failure to do this will result in the `this` keyword referring 
+  // with the `new` keyword - failure to do this will result in the `this` keyword referring
   // to the callee's scope (typically the window global) which will result in the following fields
   // (name and _age) leaking into the global namespace and not being set on this object.
   if (!(this instanceof ChordParser)) {
@@ -31,7 +31,7 @@ ChordParser.DEFAULT_OPTIONS = {
 
 ChordParser.prototype = {
   // Whenever you replace an Object's Prototype, you need to repoint
-  // the base Constructor back at the original constructor Function, 
+  // the base Constructor back at the original constructor Function,
   // otherwise `instanceof` calls will fail.
   constructor: ChordParser,
 
@@ -76,8 +76,8 @@ ChordParser.prototype = {
 
     var chordConfig = {};
     var chordStrings = [];
-    
-    // TODO: handle default color for parser
+
+    // TODO: (aallison) handle default color for parser
     var color = "white";
 
     var lines = chordStr.split("\n");
@@ -96,9 +96,9 @@ ChordParser.prototype = {
 
     }, this);
 
-    // TODO: create ChordModel
+    // TODO: (aallison) create ChordModel
     var model = new ChordModel();
-    // TODO: add notes to model
+    // TODO: (aallison) add notes to model
 
     var result = new ChordView(element, chordConfig, model);
     return result;
@@ -144,7 +144,7 @@ ChordParser.prototype = {
 
     // Remove string num part for subsequent processing
     var notes_part = stringStr.replace(string_regex, "");
-    
+
     var notes = notes_part.split(',');
     _.each(notes, function(note) {
       var noteObj = this._parseNoteString(note);
@@ -177,7 +177,7 @@ ChordParser.prototype = {
         var key = tokens[0].replace(/^\s+|\s+$/g, '');
         var val = tokens[1].replace(/^\s+|\s+$/g, '');
 
-        // TODO: you can only config color right now
+        // TODO: (aallison) you can only config color right now
         if (key == "color") {
           color = val;
         }
@@ -204,7 +204,7 @@ ChordParser.prototype = {
     // Check if fret is 'muted'
     } else if (noteObj.fret.match(/[mMxX]/)) {
       noteObj.muted = true;
-    
+
     // Otherwise, is a fret number
     } else {
       noteObj.fret = parseInt(noteObj.fret, 10);

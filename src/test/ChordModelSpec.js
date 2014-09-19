@@ -18,7 +18,7 @@ describe("ChordModel", function() {
     expect(function() { cm.addNote({ foo: "bar" }); }).toThrow();
     expect(function() { cm.addNote([ 1234 ]); }).toThrow();
 
-    // TODO: note strings
+    // TODO: (aallison) note strings
     // expect(cm.addNote("INVALID")).toThrow();
   });
 

@@ -5,6 +5,8 @@ module.exports = function(grunt) {
           target = "dev"
         }
 
+        grunt.task.run([ 'todos' ]);
+
         if (target === "dev") {
             grunt.task.run([
                 'jshint:src',

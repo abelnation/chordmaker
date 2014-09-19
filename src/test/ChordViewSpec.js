@@ -17,12 +17,12 @@ describe("ChordView", function() {
     expect(function() { new ChordView({ foo: "bar" }); }).toThrow();
     expect(function() { new ChordView([ "chord-ex1" ]); }).toThrow();
   });
-  
+
   it("constructor with valid element inserts SVG", function() {
     new ChordView("chord-ex1");
     new ChordView("#chord-ex2");
     new ChordView("chord-ex3");
-    
+
     expect($("#chord-ex1")).not.toBeEmpty();
     expect($("#chord-ex2")).not.toBeEmpty();
     expect($("#chord-ex3")).not.toBeEmpty();
@@ -32,6 +32,6 @@ describe("ChordView", function() {
     expect($("#chord-ex3")).toContain("svg");
   });
 
-  // TODO: Lots of testing
+  // TODO: (aallison) Lots of testing
 
 });

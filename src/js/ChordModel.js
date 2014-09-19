@@ -27,7 +27,7 @@ ChordModel.DEFAULT_OPTIONS = {
   // DATA DEFAULTS
   // numFrets: 5,
 
-  // // TODO: doesn't make sense that a chord with a nut is based at fret 1, not 0
+  // // TODO: (aallison) doesn't make sense that a chord with a nut is based at fret 1, not 0
   // baseFret: 1,
 
   // Name/label for the chord
@@ -125,7 +125,7 @@ ChordModel.prototype = {
       throw TypeError("note stringNum is not valid for this chord: " + note.string);
     }
 
-    // TODO: notify listeners
+    // TODO: (aallison) notify listeners
     this.notes[note.getKey()] = note;
     if (_.isNumber(note.fret) && note.fret !== 0 && (this.min_fret == -1 || note.fret < this.min_fret)) { this.min_fret = note.fret; }
     if (_.isNumber(note.fret) && note.fret !== 0 && (this.max_fret == -1 || note.fret > this.max_fret)) { this.max_fret = note.fret; }
@@ -133,7 +133,7 @@ ChordModel.prototype = {
   removeNote: function(note) {
     var key = this._keyForNote(note);
 
-    // TODO: notify listeners
+    // TODO: (aallison) notify listeners
     delete this.notes[key];
   },
   empty: function() {
@@ -147,7 +147,7 @@ ChordModel.prototype = {
     // - `direction` : direction to shift notes (`1` or `-1`)
 
     // just create a new notes dict because keys will change
-    // TODO: does this cause issues for ChordView?
+    // TODO: (aallison) does this cause issues for ChordView?
     var newNotes = {};
     var transposeOffset = (interval * direction);
     for (var noteKey in this.notes) {
@@ -173,7 +173,7 @@ ChordModel.prototype = {
     if (!this.options.key && !originalKey) {
       throw TypeError("No key assigned to chordmodel or passed as an argument");
     }
-    // TODO: implement
+    // TODO: (aallison) implement
   },
 
   equals: function(model) {

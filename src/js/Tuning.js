@@ -94,7 +94,7 @@ Tuning.instruments = {
     "open-g": "DGDGBD",
     "open-g-dobro": "GBDGBD",
     "open-d": "DADF#AD",
-    // TODO: add more?
+    // TODO: (aallison) add more?
   },
   "banjo": {
     "default": "gDGBD",
@@ -103,15 +103,15 @@ Tuning.instruments = {
     "open-g-minor": "gDGA#D",
     "standard-c": "gCGBD",
     "open-d": "f#DF#AD"
-    // TODO: add more?
+    // TODO: (aallison) add more?
   },
   "mandolin": {
     "default": "GDAE",
-    // TODO: fill in
+    // TODO: (aallison) fill in
   },
   "bass": {
     "default": "EADG",
-    // TODO: fill in
+    // TODO: (aallison) fill in
   },
 };
 Tuning.defaultTuning = Tuning.instruments["guitar"]["default"];

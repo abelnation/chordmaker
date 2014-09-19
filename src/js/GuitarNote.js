@@ -45,7 +45,7 @@ GuitarNote.prototype = {
     } else if (_.isNumber(fret) && fret < 0) {
       throw TypeError("Fret number must be >= 0: " + fret);
     }
-    
+
     if (this.isMuteAnnotation(fret) ||
         this.options.finger && this.isMuteAnnotation(this.options.finger)) {
       this.options.muted = true;
@@ -79,7 +79,7 @@ GuitarNote.prototype = {
     } else if (this.isMuted() != note.isMuted()) {
       return false;
     }
-    
+
     return true;
   },
 
@@ -90,7 +90,7 @@ GuitarNote.prototype = {
     return (GuitarNote.THUMB_ANNOTATION.indexOf(str) !== -1);
   },
   toString: function() {
-    // TODO: implement
+    // TODO: (aallison) implement
     var result = "String: " + this.string + ", Fret: " + this.fret;
     if (this.isMuted()) {
       result += ", Finger: " + GuitarNote.DEF_MUTE_ANNOTATION;
