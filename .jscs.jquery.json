@@ -8,11 +8,23 @@
         "beforeOpeningRoundBrace": true
     },
     "requireSpacesInsideObjectBrackets": "all",
+    "disallowMultipleVarDecl": true,
     "requireSpacesInsideArrayBrackets": "allButNested",
-    "disallowLeftStickedOperators": [ "?", "-", "/", "*", "=", "==", "===", "!=", "!==", ">", ">=", "<", "<=" ],
-    "disallowRightStickedOperators": [ "?", "/", "*", ":", "=", "==", "===", "!=", "!==", ">", ">=", "<", "<="],
-    "requireRightStickedOperators": [ "!" ],
-    "requireLeftStickedOperators": [ "," ],
+
+    "disallowSpaceBeforeBinaryOperators": [","],
+    "requireSpaceBeforeBinaryOperators": [ "+", "-", "/", "*", "=", "==", "===", "!=", "!==" ],
+    "requireSpaceAfterBinaryOperators": [ ",", "+", "-", "/", "*", "=", "==", "===", "!=", "!==" ],
+
+    "disallowSpaceAfterPrefixUnaryOperators": ["!"],
+
+    "disallowSpaceBeforePostfixUnaryOperators": ["++", "--"],
+
+    "requireSpacesInConditionalExpression": {
+        "afterTest": true,
+        "beforeConsequent": true,
+        "afterConsequent": true,
+        "beforeAlternate": true
+    },
     "disallowKeywords": [ "with" ],
     "disallowMultipleLineBreaks": true,
     "disallowKeywordsOnNewLine": [ "else" ],

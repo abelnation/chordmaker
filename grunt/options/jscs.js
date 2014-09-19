@@ -5,7 +5,10 @@ module.exports = function(grunt) {
     },
     src: {
       files: {
-        src: ["<%= jshint.src.src %>", '!<%= paths.src %>/js/Voicings.js']
+        src: [
+          "<%= jshint.src.src %>",
+          '!<%= paths.src %>/js/Voicings.js'
+        ]
       }
     },
     test: {

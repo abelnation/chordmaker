@@ -1,7 +1,7 @@
 /* global ChordModel, GuitarNote */
 
 describe("ChordModel", function() {
-  
+
   it("constructor validates arguments", function() {
     expect(function() { new ChordModel({ tuning: "INVALID" }); }).toThrow();
 
@@ -26,17 +26,17 @@ describe("ChordModel", function() {
     var cm = new ChordModel();
     expect(cm.getNumNotes()).toEqual(0);
 
-    cm.addNote(new GuitarNote(0,1));
+    cm.addNote(new GuitarNote(0, 1));
     expect(cm.getNumNotes()).toEqual(1);
 
-    cm.addNote(new GuitarNote(0,2));
+    cm.addNote(new GuitarNote(0, 2));
     expect(cm.getNumNotes()).toEqual(2);
 
-    cm.addNote(new GuitarNote(0,3));
+    cm.addNote(new GuitarNote(0, 3));
     expect(cm.getNumNotes()).toEqual(3);
 
     // replace note
-    cm.addNote(new GuitarNote(0,3));
+    cm.addNote(new GuitarNote(0, 3));
     expect(cm.getNumNotes()).toEqual(3);
   });
 
@@ -44,14 +44,14 @@ describe("ChordModel", function() {
     var cm = new ChordModel();
     var notes = [];
     for (var i = 1; i < 5; i++) {
-      notes.push(new GuitarNote(0,i));
+      notes.push(new GuitarNote(0, i));
     }
     cm.addNotes(notes);
     expect(cm.getNumNotes()).toEqual(4);
 
     notes = [];
     for (var j = 1; j < 3; j++) {
-      notes.push(new GuitarNote(1,j));
+      notes.push(new GuitarNote(1, j));
     }
     cm.addNotes(notes);
     expect(cm.getNumNotes()).toEqual(6);
@@ -61,18 +61,18 @@ describe("ChordModel", function() {
     var cm = new ChordModel();
     var notes = [];
     for (var i = 1; i < 5; i++) {
-      notes.push(new GuitarNote(0,i));
+      notes.push(new GuitarNote(0, i));
     }
     cm.addNotes(notes);
 
-    cm.removeNote(new GuitarNote(0,1));
+    cm.removeNote(new GuitarNote(0, 1));
     expect(cm.getNumNotes()).toEqual(3);
 
-    cm.removeNote(new GuitarNote(0,3));
+    cm.removeNote(new GuitarNote(0, 3));
     expect(cm.getNumNotes()).toEqual(2);
-    
+
     // remove already removed note
-    cm.removeNote(new GuitarNote(0,3));
+    cm.removeNote(new GuitarNote(0, 3));
     expect(cm.getNumNotes()).toEqual(2);
   });
 
@@ -80,13 +80,13 @@ describe("ChordModel", function() {
     var cm1 = new ChordModel();
     var notes = [];
     for (var i = 1; i < 5; i++) {
-      notes.push(new GuitarNote(0,i));
+      notes.push(new GuitarNote(0, i));
     }
     cm1.addNotes(notes);
     expect(cm1.getNumNotes()).toEqual(4);
     cm1.empty();
     expect(cm1.getNumNotes()).toEqual(0);
-    cm1.addNote(new GuitarNote(0,i));
+    cm1.addNote(new GuitarNote(0, i));
     expect(cm1.getNumNotes()).toEqual(1);
     cm1.empty();
     expect(cm1.getNumNotes()).toEqual(0);
@@ -100,7 +100,7 @@ describe("ChordModel", function() {
     var notes = [];
     var numNotes = 4;
     for (var i = 1; i <= numNotes; i++) {
-      notes.push(new GuitarNote(0,i));
+      notes.push(new GuitarNote(0, i));
     }
     cm1.addNotes(notes);
 
@@ -132,7 +132,7 @@ describe("ChordModel", function() {
     var notes = [];
     var numNotes = 4;
     for (var i = 1; i <= numNotes; i++) {
-      notes.push(new GuitarNote(0,i));
+      notes.push(new GuitarNote(0, i));
     }
 
     // Test option inequality

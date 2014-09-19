@@ -1,7 +1,7 @@
 /* global GuitarNoteFactory */
 
 describe("GuitarNoteFactory", function() {
-  
+
   it("errors if provided invalid tuning", function() {
     expect(function() { new GuitarNoteFactory({ tuning: "EABbCDE" }); }).toThrow();
     expect(function() { new GuitarNoteFactory({ tuning: "WERT" }); }).toThrow();
@@ -42,7 +42,6 @@ describe("GuitarNoteFactory", function() {
     expect(note.string).toEqual(0);
     expect(note.fret).toEqual(2);
 
-    
     nf = new GuitarNoteFactory({ tuning: "E D C", numFrets: 12 });
     var notes = nf.notesForNotesValues([ 4 ]); // e (int_val: 4)
     expect(notes.length).toEqual(3);
@@ -59,7 +58,7 @@ describe("GuitarNoteFactory", function() {
     //open e string (int_val: 4)
     var notes = nf.notesForNotesValues([ 4 ]);
     expect(notes.length).toEqual(0);
-    
+
     // bottom of range (inclusive)
     notes = nf.notesForNotesValues([ 9 ]);
     expect(notes[0].fret).toEqual(5);
@@ -88,7 +87,7 @@ describe("GuitarNoteFactory", function() {
     expect(nf.notesForNotesValues([ 4 ]).length).toEqual(6);
     expect(nf.notesForNotesValues([ 0 ]).length).toEqual(6);
     expect(nf.notesForNotesValues([ 11 ]).length).toEqual(6);
-    expect(nf.notesForNotesValues([ 1,2,3 ]).length).toEqual(6 * 3);
+    expect(nf.notesForNotesValues([ 1, 2, 3 ]).length).toEqual(6 * 3);
   });
 
   it("notesForNotesStr throws for invalid note strings", function() {
@@ -181,7 +180,7 @@ describe("GuitarNoteFactory", function() {
 
   it("notesForScale validates input", function() {
     var nf = new GuitarNoteFactory({ tuning: "E", numFrets: 12 });
-    
+
     expect(function() { nf.notesForScale(); }).toThrow();
     expect(function() { nf.notesForScale("C"); }).toThrow();
 

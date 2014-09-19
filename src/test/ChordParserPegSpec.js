@@ -68,7 +68,7 @@ describe("ChordParserPeg", function() {
       }
     };
     var result = parser.parse(c);
-    expect(parsedChordsAreEqual(result,expected)).toBe(true);
+    expect(parsedChordsAreEqual(result, expected)).toBe(true);
   });
 
   it("parses simple non-bracket version", function() {
@@ -83,7 +83,7 @@ describe("ChordParserPeg", function() {
     };
 
     var result = parser.parse(c);
-    expect(parsedChordsAreEqual(result,expected)).toBe(true);
+    expect(parsedChordsAreEqual(result, expected)).toBe(true);
   });
 
   it("parses simple non-bracket version with multiple frets", function() {
@@ -108,6 +108,6 @@ describe("ChordParserPeg", function() {
     };
 
     var result = parser.parse(c);
-    expect(parsedChordsAreEqual(result,expected)).toBe(true);
+    expect(parsedChordsAreEqual(result, expected)).toBe(true);
   });
 });

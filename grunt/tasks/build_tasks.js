@@ -1,6 +1,10 @@
 module.exports = function(grunt) {
 
     grunt.registerTask('build', "Build ChordMaker Lib", function(target) {
+        if (typeof target === "undefined") {
+          target = "dev"
+        }
+
         if (target === "dev") {
             grunt.task.run([
                 'jshint:src',
