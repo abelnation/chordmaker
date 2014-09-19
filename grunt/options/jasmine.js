@@ -14,7 +14,10 @@ module.exports = function(grunt) {
         '<%= paths.dev %>/js/chordmaker.js',
       ],
       options: {
-        specs: '<%= paths.dev %>/test/*Spec.js',
+        specs: [
+          '<%= paths.dev %>/test/*Spec.js',
+          '!<%= paths.dev %>/test/ChordParserPegSpec.js'
+        ],
         vendor: [
           '<%= paths.dev %>/js/lib/jasmine-jquery/jquery-2.0.3.min.js',
           '<%= paths.dev %>/js/lib/jasmine-jquery/jasmine-jquery.js',

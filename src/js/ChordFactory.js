@@ -32,7 +32,8 @@
       // Create config dict, filling in defaults where not provided
       _.defaults(options, ChordFactory.DEFAULT_OPTIONS);
 
-      this.parser = ChordParserPEG;
+      // TODO: (aallison) uncomment to re-enable parser
+      // this.parser = ChordParserPEG;
     },
 
     // **parseChord** parses a chord string and returns a ChordView
@@ -48,64 +49,65 @@
       this.chordFromString(elem, chordStr);
     },
 
-    chordFromString: function(element, chordStr) {
-      // - element : string or DOM element to insert chord into
-      // - chordStr : string, of the format
+    // TODO: (aallison) uncomment to re-enable parser
+    // chordFromString: function(element, chordStr) {
+    //   // - element : string or DOM element to insert chord into
+    //   // - chordStr : string, of the format
 
-      //     [<config_str>, ... ]
-      //     <string_str>
-      //     ...
+    //   //     [<config_str>, ... ]
+    //   //     <string_str>
+    //   //     ...
 
-      // where:
+    //   // where:
 
-      //     config_str: <config_key>: <config_value>
-      //     config_key: any key in ChordView.options
-      //     config_value: any valid value for ChordView.options
-      //     string_str: <string_num>: <fret_marker>[, <fret_marker> ...]
-      //     chord_num: int
-      //     fret_marker: {<fret_num> <finger_num>} | <fret_num>
-      //     fret_num: int
-      //     finger_num: [1,2,3,4] | "T" | "x"
+    //   //     config_str: <config_key>: <config_value>
+    //   //     config_key: any key in ChordView.options
+    //   //     config_value: any valid value for ChordView.options
+    //   //     string_str: <string_num>: <fret_marker>[, <fret_marker> ...]
+    //   //     chord_num: int
+    //   //     fret_marker: {<fret_num> <finger_num>} | <fret_num>
+    //   //     fret_num: int
+    //   //     finger_num: [1,2,3,4] | "T" | "x"
 
-      // e.g.
+    //   // e.g.
 
-      //      [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
-      //      0: 10
-      //      1: 10(color:black;),14
-      //      2: 9,12
-      //      3: 12(color:black;)
-      //      4: 12
-      //      5: 10,15(color:black;)
+    //   //      [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+    //   //      0: 10
+    //   //      1: 10(color:black;),14
+    //   //      2: 9,12
+    //   //      3: 12(color:black;)
+    //   //      4: 12
+    //   //      5: 10,15(color:black;)
 
-      if (!element || (_.isString(element) && element === "")) {
-        throw TypeError("Must provide a valid DOM element or id string: " + element);
-      } else if (_.isUndefined(chordStr)) {
-        throw TypeError("chordStr not provided: " + chordStr);
-      } else if (this._trim(chordStr) === "") {
-        throw TypeError("empty chordStr provided");
-      }
+    //   if (!element || (_.isString(element) && element === "")) {
+    //     throw TypeError("Must provide a valid DOM element or id string: " + element);
+    //   } else if (_.isUndefined(chordStr)) {
+    //     throw TypeError("chordStr not provided: " + chordStr);
+    //   } else if (this._trim(chordStr) === "") {
+    //     throw TypeError("empty chordStr provided");
+    //   }
 
-      // console.log(chordStr);
-      var parseResult;
-      try {
-        parseResult = this.parser.parse(chordStr);
-      } catch(e) {
-        console.log(chordStr);
-        console.log(e);
-        throw e;
-      }
+    //   // console.log(chordStr);
+    //   var parseResult;
+    //   try {
+    //     parseResult = this.parser.parse(chordStr);
+    //   } catch(e) {
+    //     console.log(chordStr);
+    //     console.log(e);
+    //     throw e;
+    //   }
 
-      // Pre-fab styles get over-ridden by options specified in chord string
-      var style_val = $(element).attr("data-style");
-      if (_.has(ChordView.OPTIONS, style_val)) {
-        _.defaults(parseResult.config, ChordView.OPTIONS[style_val]);
-        console.log(parseResult.config);
-      }
+    //   // Pre-fab styles get over-ridden by options specified in chord string
+    //   var style_val = $(element).attr("data-style");
+    //   if (_.has(ChordView.OPTIONS, style_val)) {
+    //     _.defaults(parseResult.config, ChordView.OPTIONS[style_val]);
+    //     console.log(parseResult.config);
+    //   }
 
-      var model = this._chordModelFromParseResult(parseResult);
-      var view = this._chordViewFromParseResultAndModel(element, model, parseResult);
-      return view;
-    },
+    //   var model = this._chordModelFromParseResult(parseResult);
+    //   var view = this._chordViewFromParseResultAndModel(element, model, parseResult);
+    //   return view;
+    // },
 
     _trim: function(str) {
       if (str.trim) {
