@@ -27,7 +27,7 @@ ChordView.NOTE_GRADIENTS = {
   <span class="hljs-string">'red'</span>  : <span class="hljs-string">'90-#f22:5-#f55:95'</span>,
   <span class="hljs-string">'green'</span>: <span class="hljs-string">'90-#0f0:5-#0f0:95'</span>
 };</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Positions on neck of neck marker dots
-TODO: only applicable for guitar</p></div></div><div class="code"><div class="wrapper">ChordView.NECK_MARKERS = [
+TODO: (aallison) only applicable for guitar</p></div></div><div class="code"><div class="wrapper">ChordView.NECK_MARKERS = [
   [ <span class="hljs-number">5</span>, <span class="hljs-number">1</span> ],
   [ <span class="hljs-number">7</span>, <span class="hljs-number">2</span> ],
   [ <span class="hljs-number">9</span>, <span class="hljs-number">1</span> ],
@@ -53,7 +53,7 @@ ChordView.DEFAULT_OPTIONS = {</div></div></div><div class="segment"><div class="
 base_fret: 1,</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Finger number annotations</p></div></div><div class="code"><div class="wrapper">  show_fingers: <span class="hljs-literal">true</span>,
   finger_anno_y: <span class="hljs-number">10</span>,
   finger_position: ChordView.FINGER_TOP,
-  anno_font_size: <span class="hljs-number">18</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: open annotations not really related to finger annotations</p></div></div><div class="code"><div class="wrapper">  open_note_radius: <span class="hljs-number">6</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Note markers</p></div></div><div class="code"><div class="wrapper">  note_radius: <span class="hljs-number">10</span>,
+  anno_font_size: <span class="hljs-number">18</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: (aallison) open annotations not really related to finger annotations</p></div></div><div class="code"><div class="wrapper">  open_note_radius: <span class="hljs-number">6</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Note markers</p></div></div><div class="code"><div class="wrapper">  note_radius: <span class="hljs-number">10</span>,
   note_stroke_width: <span class="hljs-number">1.5</span>,
   note_gradient: <span class="hljs-literal">true</span>,
   note_color: <span class="hljs-string">'white'</span>,
@@ -144,7 +144,7 @@ the static pre-set options objects</p></div></div><div class="code"><div class="
     };
     <span class="hljs-keyword">this</span>.noteGlyphs = {};
 
-    <span class="hljs-keyword">this</span>.transform_str = <span class="hljs-string">""</span>;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: decomp out this calculation</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">this</span>.width = <span class="hljs-keyword">this</span>.options.grid_x + <span class="hljs-keyword">this</span>.model.getNumStrings() * <span class="hljs-keyword">this</span>.options.string_gap + <span class="hljs-keyword">this</span>.options.base_fret_label_width + <span class="hljs-keyword">this</span>.options.grid_padding_right;
+    <span class="hljs-keyword">this</span>.transform_str = <span class="hljs-string">""</span>;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: (aallison) decomp out this calculation</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">this</span>.width = <span class="hljs-keyword">this</span>.options.grid_x + <span class="hljs-keyword">this</span>.model.getNumStrings() * <span class="hljs-keyword">this</span>.options.string_gap + <span class="hljs-keyword">this</span>.options.base_fret_label_width + <span class="hljs-keyword">this</span>.options.grid_padding_right;
     <span class="hljs-keyword">this</span>.height = <span class="hljs-keyword">this</span>.options.grid_y + <span class="hljs-keyword">this</span>.options.num_frets * <span class="hljs-keyword">this</span>.options.fret_gap + <span class="hljs-keyword">this</span>.options.tuning_label_font_size + <span class="hljs-keyword">this</span>.options.grid_padding_bottom;
 
     <span class="hljs-keyword">if</span> (window.jQuery) {
@@ -182,14 +182,14 @@ if (this.options.orientation == ChordView.NUT_LEFT &amp;&amp;
 
   },
 
-  getCode: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: implement</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">throw</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"Not implemented yet"</span>);
+  getCode: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: (aallison) implement</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">throw</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"Not implemented yet"</span>);
   },
   getModel: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.model;
   },
 
   _scaleSize: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
-    _.each(ChordView.DEFAULT_OPTIONS, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(num, key)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: improve the fact that we&#39;re using negative numbers to distinguish values from consts</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> (_.indexOf(ChordView.UNSCALABLE, key) == -<span class="hljs-number">1</span> &amp;&amp; _.isNumber(<span class="hljs-keyword">this</span>.options[key])) {
+    _.each(ChordView.DEFAULT_OPTIONS, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(num, key)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: (aallison) improve the fact that we&#39;re using negative numbers to distinguish values from consts</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> (_.indexOf(ChordView.UNSCALABLE, key) == -<span class="hljs-number">1</span> &amp;&amp; _.isNumber(<span class="hljs-keyword">this</span>.options[key])) {
 
         <span class="hljs-keyword">this</span>.options[key] = <span class="hljs-keyword">this</span>.options[key] * <span class="hljs-keyword">this</span>.options.scale;
       }
@@ -252,7 +252,7 @@ if (this.options.orientation == ChordView.NUT_LEFT &amp;&amp;
     }
     <span class="hljs-keyword">if</span> (!_.include([ ChordView.NUT_TOP, ChordView.NUT_LEFT ], orientation)) {
       <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"Invalid orientation: "</span> + orientation);
-    }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: Deal correctly with chord label</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> (orientation == ChordView.NUT_TOP) {
+    }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: (aallison) Deal correctly with chord label</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> (orientation == ChordView.NUT_TOP) {
 
       <span class="hljs-keyword">this</span>.transform_str = <span class="hljs-string">""</span>;
       <span class="hljs-keyword">this</span>.width = <span class="hljs-keyword">this</span>.options.grid_x + <span class="hljs-keyword">this</span>.model.getNumStrings() * <span class="hljs-keyword">this</span>.options.string_gap + <span class="hljs-keyword">this</span>.options.base_fret_label_width + <span class="hljs-keyword">this</span>.options.grid_padding_right;
@@ -263,9 +263,9 @@ if (this.options.orientation == ChordView.NUT_LEFT &amp;&amp;
 var transform_str = &quot;t-&quot;+this.neck.height+&quot;,0&quot; + &quot;r-90,&quot;+this.options.grid_x+&quot;,&quot;+this.options.grid_y;</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">var</span> rotate_o_x = (<span class="hljs-keyword">this</span>.options.grid_x + (<span class="hljs-keyword">this</span>.neck.width / <span class="hljs-number">2</span>));
       <span class="hljs-keyword">var</span> rotate_o_y = (<span class="hljs-keyword">this</span>.options.grid_y + (<span class="hljs-keyword">this</span>.neck.height / <span class="hljs-number">2</span>));
       <span class="hljs-keyword">var</span> translate_x = -(<span class="hljs-keyword">this</span>.width - <span class="hljs-keyword">this</span>.height) / <span class="hljs-number">2</span>;
-      <span class="hljs-keyword">var</span> translate_y = (<span class="hljs-keyword">this</span>.height - <span class="hljs-keyword">this</span>.width) / <span class="hljs-number">2</span>;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: explain this transformation
+      <span class="hljs-keyword">var</span> translate_y = (<span class="hljs-keyword">this</span>.height - <span class="hljs-keyword">this</span>.width) / <span class="hljs-number">2</span>;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: (aallison) explain this transformation
 don&#39;t include right padding for sideways layouts
-TODO: position base fret label differently depending on orientation</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">this</span>.transform_str = <span class="hljs-string">"r-90,0,0"</span> + <span class="hljs-string">"t-"</span> + (<span class="hljs-keyword">this</span>.width - (<span class="hljs-keyword">this</span>.options.base_fret_label_width + <span class="hljs-keyword">this</span>.options.grid_padding_right)) + <span class="hljs-string">",0"</span>;
+TODO: (aallison) position base fret label differently depending on orientation</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">this</span>.transform_str = <span class="hljs-string">"r-90,0,0"</span> + <span class="hljs-string">"t-"</span> + (<span class="hljs-keyword">this</span>.width - (<span class="hljs-keyword">this</span>.options.base_fret_label_width + <span class="hljs-keyword">this</span>.options.grid_padding_right)) + <span class="hljs-string">",0"</span>;
 
       <span class="hljs-keyword">this</span>.height = <span class="hljs-keyword">this</span>.options.grid_x + <span class="hljs-keyword">this</span>.model.getNumStrings() * <span class="hljs-keyword">this</span>.options.string_gap;
       <span class="hljs-keyword">this</span>.width = <span class="hljs-keyword">this</span>.options.grid_y + <span class="hljs-keyword">this</span>.options.num_frets * <span class="hljs-keyword">this</span>.options.fret_gap + <span class="hljs-keyword">this</span>.options.tuning_label_font_size + <span class="hljs-keyword">this</span>.options.grid_padding_bottom;

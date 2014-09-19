@@ -10,7 +10,7 @@ to the callee&#39;s scope (typically the window global) which will result in the
   <span class="hljs-keyword">if</span> (!options) { options = {}; }
   <span class="hljs-keyword">this</span>._init(options);
 }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="options">Options</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Default options are for 6-stringed guitar in standard tuning</p></div></div><div class="code"><div class="wrapper">ChordModel.DEFAULT_OPTIONS = {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>DATA DEFAULTS
-numFrets: 5,</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>// TODO: doesn&#39;t make sense that a chord with a nut is based at fret 1, not 0
+numFrets: 5,</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>// TODO: (aallison) doesn&#39;t make sense that a chord with a nut is based at fret 1, not 0
 baseFret: 1,</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Name/label for the chord</p></div></div><div class="code"><div class="wrapper">  label: <span class="hljs-string">""</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Tuning, expressed a a tuning string (see Tuning.js)</p></div></div><div class="code"><div class="wrapper">  tuning: <span class="hljs-string">"EADGBe"</span>
 };</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="chordmodel-class">ChordModel Class</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper">ChordModel.prototype = {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Whenever you replace an Object&#39;s Prototype, you need to repoint
 the base Constructor back at the original constructor Function,
@@ -74,12 +74,12 @@ otherwise <code>instanceof</code> calls will fail.</p></div></div><div class="co
       <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"addNote requires a valid note string or GuitarNote object: "</span> + note);
     } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (note.string &lt; <span class="hljs-number">0</span> || note.string &gt;= <span class="hljs-keyword">this</span>.getNumStrings()) {
       <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"note stringNum is not valid for this chord: "</span> + note.string);
-    }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: notify listeners</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">this</span>.notes[note.getKey()] = note;
+    }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: (aallison) notify listeners</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">this</span>.notes[note.getKey()] = note;
     <span class="hljs-keyword">if</span> (_.isNumber(note.fret) &amp;&amp; note.fret !== <span class="hljs-number">0</span> &amp;&amp; (<span class="hljs-keyword">this</span>.min_fret == -<span class="hljs-number">1</span> || note.fret &lt; <span class="hljs-keyword">this</span>.min_fret)) { <span class="hljs-keyword">this</span>.min_fret = note.fret; }
     <span class="hljs-keyword">if</span> (_.isNumber(note.fret) &amp;&amp; note.fret !== <span class="hljs-number">0</span> &amp;&amp; (<span class="hljs-keyword">this</span>.max_fret == -<span class="hljs-number">1</span> || note.fret &gt; <span class="hljs-keyword">this</span>.max_fret)) { <span class="hljs-keyword">this</span>.max_fret = note.fret; }
   },
   removeNote: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(note)</span> {</span>
-    <span class="hljs-keyword">var</span> key = <span class="hljs-keyword">this</span>._keyForNote(note);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: notify listeners</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.notes[key];
+    <span class="hljs-keyword">var</span> key = <span class="hljs-keyword">this</span>._keyForNote(note);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: (aallison) notify listeners</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>.notes[key];
   },
   empty: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">this</span>.notes = {};
@@ -88,7 +88,7 @@ Frets shifted off the neck will be shown as muted</p></div></div><div class="cod
 <li><code>interval</code> : amount of semi-tones to shift notes by</li>
 <li><code>direction</code> : direction to shift notes (<code>1</code> or <code>-1</code>)</li>
 </ul></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>just create a new notes dict because keys will change
-TODO: does this cause issues for ChordView?</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">var</span> newNotes = {};
+TODO: (aallison) does this cause issues for ChordView?</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">var</span> newNotes = {};
     <span class="hljs-keyword">var</span> transposeOffset = (interval * direction);
     <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> noteKey <span class="hljs-keyword">in</span> <span class="hljs-keyword">this</span>.notes) {
       <span class="hljs-keyword">var</span> note = <span class="hljs-keyword">this</span>.notes[noteKey];
@@ -109,7 +109,7 @@ Frets and key will be changed.</p></div></div><div class="code"><div class="wrap
 <li><code>originalKey</code> : (optional) original key of chordmodel</li>
 </ul></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.options.key &amp;&amp; !originalKey) {
       <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"No key assigned to chordmodel or passed as an argument"</span>);
-    }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: implement</p></div></div><div class="code"><div class="wrapper">  },
+    }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: (aallison) implement</p></div></div><div class="code"><div class="wrapper">  },
 
   equals: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(model)</span> {</span>
     <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.getNumStrings() != model.getNumStrings() ||

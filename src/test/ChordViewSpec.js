@@ -27,9 +27,9 @@ describe("ChordView", function() {
     expect($("#chord-ex2")).not.toBeEmpty();
     expect($("#chord-ex3")).not.toBeEmpty();
 
-    expect($("#chord-ex1")).toContain("svg");
-    expect($("#chord-ex2")).toContain("svg");
-    expect($("#chord-ex3")).toContain("svg");
+    expect($("#chord-ex1")).toContainElement("svg");
+    expect($("#chord-ex2")).toContainElement("svg");
+    expect($("#chord-ex3")).toContainElement("svg");
   });
 
   // TODO: (aallison) Lots of testing
