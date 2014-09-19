@@ -15,7 +15,6 @@ module.exports = function(grunt) {
                 /* 'sass:dev',
                 */ 'concat:dev',
                 /*'uglify:dev',*/
-                'test',
                 'groc'
             ]);
         } else if (target === "dist") {
@@ -31,7 +30,6 @@ module.exports = function(grunt) {
                 'uglify:dist',
                 'clean:scrub_dist',
                 'groc',
-                'dev'
             ]);
         } else {
             grunt.log.error("Invalid build target.  Choices: dev, dist");

@@ -1,123 +1,120 @@
-<!DOCTYPE html><html lang="en"><head><title>src/js/ChordFactory</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="src/js/ChordFactory"><meta name="groc-project-path" content="src/js/ChordFactory.js"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/js/ChordFactory.js</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h2 id="chordfactory">ChordFactory</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>global ChordParserPEG, ChordModel, GuitarNote, Tuning, ChordView </p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>ChordFactory</strong> Provides methods for easily creating Chords</p></div></div><div class="code"><div class="wrapper"><span class="kd">function</span> <span class="nx">ChordFactory</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
+<!DOCTYPE html><html lang="en"><head><title>src/js/ChordFactory</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="src/js/ChordFactory"><meta name="groc-project-path" content="src/js/ChordFactory.js"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/js/ChordFactory.js</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h2 id="chordfactory">ChordFactory</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>global ChordParserPEG, ChordModel, GuitarNote, Tuning, ChordView </p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>ChordFactory</strong> Provides methods for easily creating Chords</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ChordFactory</span><span class="hljs-params">(options)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
 <li><code>options</code> : config object</li>
-</ul></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>This first guard ensures that the callee has invoked our Class' constructor function
+</ul></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>This first guard ensures that the callee has invoked our Class&#39; constructor function
 with the <code>new</code> keyword - failure to do this will result in the <code>this</code> keyword referring
-to the callee's scope (typically the window global) which will result in the following fields
-(name and _age) leaking into the global namespace and not being set on this object.</p></div></div><div class="code"><div class="wrapper">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="k">this</span> <span class="k">instanceof</span> <span class="nx">ChordFactory</span><span class="p">))</span> <span class="p">{</span>
-    <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;ChordFactory cannot be called as a function.&quot;</span><span class="p">);</span>
-  <span class="p">}</span>
+to the callee&#39;s scope (typically the window global) which will result in the following fields
+(name and _age) leaking into the global namespace and not being set on this object.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> (!(<span class="hljs-keyword">this</span> <span class="hljs-keyword">instanceof</span> ChordFactory)) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"ChordFactory cannot be called as a function."</span>);
+  }
 
-  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{};</span> <span class="p">}</span>
-  <span class="k">this</span><span class="p">.</span><span class="nx">_init</span><span class="p">(</span><span class="nx">options</span><span class="p">);</span>
-<span class="p">}</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="options">Options</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="nx">ChordFactory</span><span class="p">.</span><span class="nx">DEFAULT_OPTIONS</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="nx">version</span><span class="o">:</span> <span class="s2">&quot;0.1.0&quot;</span>
-<span class="p">};</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="chordfactory-class">ChordFactory Class</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="nx">ChordFactory</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Whenever you replace an Object's Prototype, you need to repoint
+  <span class="hljs-keyword">if</span> (!options) { options = {}; }
+  <span class="hljs-keyword">this</span>._init(options);
+}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="options">Options</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper">ChordFactory.DEFAULT_OPTIONS = {
+  version: <span class="hljs-string">"0.1.0"</span>
+};</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="chordfactory-class">ChordFactory Class</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper">ChordFactory.prototype = {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Whenever you replace an Object&#39;s Prototype, you need to repoint
 the base Constructor back at the original constructor Function,
-otherwise <code>instanceof</code> calls will fail.</p></div></div><div class="code"><div class="wrapper">  <span class="nx">constructor</span><span class="o">:</span> <span class="nx">ChordFactory</span><span class="p">,</span>
+otherwise <code>instanceof</code> calls will fail.</p></div></div><div class="code"><div class="wrapper">  constructor: ChordFactory,
 
-  <span class="nx">_init</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create config dict, filling in defaults where not provided</p></div></div><div class="code"><div class="wrapper">    <span class="nx">_</span><span class="p">.</span><span class="nx">defaults</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span> <span class="nx">ChordFactory</span><span class="p">.</span><span class="nx">DEFAULT_OPTIONS</span><span class="p">);</span>
+  _init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create config dict, filling in defaults where not provided</p></div></div><div class="code"><div class="wrapper">    _.defaults(options, ChordFactory.DEFAULT_OPTIONS);
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">parser</span> <span class="o">=</span> <span class="nx">ChordParserPEG</span><span class="p">;</span>
-  <span class="p">},</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>parseChord</strong> parses a chord string and returns a ChordView</p></div></div><div class="code"><div class="wrapper">  <span class="nx">chordFromDiv</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">elem</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">element</span><span class="p">);</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">elem</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span><span class="p">;</span> <span class="p">}</span>
-    <span class="kd">var</span> <span class="nx">chordStr</span> <span class="o">=</span> <span class="nx">elem</span><span class="p">.</span><span class="nx">html</span><span class="p">();</span>
-    <span class="kd">var</span> <span class="nx">chordId</span> <span class="o">=</span> <span class="nx">elem</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">);</span>
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">chordId</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">chordId</span> <span class="o">=</span> <span class="s2">&quot;chord-&quot;</span> <span class="o">+</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000000000</span><span class="p">);</span>
-      <span class="nx">elem</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="nx">chordId</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">chordFromString</span><span class="p">(</span><span class="nx">elem</span><span class="p">,</span> <span class="nx">chordStr</span><span class="p">);</span>
-  <span class="p">},</span>
+    <span class="hljs-keyword">this</span>.parser = ChordParserPEG;
+  },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>parseChord</strong> parses a chord string and returns a ChordView</p></div></div><div class="code"><div class="wrapper">  chordFromDiv: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(element)</span> {</span>
+    <span class="hljs-keyword">var</span> elem = $(element);
+    <span class="hljs-keyword">if</span> (elem.length === <span class="hljs-number">0</span>) { <span class="hljs-keyword">return</span>; }
+    <span class="hljs-keyword">var</span> chordStr = elem.html();
+    <span class="hljs-keyword">var</span> chordId = elem.attr(<span class="hljs-string">"id"</span>);
+    <span class="hljs-keyword">if</span> (!chordId) {
+      chordId = <span class="hljs-string">"chord-"</span> + <span class="hljs-built_in">Math</span>.round(<span class="hljs-built_in">Math</span>.random() * <span class="hljs-number">1000000000</span>);
+      elem.attr(<span class="hljs-string">"id"</span>, chordId);
+    }
+    <span class="hljs-keyword">this</span>.chordFromString(elem, chordStr);
+  },
 
-  <span class="nx">chordFromString</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">chordStr</span><span class="p">)</span> <span class="p">{</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
+  chordFromString: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(element, chordStr)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
 <li>element : string or DOM element to insert chord into</li>
 <li>chordStr : string, of the format</li>
 </ul></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code>[&lt;config_str&gt;, ... ]
 &lt;string_str&gt;
-...
-</code></pre></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>where:</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code>config_str: &lt;config_key&gt;: &lt;config_value&gt;
+...</code></pre></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>where:</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code>config_str: &lt;config_key&gt;: &lt;config_value&gt;
 config_key: any key in ChordView.options
 config_value: any valid value for ChordView.options
 string_str: &lt;string_num&gt;: &lt;fret_marker&gt;[, &lt;fret_marker&gt; ...]
 chord_num: int
 fret_marker: {&lt;fret_num&gt; &lt;finger_num&gt;} | &lt;fret_num&gt;
 fret_num: int
-finger_num: [1,2,3,4] | "T" | "x"
-</code></pre></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>e.g.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code> [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+finger_num: [1,2,3,4] | &quot;T&quot; | &quot;x&quot;</code></pre></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>e.g.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code> [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
  0: 10
  1: 10(color:black;),14
  2: 9,12
  3: 12(color:black;)
  4: 12
- 5: 10,15(color:black;)
-</code></pre></div></div><div class="code"><div class="wrapper">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">element</span> <span class="o">||</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">element</span> <span class="o">===</span> <span class="s2">&quot;&quot;</span><span class="p">))</span> <span class="p">{</span>
-      <span class="k">throw</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;Must provide a valid DOM element or id string: &quot;</span> <span class="o">+</span> <span class="nx">element</span><span class="p">);</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">chordStr</span><span class="p">))</span> <span class="p">{</span>
-      <span class="k">throw</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;chordStr not provided: &quot;</span> <span class="o">+</span> <span class="nx">chordStr</span><span class="p">);</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_trim</span><span class="p">(</span><span class="nx">chordStr</span><span class="p">)</span> <span class="o">===</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">throw</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;empty chordStr provided&quot;</span><span class="p">);</span>
-    <span class="p">}</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>console.log(chordStr);</p></div></div><div class="code"><div class="wrapper">    <span class="kd">var</span> <span class="nx">parseResult</span><span class="p">;</span>
-    <span class="k">try</span> <span class="p">{</span>
-      <span class="nx">parseResult</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">parser</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">chordStr</span><span class="p">);</span>
-    <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">chordStr</span><span class="p">);</span>
-      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
-      <span class="k">throw</span> <span class="nx">e</span><span class="p">;</span>
-    <span class="p">}</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Pre-fab styles get over-ridden by options specified in chord string</p></div></div><div class="code"><div class="wrapper">    <span class="kd">var</span> <span class="nx">style_val</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">element</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;data-style&quot;</span><span class="p">);</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">has</span><span class="p">(</span><span class="nx">ChordView</span><span class="p">.</span><span class="nx">OPTIONS</span><span class="p">,</span> <span class="nx">style_val</span><span class="p">))</span> <span class="p">{</span>
-      <span class="nx">_</span><span class="p">.</span><span class="nx">defaults</span><span class="p">(</span><span class="nx">parseResult</span><span class="p">.</span><span class="nx">config</span><span class="p">,</span> <span class="nx">ChordView</span><span class="p">.</span><span class="nx">OPTIONS</span><span class="p">[</span><span class="nx">style_val</span><span class="p">]);</span>
-      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">parseResult</span><span class="p">.</span><span class="nx">config</span><span class="p">);</span>
-    <span class="p">}</span>
+ 5: 10,15(color:black;)</code></pre></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> (!element || (_.isString(element) &amp;&amp; element === <span class="hljs-string">""</span>)) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"Must provide a valid DOM element or id string: "</span> + element);
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (_.isUndefined(chordStr)) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"chordStr not provided: "</span> + chordStr);
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>._trim(chordStr) === <span class="hljs-string">""</span>) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"empty chordStr provided"</span>);
+    }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>console.log(chordStr);</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">var</span> parseResult;
+    <span class="hljs-keyword">try</span> {
+      parseResult = <span class="hljs-keyword">this</span>.parser.parse(chordStr);
+    } <span class="hljs-keyword">catch</span>(e) {
+      console.log(chordStr);
+      console.log(e);
+      <span class="hljs-keyword">throw</span> e;
+    }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Pre-fab styles get over-ridden by options specified in chord string</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">var</span> style_val = $(element).attr(<span class="hljs-string">"data-style"</span>);
+    <span class="hljs-keyword">if</span> (_.has(ChordView.OPTIONS, style_val)) {
+      _.defaults(parseResult.config, ChordView.OPTIONS[style_val]);
+      console.log(parseResult.config);
+    }
 
-    <span class="kd">var</span> <span class="nx">model</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_chordModelFromParseResult</span><span class="p">(</span><span class="nx">parseResult</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">view</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_chordViewFromParseResultAndModel</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">model</span><span class="p">,</span> <span class="nx">parseResult</span><span class="p">);</span>
-    <span class="k">return</span> <span class="nx">view</span><span class="p">;</span>
-  <span class="p">},</span>
+    <span class="hljs-keyword">var</span> model = <span class="hljs-keyword">this</span>._chordModelFromParseResult(parseResult);
+    <span class="hljs-keyword">var</span> view = <span class="hljs-keyword">this</span>._chordViewFromParseResultAndModel(element, model, parseResult);
+    <span class="hljs-keyword">return</span> view;
+  },
 
-  <span class="nx">_trim</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">str</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">str</span><span class="p">.</span><span class="nx">trim</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="nx">str</span><span class="p">.</span><span class="nx">trim</span><span class="p">();</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="nb">String</span><span class="p">(</span><span class="nx">str</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^\s+|\s+$/g</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
-    <span class="p">}</span>
-  <span class="p">},</span>
+  _trim: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(str)</span> {</span>
+    <span class="hljs-keyword">if</span> (str.trim) {
+      <span class="hljs-keyword">return</span> str.trim();
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">return</span> <span class="hljs-built_in">String</span>(str).replace(<span class="hljs-regexp">/^\s+|\s+$/g</span>, <span class="hljs-string">''</span>);
+    }
+  },
 
-  <span class="nx">_chordModelFromParseResult</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">parseResult</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
-      <span class="nx">notes</span><span class="o">:</span> <span class="p">[</span> <span class="p">],</span>
-    <span class="p">};</span>
-    <span class="kd">var</span> <span class="nx">i</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">j</span><span class="p">;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>handle config string</p></div></div><div class="code"><div class="wrapper">    <span class="k">if</span> <span class="p">(</span><span class="nx">parseResult</span><span class="p">.</span><span class="nx">config</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">_</span><span class="p">.</span><span class="nx">defaults</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span> <span class="nx">parseResult</span><span class="p">.</span><span class="nx">config</span><span class="p">);</span>
-    <span class="p">}</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>create default tuning so we know how many strings we have</p></div></div><div class="code"><div class="wrapper">    <span class="kd">var</span> <span class="nx">tuning</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Tuning</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">tuning</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">numStrings</span> <span class="o">=</span> <span class="nx">tuning</span><span class="p">.</span><span class="nx">getNumStrings</span><span class="p">();</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>handle string strings</p></div></div><div class="code"><div class="wrapper">    <span class="k">if</span> <span class="p">(</span><span class="nx">parseResult</span><span class="p">.</span><span class="nx">strings</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">stringNum</span> <span class="k">in</span> <span class="nx">parseResult</span><span class="p">.</span><span class="nx">strings</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="nx">parseResult</span><span class="p">.</span><span class="nx">strings</span><span class="p">[</span><span class="nx">stringNum</span><span class="p">];</span>
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">_</span><span class="p">.</span><span class="nx">isNumber</span><span class="p">(</span><span class="nx">stringNum</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">s</span><span class="p">.</span><span class="nx">frets</span> <span class="o">&amp;&amp;</span> <span class="nx">s</span><span class="p">.</span><span class="nx">frets</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-          <span class="k">for</span> <span class="p">(</span><span class="nx">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&lt;</span> <span class="nx">s</span><span class="p">.</span><span class="nx">frets</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-            <span class="kd">var</span> <span class="nx">n</span> <span class="o">=</span> <span class="nx">s</span><span class="p">.</span><span class="nx">frets</span><span class="p">[</span><span class="nx">j</span><span class="p">];</span>
-            <span class="kd">var</span> <span class="nx">note_options</span> <span class="o">=</span> <span class="p">{};</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">n</span><span class="p">.</span><span class="nx">config</span><span class="p">)</span> <span class="p">{</span> <span class="nx">_</span><span class="p">.</span><span class="nx">defaults</span><span class="p">(</span><span class="nx">note_options</span><span class="p">,</span> <span class="nx">n</span><span class="p">.</span><span class="nx">config</span><span class="p">);</span> <span class="p">}</span>
-            <span class="nx">note_options</span><span class="p">.</span><span class="nx">finger</span> <span class="o">=</span> <span class="nx">n</span><span class="p">.</span><span class="nx">finger</span><span class="p">;</span>
-            <span class="kd">var</span> <span class="nx">note</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">GuitarNote</span><span class="p">(</span><span class="nx">s</span><span class="p">.</span><span class="nx">string</span><span class="p">,</span> <span class="nx">n</span><span class="p">.</span><span class="nx">fret</span><span class="p">,</span> <span class="nx">note_options</span><span class="p">);</span>
-            <span class="nx">options</span><span class="p">.</span><span class="nx">notes</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">note</span><span class="p">);</span>
-          <span class="p">}</span>
-        <span class="p">}</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="k">new</span> <span class="nx">ChordModel</span><span class="p">(</span><span class="nx">options</span><span class="p">);</span>
-  <span class="p">},</span>
+  _chordModelFromParseResult: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(parseResult)</span> {</span>
+    <span class="hljs-keyword">var</span> options = {
+      notes: [ ],
+    };
+    <span class="hljs-keyword">var</span> i;
+    <span class="hljs-keyword">var</span> j;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>handle config string</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> (parseResult.config) {
+      _.defaults(options, parseResult.config);
+    }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>create default tuning so we know how many strings we have</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">var</span> tuning = <span class="hljs-keyword">new</span> Tuning(options.tuning);
+    <span class="hljs-keyword">var</span> numStrings = tuning.getNumStrings();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>handle string strings</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> (parseResult.strings) {
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> stringNum <span class="hljs-keyword">in</span> parseResult.strings) {
+        <span class="hljs-keyword">var</span> s = parseResult.strings[stringNum];
+        <span class="hljs-keyword">if</span> (!_.isNumber(stringNum) &amp;&amp; s.frets &amp;&amp; s.frets.length &gt; <span class="hljs-number">0</span>) {
+          <span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt; s.frets.length; j++) {
+            <span class="hljs-keyword">var</span> n = s.frets[j];
+            <span class="hljs-keyword">var</span> note_options = {};
+            <span class="hljs-keyword">if</span> (n.config) { _.defaults(note_options, n.config); }
+            note_options.finger = n.finger;
+            <span class="hljs-keyword">var</span> note = <span class="hljs-keyword">new</span> GuitarNote(s.string, n.fret, note_options);
+            options.notes.push(note);
+          }
+        }
+      }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ChordModel(options);
+  },
 
-  <span class="nx">_chordViewFromParseResultAndModel</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">model</span><span class="p">,</span> <span class="nx">parseResult</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{};</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>handle config string</p></div></div><div class="code"><div class="wrapper">    <span class="k">if</span> <span class="p">(</span><span class="nx">parseResult</span><span class="p">.</span><span class="nx">config</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">_</span><span class="p">.</span><span class="nx">defaults</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span> <span class="nx">parseResult</span><span class="p">.</span><span class="nx">config</span><span class="p">);</span>
-    <span class="p">}</span>
+  _chordViewFromParseResultAndModel: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(element, model, parseResult)</span> {</span>
+    <span class="hljs-keyword">var</span> options = {};</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>handle config string</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> (parseResult.config) {
+      _.defaults(options, parseResult.config);
+    }
 
-    <span class="k">return</span> <span class="k">new</span> <span class="nx">ChordView</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">model</span><span class="p">);</span>
-  <span class="p">},</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>_isNumber</strong> detects if string <code>n</code> is a number</p></div></div><div class="code"><div class="wrapper">  <span class="nx">_isNumber</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="o">!</span><span class="nb">isNaN</span><span class="p">(</span><span class="nb">parseFloat</span><span class="p">(</span><span class="nx">n</span><span class="p">))</span> <span class="o">&amp;&amp;</span> <span class="nb">isFinite</span><span class="p">(</span><span class="nx">n</span><span class="p">);</span>
-  <span class="p">},</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>_isFloat</strong> detects if string <code>n</code> is a float</p></div></div><div class="code"><div class="wrapper">  <span class="nx">_isFloat</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_isNumber</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">n</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
-  <span class="p">},</span>
-<span class="p">};</span></div></div></div></div></body></html>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ChordView(element, options, model);
+  },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>_isNumber</strong> detects if string <code>n</code> is a number</p></div></div><div class="code"><div class="wrapper">  _isNumber: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(n)</span> {</span>
+    <span class="hljs-keyword">return</span> !<span class="hljs-built_in">isNaN</span>(<span class="hljs-built_in">parseFloat</span>(n)) &amp;&amp; <span class="hljs-built_in">isFinite</span>(n);
+  },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>_isFloat</strong> detects if string <code>n</code> is a float</p></div></div><div class="code"><div class="wrapper">  _isFloat: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(n)</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._isNumber(n) &amp;&amp; (n.indexOf(<span class="hljs-string">"."</span>) != -<span class="hljs-number">1</span>);
+  },
+};</div></div></div></div></body></html>

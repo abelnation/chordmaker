@@ -1,27 +1,27 @@
-<!DOCTYPE html><html lang="en"><head><title>src/js/TuningFactory</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="src/js/TuningFactory"><meta name="groc-project-path" content="src/js/TuningFactory.js"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/js/TuningFactory.js</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><p>global Tuning </p></div></div><div class="code"><div class="wrapper"><span class="kd">function</span> <span class="nx">TuningFactory</span><span class="p">()</span> <span class="p">{</span>
-  <span class="k">throw</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">&quot;Cannot instantiate TuningFactory.&quot;</span><span class="p">);</span>
-<span class="p">}</span>
+<!DOCTYPE html><html lang="en"><head><title>src/js/TuningFactory</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="src/js/TuningFactory"><meta name="groc-project-path" content="src/js/TuningFactory.js"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/js/TuningFactory.js</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><p>global Tuning </p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">TuningFactory</span><span class="hljs-params">()</span> {</span>
+  <span class="hljs-keyword">throw</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"Cannot instantiate TuningFactory."</span>);
+}
 
-<span class="nx">TuningFactory</span><span class="p">.</span><span class="nx">fromInstrument</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">instrument</span><span class="p">,</span> <span class="nx">tuning_type</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">instrument</span> <span class="o">||</span> <span class="o">!</span><span class="nx">_</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">instrument</span><span class="p">))</span> <span class="p">{</span>
-    <span class="k">throw</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;Must provide an instrument string&quot;</span><span class="p">);</span>
-  <span class="p">}</span>
-  <span class="nx">instrument</span> <span class="o">=</span> <span class="nx">instrument</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">();</span>
+TuningFactory.fromInstrument = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(instrument, tuning_type)</span> {</span>
+  <span class="hljs-keyword">if</span> (!instrument || !_.isString(instrument)) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"Must provide an instrument string"</span>);
+  }
+  instrument = instrument.toLowerCase();
   
-  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">_</span><span class="p">.</span><span class="nx">has</span><span class="p">(</span><span class="nx">Tuning</span><span class="p">.</span><span class="nx">instruments</span><span class="p">,</span> <span class="nx">instrument</span><span class="p">))</span> <span class="p">{</span>
-    <span class="k">throw</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;Invalid instrument&quot;</span><span class="p">);</span>
-  <span class="p">}</span>
+  <span class="hljs-keyword">if</span> (!_.has(Tuning.instruments, instrument)) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"Invalid instrument"</span>);
+  }
 
-  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">tuning_type</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">tuning_type</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span><span class="p">;</span>
-  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">_</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">tuning_type</span><span class="p">))</span> <span class="p">{</span>
-    <span class="k">throw</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;tuning_type must be a string&quot;</span><span class="p">);</span>
-  <span class="p">}</span>
+  <span class="hljs-keyword">if</span> (!tuning_type) {
+    tuning_type = <span class="hljs-string">"default"</span>;
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!_.isString(tuning_type)) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"tuning_type must be a string"</span>);
+  }
   
-  <span class="nx">tuning_type</span> <span class="o">=</span> <span class="nx">tuning_type</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">();</span>
-  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">_</span><span class="p">.</span><span class="nx">has</span><span class="p">(</span><span class="nx">Tuning</span><span class="p">.</span><span class="nx">instruments</span><span class="p">[</span><span class="nx">instrument</span><span class="p">],</span> <span class="nx">tuning_type</span><span class="p">))</span> <span class="p">{</span>
-    <span class="k">throw</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;Invalid tuning type: &quot;</span> <span class="o">+</span> <span class="nx">tuning_type</span><span class="p">);</span>
-  <span class="p">}</span>
+  tuning_type = tuning_type.toLowerCase();
+  <span class="hljs-keyword">if</span> (!_.has(Tuning.instruments[instrument], tuning_type)) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"Invalid tuning type: "</span> + tuning_type);
+  }
 
-  <span class="k">return</span> <span class="k">new</span> <span class="nx">Tuning</span><span class="p">(</span><span class="nx">Tuning</span><span class="p">.</span><span class="nx">instruments</span><span class="p">[</span><span class="nx">instrument</span><span class="p">][</span><span class="nx">tuning_type</span><span class="p">]);</span>
-<span class="p">};</span></div></div></div></div></body></html>
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Tuning(Tuning.instruments[instrument][tuning_type]);
+};</div></div></div></div></body></html>

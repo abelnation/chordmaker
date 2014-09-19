@@ -1,526 +1,525 @@
-<!DOCTYPE html><html lang="en"><head><title>src/js/ChordView</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="src/js/ChordView"><meta name="groc-project-path" content="src/js/ChordView.js"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/js/ChordView.js</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><p>global Aex, Raphael, ChordModel, GuitarNote </p></div></div><div class="code"><div class="wrapper"><span class="kd">function</span> <span class="nx">ChordView</span><span class="p">(</span><span class="nx">container</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">model</span><span class="p">)</span> <span class="p">{</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>This first guard ensures that the callee has invoked our Class' constructor function
+<!DOCTYPE html><html lang="en"><head><title>src/js/ChordView</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="src/js/ChordView"><meta name="groc-project-path" content="src/js/ChordView.js"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/js/ChordView.js</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><p>global Aex, Raphael, ChordModel, GuitarNote </p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ChordView</span><span class="hljs-params">(container, options, model)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>This first guard ensures that the callee has invoked our Class&#39; constructor function
 with the <code>new</code> keyword - failure to do this will result in the <code>this</code> keyword referring
-to the callee's scope (typically the window global) which will result in the following fields
-(name and _age) leaking into the global namespace and not being set on this object.</p></div></div><div class="code"><div class="wrapper">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="k">this</span> <span class="k">instanceof</span> <span class="nx">ChordView</span><span class="p">))</span> <span class="p">{</span>
-    <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;ChordView constructor cannot be called as a function.&quot;</span><span class="p">);</span>
-  <span class="p">}</span>
-  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{};</span> <span class="p">}</span>
-  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">model</span><span class="p">)</span> <span class="p">{</span> <span class="nx">model</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ChordModel</span><span class="p">();</span> <span class="p">}</span>
+to the callee&#39;s scope (typically the window global) which will result in the following fields
+(name and _age) leaking into the global namespace and not being set on this object.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> (!(<span class="hljs-keyword">this</span> <span class="hljs-keyword">instanceof</span> ChordView)) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"ChordView constructor cannot be called as a function."</span>);
+  }
+  <span class="hljs-keyword">if</span> (!options) { options = {}; }
+  <span class="hljs-keyword">if</span> (!model) { model = <span class="hljs-keyword">new</span> ChordModel(); }
 
-  <span class="k">this</span><span class="p">.</span><span class="nx">_init</span><span class="p">(</span><span class="nx">container</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">model</span><span class="p">);</span>
-<span class="p">}</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="constants">CONSTANTS</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Diagram orientation constants</p></div></div><div class="code"><div class="wrapper"><span class="nx">ChordView</span><span class="p">.</span><span class="nx">NUT_TOP</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-<span class="nx">ChordView</span><span class="p">.</span><span class="nx">NUT_LEFT</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span><span class="p">;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Finger position constants</p></div></div><div class="code"><div class="wrapper"><span class="nx">ChordView</span><span class="p">.</span><span class="nx">FINGER_TOP</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-<span class="nx">ChordView</span><span class="p">.</span><span class="nx">FINGER_LEFT</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span><span class="p">;</span>
-<span class="nx">ChordView</span><span class="p">.</span><span class="nx">FINGER_ONNOTE</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span><span class="p">;</span>
+  <span class="hljs-keyword">this</span>._init(container, options, model);
+}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="constants">CONSTANTS</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Diagram orientation constants</p></div></div><div class="code"><div class="wrapper">ChordView.NUT_TOP = -<span class="hljs-number">1</span>;
+ChordView.NUT_LEFT = -<span class="hljs-number">2</span>;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Finger position constants</p></div></div><div class="code"><div class="wrapper">ChordView.FINGER_TOP = -<span class="hljs-number">1</span>;
+ChordView.FINGER_LEFT = -<span class="hljs-number">2</span>;
+ChordView.FINGER_ONNOTE = -<span class="hljs-number">3</span>;
 
-<span class="nx">ChordView</span><span class="p">.</span><span class="nx">NOTE_COLORS</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="s1">&#39;black&#39;</span><span class="o">:</span> <span class="s1">&#39;#000&#39;</span><span class="p">,</span>
-  <span class="s1">&#39;white&#39;</span><span class="o">:</span> <span class="s1">&#39;#fff&#39;</span><span class="p">,</span>
-  <span class="s1">&#39;blue&#39;</span> <span class="o">:</span> <span class="s1">&#39;#22f&#39;</span><span class="p">,</span>
-  <span class="s1">&#39;red&#39;</span>  <span class="o">:</span> <span class="s1">&#39;#f22&#39;</span><span class="p">,</span>
-  <span class="s1">&#39;green&#39;</span><span class="o">:</span> <span class="s1">&#39;#0f0&#39;</span>
-<span class="p">};</span>
-<span class="nx">ChordView</span><span class="p">.</span><span class="nx">NOTE_GRADIENTS</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="s1">&#39;black&#39;</span><span class="o">:</span> <span class="s1">&#39;90-#000:5-#555:95&#39;</span><span class="p">,</span>
-  <span class="s1">&#39;white&#39;</span><span class="o">:</span> <span class="s1">&#39;90-#eee:5-#fff:95&#39;</span><span class="p">,</span>
-  <span class="s1">&#39;blue&#39;</span> <span class="o">:</span> <span class="s1">&#39;90-#22f:5-#55f:95&#39;</span><span class="p">,</span>
-  <span class="s1">&#39;red&#39;</span>  <span class="o">:</span> <span class="s1">&#39;90-#f22:5-#f55:95&#39;</span><span class="p">,</span>
-  <span class="s1">&#39;green&#39;</span><span class="o">:</span> <span class="s1">&#39;90-#0f0:5-#0f0:95&#39;</span>
-<span class="p">};</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Positions on neck of neck marker dots
-TODO: only applicable for guitar</p></div></div><div class="code"><div class="wrapper"><span class="nx">ChordView</span><span class="p">.</span><span class="nx">NECK_MARKERS</span> <span class="o">=</span> <span class="p">[</span>
-  <span class="p">[</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span> <span class="p">],</span>
-  <span class="p">[</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span> <span class="p">],</span>
-  <span class="p">[</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">1</span> <span class="p">],</span>
-  <span class="p">[</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">2</span> <span class="p">],</span>
-  <span class="p">[</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">1</span> <span class="p">],</span>
-  <span class="p">[</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">1</span> <span class="p">]</span>
-<span class="p">];</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="render-options">Render Options</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Render attributes are configurable via the ChordView's options object.
+ChordView.NOTE_COLORS = {
+  <span class="hljs-string">'black'</span>: <span class="hljs-string">'#000'</span>,
+  <span class="hljs-string">'white'</span>: <span class="hljs-string">'#fff'</span>,
+  <span class="hljs-string">'blue'</span> : <span class="hljs-string">'#22f'</span>,
+  <span class="hljs-string">'red'</span>  : <span class="hljs-string">'#f22'</span>,
+  <span class="hljs-string">'green'</span>: <span class="hljs-string">'#0f0'</span>
+};
+ChordView.NOTE_GRADIENTS = {
+  <span class="hljs-string">'black'</span>: <span class="hljs-string">'90-#000:5-#555:95'</span>,
+  <span class="hljs-string">'white'</span>: <span class="hljs-string">'90-#eee:5-#fff:95'</span>,
+  <span class="hljs-string">'blue'</span> : <span class="hljs-string">'90-#22f:5-#55f:95'</span>,
+  <span class="hljs-string">'red'</span>  : <span class="hljs-string">'90-#f22:5-#f55:95'</span>,
+  <span class="hljs-string">'green'</span>: <span class="hljs-string">'90-#0f0:5-#0f0:95'</span>
+};</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Positions on neck of neck marker dots
+TODO: only applicable for guitar</p></div></div><div class="code"><div class="wrapper">ChordView.NECK_MARKERS = [
+  [ <span class="hljs-number">5</span>, <span class="hljs-number">1</span> ],
+  [ <span class="hljs-number">7</span>, <span class="hljs-number">2</span> ],
+  [ <span class="hljs-number">9</span>, <span class="hljs-number">1</span> ],
+  [ <span class="hljs-number">12</span>, <span class="hljs-number">2</span> ],
+  [ <span class="hljs-number">15</span>, <span class="hljs-number">1</span> ],
+  [ <span class="hljs-number">17</span>, <span class="hljs-number">1</span> ]
+];</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="render-options">Render Options</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Render attributes are configurable via the ChordView&#39;s options object.
 Render options tend to contain measurement, color, and boolean values.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Default options for a standard chord diagram.  These can be over-ridden
-by passing in a config object to the ChordView constructor.</p></div></div><div class="code"><div class="wrapper"><span class="nx">ChordView</span><span class="p">.</span><span class="nx">UNSCALABLE</span> <span class="o">=</span> <span class="p">[</span>
-  <span class="s1">&#39;base_fret&#39;</span><span class="p">,</span>
-  <span class="s1">&#39;num_frets&#39;</span><span class="p">,</span>
-  <span class="s1">&#39;min_frets&#39;</span><span class="p">,</span>
-  <span class="s1">&#39;fret_pad&#39;</span><span class="p">,</span>
-  <span class="s1">&#39;scale&#39;</span><span class="p">,</span>
-  <span class="s1">&#39;orientation&#39;</span><span class="p">,</span>
-  <span class="s1">&#39;finger_position&#39;</span><span class="p">,</span>
-<span class="p">];</span>
-<span class="nx">ChordView</span><span class="p">.</span><span class="nx">DEFAULT_OPTIONS</span> <span class="o">=</span> <span class="p">{</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Constant factor to scale all subsquent values by.</p></div></div><div class="code"><div class="wrapper">  <span class="nx">scale</span><span class="o">:</span> <span class="mf">0.5</span><span class="p">,</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Orientation. Side view is useful for longer neck diagrams.</p></div></div><div class="code"><div class="wrapper">  <span class="nx">orientation</span><span class="o">:</span> <span class="nx">ChordView</span><span class="p">.</span><span class="nx">NUT_TOP</span><span class="p">,</span>
+by passing in a config object to the ChordView constructor.</p></div></div><div class="code"><div class="wrapper">ChordView.UNSCALABLE = [
+  <span class="hljs-string">'base_fret'</span>,
+  <span class="hljs-string">'num_frets'</span>,
+  <span class="hljs-string">'min_frets'</span>,
+  <span class="hljs-string">'fret_pad'</span>,
+  <span class="hljs-string">'scale'</span>,
+  <span class="hljs-string">'orientation'</span>,
+  <span class="hljs-string">'finger_position'</span>,
+];
+ChordView.DEFAULT_OPTIONS = {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Constant factor to scale all subsquent values by.</p></div></div><div class="code"><div class="wrapper">  scale: <span class="hljs-number">0.5</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Orientation. Side view is useful for longer neck diagrams.</p></div></div><div class="code"><div class="wrapper">  orientation: ChordView.NUT_TOP,
 
-  <span class="nx">string_gap</span><span class="o">:</span> <span class="mi">30</span><span class="p">,</span>
-  <span class="nx">fret_gap</span><span class="o">:</span> <span class="mi">30</span><span class="p">,</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Neck range</p></div></div><div class="code"><div class="wrapper">  <span class="nx">fret_pad</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
-  <span class="nx">min_frets</span><span class="o">:</span> <span class="mi">5</span><span class="p">,</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>num<em>frets: 5,
-base</em>fret: 1,</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Finger number annotations</p></div></div><div class="code"><div class="wrapper">  <span class="nx">show_fingers</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-  <span class="nx">finger_anno_y</span><span class="o">:</span> <span class="mi">10</span><span class="p">,</span>
-  <span class="nx">finger_position</span><span class="o">:</span> <span class="nx">ChordView</span><span class="p">.</span><span class="nx">FINGER_TOP</span><span class="p">,</span>
-  <span class="nx">anno_font_size</span><span class="o">:</span> <span class="mi">18</span><span class="p">,</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: open annotations not really related to finger annotations</p></div></div><div class="code"><div class="wrapper">  <span class="nx">open_note_radius</span><span class="o">:</span> <span class="mi">6</span><span class="p">,</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Note markers</p></div></div><div class="code"><div class="wrapper">  <span class="nx">note_radius</span><span class="o">:</span> <span class="mi">10</span><span class="p">,</span>
-  <span class="nx">note_stroke_width</span><span class="o">:</span> <span class="mf">1.5</span><span class="p">,</span>
-  <span class="nx">note_gradient</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-  <span class="nx">note_color</span><span class="o">:</span> <span class="s1">&#39;white&#39;</span><span class="p">,</span>
-  <span class="nx">tonic_color</span><span class="o">:</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span>
+  string_gap: <span class="hljs-number">30</span>,
+  fret_gap: <span class="hljs-number">30</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Neck range</p></div></div><div class="code"><div class="wrapper">  fret_pad: <span class="hljs-number">1</span>,
+  min_frets: <span class="hljs-number">5</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>num_frets: 5,
+base_fret: 1,</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Finger number annotations</p></div></div><div class="code"><div class="wrapper">  show_fingers: <span class="hljs-literal">true</span>,
+  finger_anno_y: <span class="hljs-number">10</span>,
+  finger_position: ChordView.FINGER_TOP,
+  anno_font_size: <span class="hljs-number">18</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: open annotations not really related to finger annotations</p></div></div><div class="code"><div class="wrapper">  open_note_radius: <span class="hljs-number">6</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Note markers</p></div></div><div class="code"><div class="wrapper">  note_radius: <span class="hljs-number">10</span>,
+  note_stroke_width: <span class="hljs-number">1.5</span>,
+  note_gradient: <span class="hljs-literal">true</span>,
+  note_color: <span class="hljs-string">'white'</span>,
+  tonic_color: <span class="hljs-string">'black'</span>,
 
-  <span class="nx">neck_marker_radius</span><span class="o">:</span> <span class="mi">8</span><span class="p">,</span>
-  <span class="nx">neck_marker_color</span><span class="o">:</span> <span class="s2">&quot;#eee&quot;</span><span class="p">,</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Nut (zero-th fret) marker</p></div></div><div class="code"><div class="wrapper">  <span class="nx">nut_height</span><span class="o">:</span> <span class="mi">5</span><span class="p">,</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Offset from origin of neck grid</p></div></div><div class="code"><div class="wrapper">  <span class="nx">grid_x</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-  <span class="nx">grid_y</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-  <span class="nx">grid_stroke_width</span><span class="o">:</span> <span class="mf">1.5</span><span class="p">,</span>
+  neck_marker_radius: <span class="hljs-number">8</span>,
+  neck_marker_color: <span class="hljs-string">"#eee"</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Nut (zero-th fret) marker</p></div></div><div class="code"><div class="wrapper">  nut_height: <span class="hljs-number">5</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Offset from origin of neck grid</p></div></div><div class="code"><div class="wrapper">  grid_x: <span class="hljs-number">0</span>,
+  grid_y: <span class="hljs-number">0</span>,
+  grid_stroke_width: <span class="hljs-number">1.5</span>,
 
-  <span class="nx">grid_padding_bottom</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
-  <span class="nx">grid_padding_right</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
-  <span class="nx">grid_padding_left</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Chord label</p></div></div><div class="code"><div class="wrapper">  <span class="nx">show_label</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-  <span class="nx">label_font_size</span><span class="o">:</span> <span class="mi">36</span><span class="p">,</span>
-  <span class="nx">label_y_offset</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
-  <span class="nx">label_height</span><span class="o">:</span> <span class="mi">40</span><span class="p">,</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Instrument tuning annotation</p></div></div><div class="code"><div class="wrapper">  <span class="nx">show_tuning</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-  <span class="nx">tuning_label_font_size</span><span class="o">:</span> <span class="mi">18</span><span class="p">,</span>
-  <span class="nx">tuning_label_offset</span><span class="o">:</span> <span class="mi">14</span><span class="p">,</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Base fret annotation (when chord is offset from the nut)</p></div></div><div class="code"><div class="wrapper">  <span class="nx">base_fret_font_size</span><span class="o">:</span> <span class="mi">26</span><span class="p">,</span>
-  <span class="nx">base_fret_label_width</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
-  <span class="nx">base_fret_offset</span><span class="o">:</span> <span class="mi">16</span>
-<span class="p">};</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Pre-set for compact tiny format</p></div></div><div class="code"><div class="wrapper"><span class="nx">ChordView</span><span class="p">.</span><span class="nx">OPTIONS_COMPACT</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="nx">scale</span><span class="o">:</span> <span class="mf">0.3</span><span class="p">,</span>
-  <span class="nx">show_tuning</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
-  <span class="nx">show_fingers</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
-  <span class="nx">note_stroke_width</span><span class="o">:</span> <span class="mf">1.0</span><span class="p">,</span>
-  <span class="nx">note_color</span><span class="o">:</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span>
-  <span class="nx">note_gradient</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
-  <span class="nx">base_fret_font_size</span><span class="o">:</span> <span class="mi">36</span><span class="p">,</span>
-  <span class="nx">base_fret_offset</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
-  <span class="nx">grid_padding_right</span><span class="o">:</span> <span class="mi">40</span><span class="p">,</span>
-  <span class="nx">num_frets</span><span class="o">:</span> <span class="mi">5</span>
-<span class="p">};</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Pre-set suitable for longer neck diagram</p></div></div><div class="code"><div class="wrapper"><span class="nx">ChordView</span><span class="p">.</span><span class="nx">OPTIONS_NECK</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="nx">scale</span><span class="o">:</span> <span class="mf">1.0</span><span class="p">,</span>
-  <span class="nx">orientation</span><span class="o">:</span> <span class="nx">ChordView</span><span class="p">.</span><span class="nx">NUT_LEFT</span><span class="p">,</span>
-  <span class="nx">show_tuning</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-  <span class="nx">fret_gap</span><span class="o">:</span> <span class="mi">50</span><span class="p">,</span>
-  <span class="nx">num_frets</span><span class="o">:</span> <span class="mi">15</span><span class="p">,</span>
-<span class="p">};</span>
+  grid_padding_bottom: <span class="hljs-number">20</span>,
+  grid_padding_right: <span class="hljs-number">20</span>,
+  grid_padding_left: <span class="hljs-number">20</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Chord label</p></div></div><div class="code"><div class="wrapper">  show_label: <span class="hljs-literal">true</span>,
+  label_font_size: <span class="hljs-number">36</span>,
+  label_y_offset: <span class="hljs-number">20</span>,
+  label_height: <span class="hljs-number">40</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Instrument tuning annotation</p></div></div><div class="code"><div class="wrapper">  show_tuning: <span class="hljs-literal">true</span>,
+  tuning_label_font_size: <span class="hljs-number">18</span>,
+  tuning_label_offset: <span class="hljs-number">14</span>,</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Base fret annotation (when chord is offset from the nut)</p></div></div><div class="code"><div class="wrapper">  base_fret_font_size: <span class="hljs-number">26</span>,
+  base_fret_label_width: <span class="hljs-number">20</span>,
+  base_fret_offset: <span class="hljs-number">16</span>
+};</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Pre-set for compact tiny format</p></div></div><div class="code"><div class="wrapper">ChordView.OPTIONS_COMPACT = {
+  scale: <span class="hljs-number">0.3</span>,
+  show_tuning: <span class="hljs-literal">false</span>,
+  show_fingers: <span class="hljs-literal">false</span>,
+  note_stroke_width: <span class="hljs-number">1.0</span>,
+  note_color: <span class="hljs-string">'black'</span>,
+  note_gradient: <span class="hljs-literal">false</span>,
+  base_fret_font_size: <span class="hljs-number">36</span>,
+  base_fret_offset: <span class="hljs-number">20</span>,
+  grid_padding_right: <span class="hljs-number">40</span>,
+  num_frets: <span class="hljs-number">5</span>
+};</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Pre-set suitable for longer neck diagram</p></div></div><div class="code"><div class="wrapper">ChordView.OPTIONS_NECK = {
+  scale: <span class="hljs-number">1.0</span>,
+  orientation: ChordView.NUT_LEFT,
+  show_tuning: <span class="hljs-literal">true</span>,
+  fret_gap: <span class="hljs-number">50</span>,
+  num_frets: <span class="hljs-number">15</span>,
+};
 
-<span class="nx">ChordView</span><span class="p">.</span><span class="nx">OPTIONS</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="s2">&quot;default&quot;</span><span class="o">:</span> <span class="nx">ChordView</span><span class="p">.</span><span class="nx">DEFAULT_OPTIONS</span><span class="p">,</span>
-  <span class="s2">&quot;compact&quot;</span><span class="o">:</span> <span class="nx">ChordView</span><span class="p">.</span><span class="nx">OPTIONS_COMPACT</span><span class="p">,</span>
-  <span class="s2">&quot;neck&quot;</span><span class="o">:</span> <span class="nx">ChordView</span><span class="p">.</span><span class="nx">OPTIONS_NECK</span>
-<span class="p">};</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="chordview-class">ChordView Class</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="nx">ChordView</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Whenever you replace an Object's Prototype, you need to repoint
+ChordView.OPTIONS = {
+  <span class="hljs-string">"default"</span>: ChordView.DEFAULT_OPTIONS,
+  <span class="hljs-string">"compact"</span>: ChordView.OPTIONS_COMPACT,
+  <span class="hljs-string">"neck"</span>: ChordView.OPTIONS_NECK
+};</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="chordview-class">ChordView Class</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper">ChordView.prototype = {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Whenever you replace an Object&#39;s Prototype, you need to repoint
 the base Constructor back at the original constructor Function,
-otherwise <code>instanceof</code> calls will fail.</p></div></div><div class="code"><div class="wrapper">  <span class="nx">constructor</span><span class="o">:</span> <span class="nx">ChordView</span><span class="p">,</span>
+otherwise <code>instanceof</code> calls will fail.</p></div></div><div class="code"><div class="wrapper">  constructor: ChordView,
 
-  <span class="nx">_init</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">container</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">model</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">container</span><span class="p">))</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">containerId</span> <span class="o">=</span> <span class="nx">container</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">);</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">container</span> <span class="k">instanceof</span> <span class="nx">jQuery</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">containerId</span> <span class="o">=</span> <span class="nx">container</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">);</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isElement</span><span class="p">(</span><span class="nx">container</span><span class="p">))</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">containerId</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">container</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">);</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-      <span class="k">throw</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;container must be a DOM elem or DOM ID string.&quot;</span><span class="p">);</span>
-    <span class="p">}</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create fresh copy of options object in case they have passed in one of
-the static pre-set options objects</p></div></div><div class="code"><div class="wrapper">    <span class="k">this</span><span class="p">.</span><span class="nx">options</span> <span class="o">=</span> <span class="p">{};</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">options</span><span class="p">))</span> <span class="p">{</span>
-      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">_</span><span class="p">.</span><span class="nx">has</span><span class="p">(</span><span class="nx">ChordView</span><span class="p">.</span><span class="nx">OPTIONS</span><span class="p">,</span> <span class="nx">options</span><span class="p">))</span> <span class="p">{</span>
-        <span class="k">throw</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;Invalid options string: &quot;</span> <span class="o">+</span> <span class="nx">options</span><span class="p">);</span>
-      <span class="p">}</span>
-      <span class="nx">_</span><span class="p">.</span><span class="nx">defaults</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">,</span> <span class="nx">ChordView</span><span class="p">.</span><span class="nx">OPTIONS</span><span class="p">[</span><span class="nx">options</span><span class="p">]);</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isObject</span><span class="p">(</span><span class="nx">options</span><span class="p">))</span> <span class="p">{</span>
-      <span class="nx">_</span><span class="p">.</span><span class="nx">defaults</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="nx">_</span><span class="p">.</span><span class="nx">defaults</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">,</span> <span class="nx">ChordView</span><span class="p">.</span><span class="nx">DEFAULT_OPTIONS</span><span class="p">);</span>
+  _init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(container, options, model)</span> {</span>
+    <span class="hljs-keyword">if</span> (_.isString(container)) {
+      <span class="hljs-keyword">this</span>.containerId = container.replace(<span class="hljs-string">"#"</span>, <span class="hljs-string">""</span>);
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (container <span class="hljs-keyword">instanceof</span> jQuery) {
+      <span class="hljs-keyword">this</span>.containerId = container.attr(<span class="hljs-string">"id"</span>);
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (_.isElement(container)) {
+      <span class="hljs-keyword">this</span>.containerId = $(container).attr(<span class="hljs-string">"id"</span>);
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"container must be a DOM elem or DOM ID string."</span>);
+    }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create fresh copy of options object in case they have passed in one of
+the static pre-set options objects</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">this</span>.options = {};
+    <span class="hljs-keyword">if</span> (_.isString(options)) {
+      <span class="hljs-keyword">if</span> (!_.has(ChordView.OPTIONS, options)) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"Invalid options string: "</span> + options);
+      }
+      _.defaults(<span class="hljs-keyword">this</span>.options, ChordView.OPTIONS[options]);
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (_.isObject(options)) {
+      _.defaults(<span class="hljs-keyword">this</span>.options, options);
+    }
+    _.defaults(<span class="hljs-keyword">this</span>.options, ChordView.DEFAULT_OPTIONS);
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">model</span> <span class="o">=</span> <span class="nx">model</span><span class="p">;</span>
+    <span class="hljs-keyword">this</span>.model = model;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_x</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_padding_left</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_y</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">anno_font_size</span> <span class="o">+</span> <span class="mi">4</span><span class="p">;</span>
+    <span class="hljs-keyword">this</span>.options.grid_x = <span class="hljs-keyword">this</span>.options.grid_padding_left;
+    <span class="hljs-keyword">this</span>.options.grid_y = <span class="hljs-keyword">this</span>.options.anno_font_size + <span class="hljs-number">4</span>;
 
-    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">orientation</span> <span class="o">===</span> <span class="nx">ChordView</span><span class="p">.</span><span class="nx">NUT_TOP</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">getLabel</span><span class="p">()</span> <span class="o">!==</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_y</span> <span class="o">+=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">label_height</span><span class="p">;</span>
-    <span class="p">}</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Scaling is done by scaling all the constant factors in the render code</p></div></div><div class="code"><div class="wrapper">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;scale: &quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">scale</span><span class="p">);</span>
-    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">scale</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">_scaleSize</span><span class="p">();</span>
-    <span class="p">}</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>if both are num<em>frets and base</em>fret are not provided, auto-calc missing values</p></div></div><div class="code"><div class="wrapper">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">has</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">,</span> <span class="s1">&#39;num_frets&#39;</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">_</span><span class="p">.</span><span class="nx">has</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">,</span> <span class="s1">&#39;base_fret&#39;</span><span class="p">)))</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">_calcFretRange</span><span class="p">();</span>
-    <span class="p">}</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.options.orientation === ChordView.NUT_TOP &amp;&amp; <span class="hljs-keyword">this</span>.model.getLabel() !== <span class="hljs-string">""</span>) {
+      <span class="hljs-keyword">this</span>.options.grid_y += <span class="hljs-keyword">this</span>.options.label_height;
+    }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Scaling is done by scaling all the constant factors in the render code</p></div></div><div class="code"><div class="wrapper">    console.log(<span class="hljs-string">"scale: "</span> + <span class="hljs-keyword">this</span>.options.scale);
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.options.scale != <span class="hljs-number">1</span>) {
+      <span class="hljs-keyword">this</span>._scaleSize();
+    }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>if both are num_frets and base_fret are not provided, auto-calc missing values</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> (!(_.has(<span class="hljs-keyword">this</span>.options, <span class="hljs-string">'num_frets'</span>) &amp;&amp; _.has(<span class="hljs-keyword">this</span>.options, <span class="hljs-string">'base_fret'</span>))) {
+      <span class="hljs-keyword">this</span>._calcFretRange();
+    }
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">diagram_glyphs</span> <span class="o">=</span> <span class="p">{};</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">neck</span> <span class="o">=</span> <span class="p">{</span>
-      <span class="nx">glyphs</span><span class="o">:</span> <span class="p">{},</span>
-      <span class="nx">width</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-      <span class="nx">height</span><span class="o">:</span> <span class="mi">0</span>
-    <span class="p">};</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">noteGlyphs</span> <span class="o">=</span> <span class="p">{};</span>
+    <span class="hljs-keyword">this</span>.diagram_glyphs = {};
+    <span class="hljs-keyword">this</span>.neck = {
+      glyphs: {},
+      width: <span class="hljs-number">0</span>,
+      height: <span class="hljs-number">0</span>
+    };
+    <span class="hljs-keyword">this</span>.noteGlyphs = {};
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">transform_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: decomp out this calculation</p></div></div><div class="code"><div class="wrapper">    <span class="k">this</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_x</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">getNumStrings</span><span class="p">()</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">string_gap</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">base_fret_label_width</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_padding_right</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_y</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">num_frets</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">fret_gap</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">tuning_label_font_size</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_padding_bottom</span><span class="p">;</span>
+    <span class="hljs-keyword">this</span>.transform_str = <span class="hljs-string">""</span>;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: decomp out this calculation</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">this</span>.width = <span class="hljs-keyword">this</span>.options.grid_x + <span class="hljs-keyword">this</span>.model.getNumStrings() * <span class="hljs-keyword">this</span>.options.string_gap + <span class="hljs-keyword">this</span>.options.base_fret_label_width + <span class="hljs-keyword">this</span>.options.grid_padding_right;
+    <span class="hljs-keyword">this</span>.height = <span class="hljs-keyword">this</span>.options.grid_y + <span class="hljs-keyword">this</span>.options.num_frets * <span class="hljs-keyword">this</span>.options.fret_gap + <span class="hljs-keyword">this</span>.options.tuning_label_font_size + <span class="hljs-keyword">this</span>.options.grid_padding_bottom;
 
-    <span class="k">if</span> <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">jQuery</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">$</span><span class="p">(</span><span class="nx">container</span><span class="p">).</span><span class="nx">html</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">);</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isElement</span><span class="p">(</span><span class="nx">container</span><span class="p">))</span> <span class="p">{</span>
-      <span class="nx">container</span><span class="p">.</span><span class="nx">innerHtml</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">container</span><span class="p">);</span>
-    <span class="p">}</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>var ratio = 1.0;
-console.log("Width: " + this.width);
-console.log("Height: " + this.height);
-console.log("Container Width: " + $(container).parent().width());
-console.log("Orientation: " + this.options.orientation);
+    <span class="hljs-keyword">if</span> (window.jQuery) {
+      $(container).html(<span class="hljs-string">""</span>);
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (_.isElement(container)) {
+      container.innerHtml = <span class="hljs-string">""</span>;
+    } <span class="hljs-keyword">else</span> {
+      console.log(container);
+    }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>var ratio = 1.0;
+console.log(&quot;Width: &quot; + this.width);
+console.log(&quot;Height: &quot; + this.height);
+console.log(&quot;Container Width: &quot; + $(container).parent().width());
+console.log(&quot;Orientation: &quot; + this.options.orientation);
 if (this.options.orientation == ChordView.NUT_LEFT &amp;&amp;
-    this.height > $(container).parent().width()) {</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>ratio = $(container).parent().width() / this.height;
-  console.log("Auto-scaling to: " + ratio);
-  this._scaleSize(ratio);</p></div></div><div class="code"><div class="wrapper">    <span class="c1">//  else if (this.options.orientation == ChordView.NUT_TOP &amp;&amp;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code>this.width &gt; $(container).parent().width()) {
-</code></pre></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>ratio = $(container).parent().width() / this.width;
-  console.log("Container Width: " + $(container).parent().width());
-  console.log("Auto-scaling to: " + ratio);
-  this._scaleSize(ratio);</p></div></div><div class="code"><div class="wrapper">    <span class="c1">// </span>
+    this.height &gt; $(container).parent().width()) {</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>  ratio = $(container).parent().width() / this.height;
+  console.log(&quot;Auto-scaling to: &quot; + ratio);
+  this._scaleSize(ratio);</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-comment">// else if (this.options.orientation == ChordView.NUT_TOP &amp;&amp;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code>this.width &gt; $(container).parent().width()) {</code></pre></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>  ratio = $(container).parent().width() / this.width;
+  console.log(&quot;Container Width: &quot; + $(container).parent().width());
+  console.log(&quot;Auto-scaling to: &quot; + ratio);
+  this._scaleSize(ratio);</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-comment">// </span>
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">r</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">containerId</span><span class="p">);</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">r</span> <span class="o">=</span> <span class="nx">Raphael</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">containerId</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+    <span class="hljs-keyword">this</span>.r = <span class="hljs-literal">null</span>;
+    console.log(<span class="hljs-keyword">this</span>.containerId);
+    <span class="hljs-keyword">this</span>.r = Raphael(<span class="hljs-keyword">this</span>.containerId, <span class="hljs-keyword">this</span>.width, <span class="hljs-keyword">this</span>.height);
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">_render</span><span class="p">();</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">_setOrientation</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">orientation</span><span class="p">);</span>
+    <span class="hljs-keyword">this</span>._render();
+    <span class="hljs-keyword">this</span>._setOrientation(<span class="hljs-keyword">this</span>.options.orientation);
 
-    <span class="kd">var</span> <span class="nx">svgWidth</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="o">+</span><span class="k">this</span><span class="p">.</span><span class="nx">containerId</span><span class="p">).</span><span class="nx">width</span><span class="p">();</span>
-    <span class="kd">var</span> <span class="nx">parentWidth</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="o">+</span><span class="k">this</span><span class="p">.</span><span class="nx">containerId</span><span class="p">).</span><span class="nx">parent</span><span class="p">().</span><span class="nx">width</span><span class="p">();</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">svgWidth</span> <span class="o">&gt;</span> <span class="nx">parentWidth</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;shrinking container to fit&quot;</span><span class="p">);</span>
-      <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="o">+</span><span class="k">this</span><span class="p">.</span><span class="nx">containerId</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s2">&quot;width&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span> <span class="o">+</span> <span class="nx">parentWidth</span> <span class="o">+</span> <span class="s2">&quot;px&quot;</span><span class="p">);</span>
-    <span class="p">}</span>
+    <span class="hljs-keyword">var</span> svgWidth = $(<span class="hljs-string">"#"</span> + <span class="hljs-keyword">this</span>.containerId).width();
+    <span class="hljs-keyword">var</span> parentWidth = $(<span class="hljs-string">"#"</span> + <span class="hljs-keyword">this</span>.containerId).parent().width();
+    <span class="hljs-keyword">if</span> (svgWidth &gt; parentWidth) {
+      console.log(<span class="hljs-string">"shrinking container to fit"</span>);
+      $(<span class="hljs-string">"#"</span> + <span class="hljs-keyword">this</span>.containerId).css(<span class="hljs-string">"width"</span>, <span class="hljs-string">""</span> + parentWidth + <span class="hljs-string">"px"</span>);
+    }
 
-  <span class="p">},</span>
+  },
 
-  <span class="nx">getCode</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: implement</p></div></div><div class="code"><div class="wrapper">    <span class="k">throw</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">&quot;Not implemented yet&quot;</span><span class="p">);</span>
-  <span class="p">},</span>
-  <span class="nx">getModel</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">;</span>
-  <span class="p">},</span>
+  getCode: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: implement</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">throw</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"Not implemented yet"</span>);
+  },
+  getModel: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.model;
+  },
 
-  <span class="nx">_scaleSize</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">_</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">ChordView</span><span class="p">.</span><span class="nx">DEFAULT_OPTIONS</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">num</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span> <span class="p">{</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: improve the fact that we're using negative numbers to distinguish values from consts</p></div></div><div class="code"><div class="wrapper">      <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">ChordView</span><span class="p">.</span><span class="nx">UNSCALABLE</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="nx">_</span><span class="p">.</span><span class="nx">isNumber</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">[</span><span class="nx">key</span><span class="p">]))</span> <span class="p">{</span>
+  _scaleSize: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    _.each(ChordView.DEFAULT_OPTIONS, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(num, key)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: improve the fact that we&#39;re using negative numbers to distinguish values from consts</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> (_.indexOf(ChordView.UNSCALABLE, key) == -<span class="hljs-number">1</span> &amp;&amp; _.isNumber(<span class="hljs-keyword">this</span>.options[key])) {
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">scale</span><span class="p">;</span>
-      <span class="p">}</span>
-    <span class="p">},</span> <span class="k">this</span><span class="p">);</span>
-  <span class="p">},</span>
+        <span class="hljs-keyword">this</span>.options[key] = <span class="hljs-keyword">this</span>.options[key] * <span class="hljs-keyword">this</span>.options.scale;
+      }
+    }, <span class="hljs-keyword">this</span>);
+  },
 
-  <span class="nx">_calcFretRange</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">fret_range</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">getMaxFret</span><span class="p">()</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">getMinFret</span><span class="p">();</span>
-    <span class="kd">var</span> <span class="nx">ideal_num_frets</span> <span class="o">=</span> <span class="nx">fret_range</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">fret_pad</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">ideal_base_fret</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">getMinFret</span><span class="p">(),</span> <span class="mi">1</span><span class="p">);</span>
+  _calcFretRange: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> fret_range = <span class="hljs-keyword">this</span>.model.getMaxFret() - <span class="hljs-keyword">this</span>.model.getMinFret();
+    <span class="hljs-keyword">var</span> ideal_num_frets = fret_range + <span class="hljs-keyword">this</span>.options.fret_pad;
+    <span class="hljs-keyword">var</span> ideal_base_fret = <span class="hljs-built_in">Math</span>.max(<span class="hljs-keyword">this</span>.model.getMinFret(), <span class="hljs-number">1</span>);
 
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">_</span><span class="p">.</span><span class="nx">has</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">,</span> <span class="s1">&#39;base_fret&#39;</span><span class="p">))</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">base_fret</span> <span class="o">=</span> <span class="nx">ideal_base_fret</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">_</span><span class="p">.</span><span class="nx">has</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">,</span> <span class="s1">&#39;num_frets&#39;</span><span class="p">))</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">num_frets</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">min_frets</span><span class="p">,</span>
-        <span class="nx">ideal_num_frets</span> <span class="o">+</span> <span class="p">(</span><span class="nx">ideal_base_fret</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">base_fret</span><span class="p">)</span>
-      <span class="p">);</span>
-    <span class="p">}</span>
+    <span class="hljs-keyword">if</span> (!_.has(<span class="hljs-keyword">this</span>.options, <span class="hljs-string">'base_fret'</span>)) {
+      <span class="hljs-keyword">this</span>.options.base_fret = ideal_base_fret;
+    }
+    <span class="hljs-keyword">if</span> (!_.has(<span class="hljs-keyword">this</span>.options, <span class="hljs-string">'num_frets'</span>)) {
+      <span class="hljs-keyword">this</span>.options.num_frets = <span class="hljs-built_in">Math</span>.max(
+        <span class="hljs-keyword">this</span>.options.min_frets,
+        ideal_num_frets + (ideal_base_fret - <span class="hljs-keyword">this</span>.options.base_fret)
+      );
+    }
 
-  <span class="p">},</span>
+  },
 
-  <span class="nx">_render</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">neck</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">getNumStrings</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">string_gap</span><span class="p">;</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">neck</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">num_frets</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">fret_gap</span><span class="p">;</span>
+  _render: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">this</span>.neck.width = (<span class="hljs-keyword">this</span>.model.getNumStrings() - <span class="hljs-number">1</span>) * <span class="hljs-keyword">this</span>.options.string_gap;
+    <span class="hljs-keyword">this</span>.neck.height = <span class="hljs-keyword">this</span>.options.num_frets * <span class="hljs-keyword">this</span>.options.fret_gap;
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">_drawNeck</span><span class="p">(</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_x</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_y</span><span class="p">,</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">neck</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">neck</span><span class="p">.</span><span class="nx">height</span><span class="p">,</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">getNumStrings</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">num_frets</span><span class="p">,</span> <span class="s2">&quot;#000&quot;</span>
-    <span class="p">);</span>
+    <span class="hljs-keyword">this</span>._drawNeck(
+      <span class="hljs-keyword">this</span>.options.grid_x, <span class="hljs-keyword">this</span>.options.grid_y,
+      <span class="hljs-keyword">this</span>.neck.width, <span class="hljs-keyword">this</span>.neck.height,
+      <span class="hljs-keyword">this</span>.model.getNumStrings() - <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.options.num_frets, <span class="hljs-string">"#000"</span>
+    );
 
-    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">base_fret</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">_drawNut</span><span class="p">();</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">_drawBaseFret</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">base_fret</span><span class="p">);</span>
-    <span class="p">}</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.options.base_fret == <span class="hljs-number">1</span>) {
+      <span class="hljs-keyword">this</span>._drawNut();
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">this</span>._drawBaseFret(<span class="hljs-keyword">this</span>.options.base_fret);
+    }
 
-    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">orientation</span> <span class="o">===</span> <span class="nx">ChordView</span><span class="p">.</span><span class="nx">NUT_TOP</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">show_label</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">_drawLabel</span><span class="p">();</span>
-    <span class="p">}</span>
-    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">show_tuning</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">_drawTuningLabel</span><span class="p">();</span>
-    <span class="p">}</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">_drawNotes</span><span class="p">();</span>
-  <span class="p">},</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.options.orientation === ChordView.NUT_TOP &amp;&amp; <span class="hljs-keyword">this</span>.options.show_label) {
+      <span class="hljs-keyword">this</span>._drawLabel();
+    }
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.options.show_tuning) {
+      <span class="hljs-keyword">this</span>._drawTuningLabel();
+    }
+    <span class="hljs-keyword">this</span>._drawNotes();
+  },
 
-  <span class="nx">_setOrientation</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">orientation</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">orientation</span><span class="p">))</span> <span class="p">{</span>
-      <span class="k">if</span> <span class="p">(</span><span class="nx">orientation</span> <span class="o">==</span> <span class="s2">&quot;left&quot;</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">_setOrientation</span><span class="p">(</span><span class="nx">ChordView</span><span class="p">.</span><span class="nx">NUT_LEFT</span><span class="p">);</span>
-        <span class="k">return</span><span class="p">;</span>
-      <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">orientation</span> <span class="o">==</span> <span class="s2">&quot;top&quot;</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">_setOrientation</span><span class="p">(</span><span class="nx">ChordView</span><span class="p">.</span><span class="nx">NUT_TOP</span><span class="p">);</span>
-        <span class="k">return</span><span class="p">;</span>
-      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="k">throw</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;Invalid orientation string: &quot;</span> <span class="o">+</span> <span class="nx">orientation</span><span class="p">);</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">_</span><span class="p">.</span><span class="nx">include</span><span class="p">([</span> <span class="nx">ChordView</span><span class="p">.</span><span class="nx">NUT_TOP</span><span class="p">,</span> <span class="nx">ChordView</span><span class="p">.</span><span class="nx">NUT_LEFT</span> <span class="p">],</span> <span class="nx">orientation</span><span class="p">))</span> <span class="p">{</span>
-      <span class="k">throw</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;Invalid orientation: &quot;</span> <span class="o">+</span> <span class="nx">orientation</span><span class="p">);</span>
-    <span class="p">}</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: Deal correctly with chord label</p></div></div><div class="code"><div class="wrapper">    <span class="k">if</span> <span class="p">(</span><span class="nx">orientation</span> <span class="o">==</span> <span class="nx">ChordView</span><span class="p">.</span><span class="nx">NUT_TOP</span><span class="p">)</span> <span class="p">{</span>
+  _setOrientation: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(orientation)</span> {</span>
+    <span class="hljs-keyword">if</span> (_.isString(orientation)) {
+      <span class="hljs-keyword">if</span> (orientation == <span class="hljs-string">"left"</span>) {
+        <span class="hljs-keyword">this</span>._setOrientation(ChordView.NUT_LEFT);
+        <span class="hljs-keyword">return</span>;
+      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (orientation == <span class="hljs-string">"top"</span>) {
+        <span class="hljs-keyword">this</span>._setOrientation(ChordView.NUT_TOP);
+        <span class="hljs-keyword">return</span>;
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"Invalid orientation string: "</span> + orientation);
+      }
+    }
+    <span class="hljs-keyword">if</span> (!_.include([ ChordView.NUT_TOP, ChordView.NUT_LEFT ], orientation)) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"Invalid orientation: "</span> + orientation);
+    }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: Deal correctly with chord label</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> (orientation == ChordView.NUT_TOP) {
 
-      <span class="k">this</span><span class="p">.</span><span class="nx">transform_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_x</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">getNumStrings</span><span class="p">()</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">string_gap</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">base_fret_label_width</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_padding_right</span><span class="p">;</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_y</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">num_frets</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">fret_gap</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">tuning_label_font_size</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_padding_bottom</span><span class="p">;</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">r</span><span class="p">.</span><span class="nx">setSize</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+      <span class="hljs-keyword">this</span>.transform_str = <span class="hljs-string">""</span>;
+      <span class="hljs-keyword">this</span>.width = <span class="hljs-keyword">this</span>.options.grid_x + <span class="hljs-keyword">this</span>.model.getNumStrings() * <span class="hljs-keyword">this</span>.options.string_gap + <span class="hljs-keyword">this</span>.options.base_fret_label_width + <span class="hljs-keyword">this</span>.options.grid_padding_right;
+      <span class="hljs-keyword">this</span>.height = <span class="hljs-keyword">this</span>.options.grid_y + <span class="hljs-keyword">this</span>.options.num_frets * <span class="hljs-keyword">this</span>.options.fret_gap + <span class="hljs-keyword">this</span>.options.tuning_label_font_size + <span class="hljs-keyword">this</span>.options.grid_padding_bottom;
+      <span class="hljs-keyword">this</span>.r.setSize(<span class="hljs-keyword">this</span>.width, <span class="hljs-keyword">this</span>.height);
 
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">orientation</span> <span class="o">==</span> <span class="nx">ChordView</span><span class="p">.</span><span class="nx">NUT_LEFT</span><span class="p">)</span> <span class="p">{</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Rotate Horizontally
-var transform<em>str = "t-"+this.neck.height+",0" + "r-90,"+this.options.grid</em>x+","+this.options.grid_y;</p></div></div><div class="code"><div class="wrapper">      <span class="kd">var</span> <span class="nx">rotate_o_x</span> <span class="o">=</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_x</span> <span class="o">+</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">neck</span><span class="p">.</span><span class="nx">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">));</span>
-      <span class="kd">var</span> <span class="nx">rotate_o_y</span> <span class="o">=</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_y</span> <span class="o">+</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">neck</span><span class="p">.</span><span class="nx">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">));</span>
-      <span class="kd">var</span> <span class="nx">translate_x</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">width</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">height</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
-      <span class="kd">var</span> <span class="nx">translate_y</span> <span class="o">=</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">height</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">width</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: explain this transformation
-don't include right padding for sideways layouts
-TODO: position base fret label differently depending on orientation</p></div></div><div class="code"><div class="wrapper">      <span class="k">this</span><span class="p">.</span><span class="nx">transform_str</span> <span class="o">=</span> <span class="s2">&quot;r-90,0,0&quot;</span> <span class="o">+</span> <span class="s2">&quot;t-&quot;</span><span class="o">+</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">width</span> <span class="o">-</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">base_fret_label_width</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_padding_right</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;,0&quot;</span><span class="p">;</span>
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (orientation == ChordView.NUT_LEFT) {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Rotate Horizontally
+var transform_str = &quot;t-&quot;+this.neck.height+&quot;,0&quot; + &quot;r-90,&quot;+this.options.grid_x+&quot;,&quot;+this.options.grid_y;</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">var</span> rotate_o_x = (<span class="hljs-keyword">this</span>.options.grid_x + (<span class="hljs-keyword">this</span>.neck.width / <span class="hljs-number">2</span>));
+      <span class="hljs-keyword">var</span> rotate_o_y = (<span class="hljs-keyword">this</span>.options.grid_y + (<span class="hljs-keyword">this</span>.neck.height / <span class="hljs-number">2</span>));
+      <span class="hljs-keyword">var</span> translate_x = -(<span class="hljs-keyword">this</span>.width - <span class="hljs-keyword">this</span>.height) / <span class="hljs-number">2</span>;
+      <span class="hljs-keyword">var</span> translate_y = (<span class="hljs-keyword">this</span>.height - <span class="hljs-keyword">this</span>.width) / <span class="hljs-number">2</span>;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: explain this transformation
+don&#39;t include right padding for sideways layouts
+TODO: position base fret label differently depending on orientation</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">this</span>.transform_str = <span class="hljs-string">"r-90,0,0"</span> + <span class="hljs-string">"t-"</span> + (<span class="hljs-keyword">this</span>.width - (<span class="hljs-keyword">this</span>.options.base_fret_label_width + <span class="hljs-keyword">this</span>.options.grid_padding_right)) + <span class="hljs-string">",0"</span>;
 
-      <span class="k">this</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_x</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">getNumStrings</span><span class="p">()</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">string_gap</span><span class="p">;</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_y</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">num_frets</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">fret_gap</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">tuning_label_font_size</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_padding_bottom</span><span class="p">;</span>
+      <span class="hljs-keyword">this</span>.height = <span class="hljs-keyword">this</span>.options.grid_x + <span class="hljs-keyword">this</span>.model.getNumStrings() * <span class="hljs-keyword">this</span>.options.string_gap;
+      <span class="hljs-keyword">this</span>.width = <span class="hljs-keyword">this</span>.options.grid_y + <span class="hljs-keyword">this</span>.options.num_frets * <span class="hljs-keyword">this</span>.options.fret_gap + <span class="hljs-keyword">this</span>.options.tuning_label_font_size + <span class="hljs-keyword">this</span>.options.grid_padding_bottom;
 
-      <span class="k">this</span><span class="p">.</span><span class="nx">r</span><span class="p">.</span><span class="nx">setSize</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="nx">_</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">values</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">neck</span><span class="p">.</span><span class="nx">glyphs</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">glyph</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">glyph</span><span class="p">))</span> <span class="p">{</span>
-        <span class="nx">_</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">glyph</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">glyph</span><span class="p">)</span> <span class="p">{</span>
-          <span class="nx">glyph</span><span class="p">.</span><span class="nx">transform</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">transform_str</span><span class="p">);</span>
-        <span class="p">},</span> <span class="k">this</span><span class="p">);</span>
-      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="nx">glyph</span><span class="p">.</span><span class="nx">transform</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">transform_str</span><span class="p">);</span>
-      <span class="p">}</span>
-    <span class="p">},</span> <span class="k">this</span><span class="p">);</span>
-    <span class="nx">_</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">values</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">noteGlyphs</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">note</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">_</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">values</span><span class="p">(</span><span class="nx">note</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">glyph</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">orientation</span> <span class="o">==</span> <span class="nx">ChordView</span><span class="p">.</span><span class="nx">NUT_LEFT</span><span class="p">)</span> <span class="p">{</span>
-          <span class="nx">glyph</span><span class="p">.</span><span class="nx">transform</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">transform_str</span> <span class="o">+</span> <span class="s2">&quot;r90&quot;</span><span class="p">);</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-          <span class="nx">glyph</span><span class="p">.</span><span class="nx">transform</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">transform_str</span><span class="p">);</span>
-        <span class="p">}</span>
-      <span class="p">},</span> <span class="k">this</span><span class="p">);</span>
-    <span class="p">},</span> <span class="k">this</span><span class="p">);</span>
-  <span class="p">},</span>
+      <span class="hljs-keyword">this</span>.r.setSize(<span class="hljs-keyword">this</span>.width, <span class="hljs-keyword">this</span>.height);
+    }
+    _.each(_.values(<span class="hljs-keyword">this</span>.neck.glyphs), <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(glyph)</span> {</span>
+      <span class="hljs-keyword">if</span> (_.isArray(glyph)) {
+        _.each(glyph, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(glyph)</span> {</span>
+          glyph.transform(<span class="hljs-keyword">this</span>.transform_str);
+        }, <span class="hljs-keyword">this</span>);
+      } <span class="hljs-keyword">else</span> {
+        glyph.transform(<span class="hljs-keyword">this</span>.transform_str);
+      }
+    }, <span class="hljs-keyword">this</span>);
+    _.each(_.values(<span class="hljs-keyword">this</span>.noteGlyphs), <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(note)</span> {</span>
+      _.each(_.values(note), <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(glyph)</span> {</span>
+        <span class="hljs-keyword">if</span> (orientation == ChordView.NUT_LEFT) {
+          glyph.transform(<span class="hljs-keyword">this</span>.transform_str + <span class="hljs-string">"r90"</span>);
+        } <span class="hljs-keyword">else</span> {
+          glyph.transform(<span class="hljs-keyword">this</span>.transform_str);
+        }
+      }, <span class="hljs-keyword">this</span>);
+    }, <span class="hljs-keyword">this</span>);
+  },
 
-  <span class="nx">_drawNeck</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">w</span><span class="p">,</span> <span class="nx">h</span><span class="p">,</span> <span class="nx">wv</span><span class="p">,</span> <span class="nx">hv</span><span class="p">,</span> <span class="nx">color</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">color</span> <span class="o">=</span> <span class="nx">color</span> <span class="o">||</span> <span class="s2">&quot;#000&quot;</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">path</span> <span class="o">=</span> <span class="p">[</span> <span class="s2">&quot;M&quot;</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">y</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">x</span> <span class="o">+</span> <span class="nx">w</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">y</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">x</span> <span class="o">+</span> <span class="nx">w</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">y</span> <span class="o">+</span> <span class="nx">h</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">y</span> <span class="o">+</span> <span class="nx">h</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">y</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="p">];</span>
-    <span class="kd">var</span> <span class="nx">rowHeight</span> <span class="o">=</span> <span class="nx">h</span> <span class="o">/</span> <span class="nx">hv</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">columnWidth</span> <span class="o">=</span> <span class="nx">w</span> <span class="o">/</span> <span class="nx">wv</span><span class="p">;</span>
+  _drawNeck: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(x, y, w, h, wv, hv, color)</span> {</span>
+    color = color || <span class="hljs-string">"#000"</span>;
+    <span class="hljs-keyword">var</span> path = [ <span class="hljs-string">"M"</span>, <span class="hljs-built_in">Math</span>.round(x) + <span class="hljs-number">0.5</span>, <span class="hljs-built_in">Math</span>.round(y) + <span class="hljs-number">0.5</span>, <span class="hljs-string">"L"</span>, <span class="hljs-built_in">Math</span>.round(x + w) + <span class="hljs-number">0.5</span>, <span class="hljs-built_in">Math</span>.round(y) + <span class="hljs-number">0.5</span>, <span class="hljs-built_in">Math</span>.round(x + w) + <span class="hljs-number">0.5</span>, <span class="hljs-built_in">Math</span>.round(y + h) + <span class="hljs-number">0.5</span>, <span class="hljs-built_in">Math</span>.round(x) + <span class="hljs-number">0.5</span>, <span class="hljs-built_in">Math</span>.round(y + h) + <span class="hljs-number">0.5</span>, <span class="hljs-built_in">Math</span>.round(x) + <span class="hljs-number">0.5</span>, <span class="hljs-built_in">Math</span>.round(y) + <span class="hljs-number">0.5</span> ];
+    <span class="hljs-keyword">var</span> rowHeight = h / hv;
+    <span class="hljs-keyword">var</span> columnWidth = w / wv;
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">hv</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">path</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">concat</span><span class="p">([</span> <span class="s2">&quot;M&quot;</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">y</span> <span class="o">+</span> <span class="nx">i</span> <span class="o">*</span> <span class="nx">rowHeight</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;H&quot;</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">x</span> <span class="o">+</span> <span class="nx">w</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="p">]);</span>
-    <span class="p">}</span>
-    <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">wv</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">path</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">concat</span><span class="p">([</span> <span class="s2">&quot;M&quot;</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">x</span> <span class="o">+</span> <span class="nx">i</span> <span class="o">*</span> <span class="nx">columnWidth</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">y</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;V&quot;</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">y</span> <span class="o">+</span> <span class="nx">h</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="p">]);</span>
-    <span class="p">}</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>this.neck.glyphs['grid<em>back'] = this.r.rect(this.options.grid</em>x, this.options.grid_y, this.neck.width, this.neck.height).attr("fill", "white");</p></div></div><div class="code"><div class="wrapper">    <span class="k">this</span><span class="p">.</span><span class="nx">_drawNeckMarkers</span><span class="p">();</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">neck</span><span class="p">.</span><span class="nx">glyphs</span><span class="p">[</span><span class="s1">&#39;grid&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">r</span><span class="p">.</span><span class="nx">path</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)).</span><span class="nx">attr</span><span class="p">({</span>
-      <span class="s1">&#39;stroke&#39;</span><span class="o">:</span> <span class="nx">color</span><span class="p">,</span>
-      <span class="s1">&#39;stroke-width&#39;</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_stroke_width</span>
-    <span class="p">});</span>
-  <span class="p">},</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">1</span>; i &lt; hv; i++) {
+      path = path.concat([ <span class="hljs-string">"M"</span>, <span class="hljs-built_in">Math</span>.round(x) + <span class="hljs-number">0.5</span>, <span class="hljs-built_in">Math</span>.round(y + i * rowHeight) + <span class="hljs-number">0.5</span>, <span class="hljs-string">"H"</span>, <span class="hljs-built_in">Math</span>.round(x + w) + <span class="hljs-number">0.5</span> ]);
+    }
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">1</span>; i &lt; wv; i++) {
+      path = path.concat([ <span class="hljs-string">"M"</span>, <span class="hljs-built_in">Math</span>.round(x + i * columnWidth) + <span class="hljs-number">0.5</span>, <span class="hljs-built_in">Math</span>.round(y) + <span class="hljs-number">0.5</span>, <span class="hljs-string">"V"</span>, <span class="hljs-built_in">Math</span>.round(y + h) + <span class="hljs-number">0.5</span> ]);
+    }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>this.neck.glyphs[&#39;grid_back&#39;] = this.r.rect(this.options.grid_x, this.options.grid_y, this.neck.width, this.neck.height).attr(&quot;fill&quot;, &quot;white&quot;);</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">this</span>._drawNeckMarkers();
+    <span class="hljs-keyword">this</span>.neck.glyphs[<span class="hljs-string">'grid'</span>] = <span class="hljs-keyword">this</span>.r.path(path.join(<span class="hljs-string">","</span>)).attr({
+      <span class="hljs-string">'stroke'</span>: color,
+      <span class="hljs-string">'stroke-width'</span>: <span class="hljs-keyword">this</span>.options.grid_stroke_width
+    });
+  },
 
-  <span class="nx">_drawNeckMarkers</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">neck</span><span class="p">.</span><span class="nx">glyphs</span><span class="p">[</span><span class="s1">&#39;neck-markers&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[];</span>
+  _drawNeckMarkers: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">this</span>.neck.glyphs[<span class="hljs-string">'neck-markers'</span>] = [];
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">ChordView</span><span class="p">.</span><span class="nx">NECK_MARKERS</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-      <span class="kd">var</span> <span class="nx">marker</span> <span class="o">=</span> <span class="nx">ChordView</span><span class="p">.</span><span class="nx">NECK_MARKERS</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
-      <span class="k">if</span> <span class="p">(</span><span class="nx">marker</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">base_fret</span> <span class="o">&amp;&amp;</span>
-         <span class="nx">marker</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">base_fret</span><span class="o">+</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">num_frets</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">_drawNeckMarker</span><span class="p">(</span><span class="nx">marker</span><span class="p">);</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
-  <span class="p">},</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; ChordView.NECK_MARKERS.length; i++) {
+      <span class="hljs-keyword">var</span> marker = ChordView.NECK_MARKERS[i];
+      <span class="hljs-keyword">if</span> (marker[<span class="hljs-number">0</span>] &gt; <span class="hljs-keyword">this</span>.options.base_fret &amp;&amp;
+         marker[<span class="hljs-number">0</span>] &lt; <span class="hljs-keyword">this</span>.options.base_fret + <span class="hljs-keyword">this</span>.options.num_frets) {
+        <span class="hljs-keyword">this</span>._drawNeckMarker(marker);
+      }
+    }
+  },
 
-  <span class="nx">_drawNeckMarker</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">neck_marker</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">neck_marker</span><span class="p">))</span> <span class="p">{</span> <span class="k">return</span><span class="p">;</span> <span class="p">}</span>
+  _drawNeckMarker: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(neck_marker)</span> {</span>
+    <span class="hljs-keyword">if</span> (_.isUndefined(neck_marker)) { <span class="hljs-keyword">return</span>; }
 
-    <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_y</span> <span class="o">+</span> <span class="p">((</span><span class="nx">neck_marker</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">base_fret</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">fret_gap</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">fret_gap</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">marker_style</span> <span class="o">=</span> <span class="p">{</span>
-      <span class="nx">fill</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">neck_marker_color</span><span class="p">,</span>
-      <span class="nx">stroke</span><span class="o">:</span> <span class="s2">&quot;none&quot;</span>
-    <span class="p">};</span>
+    <span class="hljs-keyword">var</span> y = <span class="hljs-keyword">this</span>.options.grid_y + ((neck_marker[<span class="hljs-number">0</span>] - (<span class="hljs-keyword">this</span>.options.base_fret - <span class="hljs-number">1</span>)) * <span class="hljs-keyword">this</span>.options.fret_gap) - (<span class="hljs-keyword">this</span>.options.fret_gap / <span class="hljs-number">2</span>);
+    <span class="hljs-keyword">var</span> marker_style = {
+      fill: <span class="hljs-keyword">this</span>.options.neck_marker_color,
+      stroke: <span class="hljs-string">"none"</span>
+    };
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">neck_marker</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-      <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_x</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">neck</span><span class="p">.</span><span class="nx">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="hljs-keyword">if</span> (neck_marker[<span class="hljs-number">1</span>] == <span class="hljs-number">1</span>) {
+      <span class="hljs-keyword">var</span> x = <span class="hljs-keyword">this</span>.options.grid_x + <span class="hljs-keyword">this</span>.neck.width / <span class="hljs-number">2</span>;
 
-      <span class="kd">var</span> <span class="nx">glyph</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">r</span><span class="p">.</span><span class="nx">circle</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">,</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">neck_marker_radius</span><span class="p">);</span>
-      <span class="nx">glyph</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="nx">marker_style</span><span class="p">);</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">neck</span><span class="p">.</span><span class="nx">glyphs</span><span class="p">[</span><span class="s1">&#39;neck-markers&#39;</span><span class="p">].</span><span class="nx">push</span><span class="p">(</span><span class="nx">glyph</span><span class="p">);</span>
+      <span class="hljs-keyword">var</span> glyph = <span class="hljs-keyword">this</span>.r.circle(x, y, <span class="hljs-keyword">this</span>.options.neck_marker_radius);
+      glyph.attr(marker_style);
+      <span class="hljs-keyword">this</span>.neck.glyphs[<span class="hljs-string">'neck-markers'</span>].push(glyph);
 
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">neck_marker</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
-      <span class="kd">var</span> <span class="nx">x1</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_x</span> <span class="o">+</span> <span class="p">(</span><span class="mf">1.2</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">string_gap</span><span class="p">);</span>
-      <span class="kd">var</span> <span class="nx">x2</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_x</span> <span class="o">+</span> <span class="p">(</span><span class="mf">3.8</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">string_gap</span><span class="p">);</span>
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (neck_marker[<span class="hljs-number">1</span>] == <span class="hljs-number">2</span>) {
+      <span class="hljs-keyword">var</span> x1 = <span class="hljs-keyword">this</span>.options.grid_x + (<span class="hljs-number">1.2</span> * <span class="hljs-keyword">this</span>.options.string_gap);
+      <span class="hljs-keyword">var</span> x2 = <span class="hljs-keyword">this</span>.options.grid_x + (<span class="hljs-number">3.8</span> * <span class="hljs-keyword">this</span>.options.string_gap);
 
-      <span class="kd">var</span> <span class="nx">glyph1</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">r</span><span class="p">.</span><span class="nx">circle</span><span class="p">(</span><span class="nx">x1</span><span class="p">,</span><span class="nx">y</span><span class="p">,</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">neck_marker_radius</span><span class="p">);</span>
-      <span class="nx">glyph1</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="nx">marker_style</span><span class="p">);</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">neck</span><span class="p">.</span><span class="nx">glyphs</span><span class="p">[</span><span class="s1">&#39;neck-markers&#39;</span><span class="p">].</span><span class="nx">push</span><span class="p">(</span><span class="nx">glyph1</span><span class="p">);</span>
+      <span class="hljs-keyword">var</span> glyph1 = <span class="hljs-keyword">this</span>.r.circle(x1, y, <span class="hljs-keyword">this</span>.options.neck_marker_radius);
+      glyph1.attr(marker_style);
+      <span class="hljs-keyword">this</span>.neck.glyphs[<span class="hljs-string">'neck-markers'</span>].push(glyph1);
 
-      <span class="kd">var</span> <span class="nx">glyph2</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">r</span><span class="p">.</span><span class="nx">circle</span><span class="p">(</span><span class="nx">x2</span><span class="p">,</span><span class="nx">y</span><span class="p">,</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">neck_marker_radius</span><span class="p">);</span>
-      <span class="nx">glyph2</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="nx">marker_style</span><span class="p">);</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">neck</span><span class="p">.</span><span class="nx">glyphs</span><span class="p">[</span><span class="s1">&#39;neck-markers&#39;</span><span class="p">].</span><span class="nx">push</span><span class="p">(</span><span class="nx">glyph2</span><span class="p">);</span>
-    <span class="p">}</span>
-  <span class="p">},</span>
+      <span class="hljs-keyword">var</span> glyph2 = <span class="hljs-keyword">this</span>.r.circle(x2, y, <span class="hljs-keyword">this</span>.options.neck_marker_radius);
+      glyph2.attr(marker_style);
+      <span class="hljs-keyword">this</span>.neck.glyphs[<span class="hljs-string">'neck-markers'</span>].push(glyph2);
+    }
+  },
 
-  <span class="nx">_drawNut</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">glyph</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">r</span><span class="p">.</span><span class="nx">rect</span><span class="p">(</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_x</span><span class="p">,</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_y</span><span class="p">,</span>
-      <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">getNumStrings</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">string_gap</span><span class="p">,</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">nut_height</span><span class="p">).</span><span class="nx">attr</span><span class="p">({</span> <span class="nx">fill</span><span class="o">:</span> <span class="s2">&quot;black&quot;</span> <span class="p">}</span>
-    <span class="p">);</span>
+  _drawNut: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> glyph = <span class="hljs-keyword">this</span>.r.rect(
+      <span class="hljs-keyword">this</span>.options.grid_x, <span class="hljs-keyword">this</span>.options.grid_y,
+      (<span class="hljs-keyword">this</span>.model.getNumStrings() - <span class="hljs-number">1</span>) * <span class="hljs-keyword">this</span>.options.string_gap,
+      <span class="hljs-keyword">this</span>.options.nut_height).attr({ fill: <span class="hljs-string">"black"</span> }
+    );
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">neck</span><span class="p">.</span><span class="nx">glyphs</span><span class="p">[</span><span class="s1">&#39;nut&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">glyph</span><span class="p">;</span>
-    <span class="c1">//this.neck.push(glyph);</span>
-  <span class="p">},</span>
+    <span class="hljs-keyword">this</span>.neck.glyphs[<span class="hljs-string">'nut'</span>] = glyph;
+    <span class="hljs-comment">//this.neck.push(glyph);</span>
+  },
 
-  <span class="nx">_drawTuningLabel</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">font_attr</span> <span class="o">=</span> <span class="p">{</span>
-      <span class="s1">&#39;font-size&#39;</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">tuning_label_font_size</span>
-    <span class="p">};</span>
+  _drawTuningLabel: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> font_attr = {
+      <span class="hljs-string">'font-size'</span>: <span class="hljs-keyword">this</span>.options.tuning_label_font_size
+    };
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">neck</span><span class="p">.</span><span class="nx">glyphs</span><span class="p">[</span><span class="s1">&#39;tuning-labels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="hljs-keyword">this</span>.neck.glyphs[<span class="hljs-string">'tuning-labels'</span>] = [];
 
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">getNumStrings</span><span class="p">();</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-      <span class="kd">var</span> <span class="nx">note</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">getTuning</span><span class="p">().</span><span class="nx">notes</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-keyword">this</span>.model.getNumStrings(); i++) {
+      <span class="hljs-keyword">var</span> note = <span class="hljs-keyword">this</span>.model.getTuning().notes[i];
 
-      <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_x</span> <span class="o">+</span> <span class="p">(</span><span class="nx">i</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">string_gap</span><span class="p">);</span>
-      <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_y</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">neck</span><span class="p">.</span><span class="nx">height</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">tuning_label_offset</span><span class="p">;</span>
-      
-      <span class="kd">var</span> <span class="nx">glyph</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">r</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="s2">&quot;&quot;</span> <span class="o">+</span> <span class="nx">note</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="nx">font_attr</span><span class="p">);</span>
-      <span class="k">this</span><span class="p">.</span><span class="nx">neck</span><span class="p">.</span><span class="nx">glyphs</span><span class="p">[</span><span class="s1">&#39;tuning-labels&#39;</span><span class="p">].</span><span class="nx">push</span><span class="p">(</span><span class="nx">glyph</span><span class="p">);</span>
-    <span class="p">}</span>
-  <span class="p">},</span>
+      <span class="hljs-keyword">var</span> x = <span class="hljs-keyword">this</span>.options.grid_x + (i * <span class="hljs-keyword">this</span>.options.string_gap);
+      <span class="hljs-keyword">var</span> y = <span class="hljs-keyword">this</span>.options.grid_y + <span class="hljs-keyword">this</span>.neck.height + <span class="hljs-keyword">this</span>.options.tuning_label_offset;
 
-  <span class="nx">_drawBaseFret</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">base_fret</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_x</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">neck</span><span class="p">.</span><span class="nx">width</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">base_fret_offset</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_y</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">fret_gap</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+      <span class="hljs-keyword">var</span> glyph = <span class="hljs-keyword">this</span>.r.text(x, y, <span class="hljs-string">""</span> + note).attr(font_attr);
+      <span class="hljs-keyword">this</span>.neck.glyphs[<span class="hljs-string">'tuning-labels'</span>].push(glyph);
+    }
+  },
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">r</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">,</span> <span class="s2">&quot;&quot;</span> <span class="o">+</span> <span class="nx">base_fret</span> <span class="o">+</span> <span class="s2">&quot;fr.&quot;</span><span class="p">).</span><span class="nx">attr</span><span class="p">({</span>
-      <span class="s1">&#39;text-anchor&#39;</span><span class="o">:</span> <span class="s1">&#39;start&#39;</span><span class="p">,</span>
-      <span class="s1">&#39;font-size&#39;</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">base_fret_font_size</span>
-    <span class="p">});</span>
-  <span class="p">},</span>
+  _drawBaseFret: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(base_fret)</span> {</span>
+    <span class="hljs-keyword">var</span> x = <span class="hljs-keyword">this</span>.options.grid_x + <span class="hljs-keyword">this</span>.neck.width + <span class="hljs-keyword">this</span>.options.base_fret_offset;
+    <span class="hljs-keyword">var</span> y = <span class="hljs-keyword">this</span>.options.grid_y + <span class="hljs-keyword">this</span>.options.fret_gap / <span class="hljs-number">2</span>;
 
-  <span class="nx">_drawNotes</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">_</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">getNotes</span><span class="p">(),</span> <span class="k">this</span><span class="p">.</span><span class="nx">_drawNote</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
-  <span class="p">},</span>
+    <span class="hljs-keyword">this</span>.r.text(x, y, <span class="hljs-string">""</span> + base_fret + <span class="hljs-string">"fr."</span>).attr({
+      <span class="hljs-string">'text-anchor'</span>: <span class="hljs-string">'start'</span>,
+      <span class="hljs-string">'font-size'</span>: <span class="hljs-keyword">this</span>.options.base_fret_font_size
+    });
+  },
 
-  <span class="nx">_drawNote</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">note</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">note</span><span class="p">)</span> <span class="o">||</span> <span class="nx">_</span><span class="p">.</span><span class="nx">isNull</span><span class="p">(</span><span class="nx">note</span><span class="p">))</span> <span class="p">{</span>
-      <span class="k">throw</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;Model has undefined note&quot;</span><span class="p">);</span>
-    <span class="p">}</span>
+  _drawNotes: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    _.each(<span class="hljs-keyword">this</span>.model.getNotes(), <span class="hljs-keyword">this</span>._drawNote, <span class="hljs-keyword">this</span>);
+  },
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">note</span> <span class="k">instanceof</span> <span class="nx">GuitarNote</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">noteGlyphs</span><span class="p">[</span><span class="nx">note</span><span class="p">.</span><span class="nx">getKey</span><span class="p">()]))</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">noteGlyphs</span><span class="p">[</span><span class="nx">note</span><span class="p">.</span><span class="nx">getKey</span><span class="p">()]</span> <span class="o">=</span> <span class="p">{};</span>
-      <span class="p">}</span>
-      <span class="k">if</span> <span class="p">(</span><span class="nx">note</span><span class="p">.</span><span class="nx">isMuted</span><span class="p">())</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">_drawMuteStringAnnotatation</span><span class="p">(</span><span class="nx">note</span><span class="p">).</span><span class="nx">transform</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">transform_str</span><span class="p">);</span>
-      <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">note</span><span class="p">.</span><span class="nx">isOpen</span><span class="p">())</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">_drawOpenStringAnnotatation</span><span class="p">(</span><span class="nx">note</span><span class="p">).</span><span class="nx">transform</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">transform_str</span><span class="p">);</span>
-      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">marker</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_drawFretMarker</span><span class="p">(</span><span class="nx">note</span><span class="p">);</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">marker</span><span class="p">)</span> <span class="p">{</span>
-          <span class="nx">marker</span><span class="p">.</span><span class="nx">transform</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">transform_str</span><span class="p">);</span>
-        <span class="p">}</span>
-        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">show_fingers</span> <span class="o">&amp;&amp;</span> <span class="nx">note</span><span class="p">.</span><span class="nx">finger</span><span class="p">)</span> <span class="p">{</span>
-          <span class="k">this</span><span class="p">.</span><span class="nx">_drawFingerAnnotation</span><span class="p">(</span><span class="nx">note</span><span class="p">).</span><span class="nx">transform</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">transform_str</span><span class="p">);</span>
-        <span class="p">}</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
-  <span class="p">},</span>
+  _drawNote: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(note)</span> {</span>
+    <span class="hljs-keyword">if</span> (_.isUndefined(note) || _.isNull(note)) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"Model has undefined note"</span>);
+    }
 
-  <span class="nx">_drawFretMarker</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">note</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">note</span><span class="p">.</span><span class="nx">fret</span><span class="p">)</span> <span class="o">||</span> <span class="nx">note</span><span class="p">.</span><span class="nx">fret</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span><span class="p">;</span> <span class="p">}</span>
+    <span class="hljs-keyword">if</span> (note <span class="hljs-keyword">instanceof</span> GuitarNote) {
+      <span class="hljs-keyword">if</span> (_.isUndefined(<span class="hljs-keyword">this</span>.noteGlyphs[note.getKey()])) {
+        <span class="hljs-keyword">this</span>.noteGlyphs[note.getKey()] = {};
+      }
+      <span class="hljs-keyword">if</span> (note.isMuted()) {
+        <span class="hljs-keyword">this</span>._drawMuteStringAnnotatation(note).transform(<span class="hljs-keyword">this</span>.transform_str);
+      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (note.isOpen()) {
+        <span class="hljs-keyword">this</span>._drawOpenStringAnnotatation(note).transform(<span class="hljs-keyword">this</span>.transform_str);
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">var</span> marker = <span class="hljs-keyword">this</span>._drawFretMarker(note);
+        <span class="hljs-keyword">if</span> (marker) {
+          marker.transform(<span class="hljs-keyword">this</span>.transform_str);
+        }
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.options.show_fingers &amp;&amp; note.finger) {
+          <span class="hljs-keyword">this</span>._drawFingerAnnotation(note).transform(<span class="hljs-keyword">this</span>.transform_str);
+        }
+      }
+    }
+  },
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">note</span><span class="p">.</span><span class="nx">fret</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">base_fret</span> <span class="o">||</span>
-        <span class="nx">note</span><span class="p">.</span><span class="nx">fret</span> <span class="o">&gt;=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">base_fret</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">num_frets</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span><span class="p">;</span> <span class="p">}</span>
+  _drawFretMarker: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(note)</span> {</span>
+    <span class="hljs-keyword">if</span> (_.isUndefined(note.fret) || note.fret === <span class="hljs-number">0</span>) { <span class="hljs-keyword">return</span>; }
 
-    <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_x</span> <span class="o">+</span> <span class="p">(</span><span class="nx">note</span><span class="p">.</span><span class="nx">string</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">string_gap</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_y</span> <span class="o">+</span> <span class="p">((</span><span class="nx">note</span><span class="p">.</span><span class="nx">fret</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">base_fret</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">fret_gap</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">fret_gap</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">;</span>
+    <span class="hljs-keyword">if</span> (note.fret &lt; <span class="hljs-keyword">this</span>.options.base_fret ||
+        note.fret &gt;= <span class="hljs-keyword">this</span>.options.base_fret + <span class="hljs-keyword">this</span>.options.num_frets) { <span class="hljs-keyword">return</span>; }
 
-    <span class="kd">var</span> <span class="nx">note_style</span> <span class="o">=</span> <span class="p">{</span>
-      <span class="nx">fill</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">_colorValueForName</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">note_color</span><span class="p">)</span>
-    <span class="p">};</span>
-    <span class="nx">note_style</span><span class="p">[</span><span class="s1">&#39;stroke-width&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">note_stroke_width</span><span class="p">;</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">note</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">color</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">note_style</span><span class="p">[</span><span class="s1">&#39;fill&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_colorValueForName</span><span class="p">(</span><span class="nx">note</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">color</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">note</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">tonic</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">note_style</span><span class="p">[</span><span class="s1">&#39;fill&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_colorValueForName</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">tonic_color</span><span class="p">);</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>note<em>style['stroke-width'] = this.options.note</em>stroke_width;</p></div></div><div class="code"><div class="wrapper">      <span class="nx">note_style</span><span class="p">[</span><span class="s1">&#39;stroke&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">;</span>
-    <span class="p">}</span>
+    <span class="hljs-keyword">var</span> x = <span class="hljs-keyword">this</span>.options.grid_x + (note.string * <span class="hljs-keyword">this</span>.options.string_gap) + <span class="hljs-number">0.5</span>;
+    <span class="hljs-keyword">var</span> y = <span class="hljs-keyword">this</span>.options.grid_y + ((note.fret - <span class="hljs-keyword">this</span>.options.base_fret + <span class="hljs-number">1</span>) * <span class="hljs-keyword">this</span>.options.fret_gap) - (<span class="hljs-keyword">this</span>.options.fret_gap / <span class="hljs-number">2</span>) + <span class="hljs-number">0.5</span>;
 
-    <span class="kd">var</span> <span class="nx">class_str</span> <span class="o">=</span> <span class="s2">&quot;chord-note&quot;</span><span class="p">;</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">note</span><span class="p">.</span><span class="kr">class</span><span class="p">)</span> <span class="p">{</span> <span class="nx">class_str</span> <span class="o">=</span> <span class="nx">class_str</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nx">note</span><span class="p">.</span><span class="kr">class</span><span class="p">;</span> <span class="p">}</span>
+    <span class="hljs-keyword">var</span> note_style = {
+      fill: <span class="hljs-keyword">this</span>._colorValueForName(<span class="hljs-keyword">this</span>.options.note_color)
+    };
+    note_style[<span class="hljs-string">'stroke-width'</span>] = <span class="hljs-keyword">this</span>.options.note_stroke_width;
+    <span class="hljs-keyword">if</span> (note.options.color) {
+      note_style[<span class="hljs-string">'fill'</span>] = <span class="hljs-keyword">this</span>._colorValueForName(note.options.color);
+    }
+    <span class="hljs-keyword">if</span> (note.options.tonic) {
+      note_style[<span class="hljs-string">'fill'</span>] = <span class="hljs-keyword">this</span>._colorValueForName(<span class="hljs-keyword">this</span>.options.tonic_color);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>note_style[&#39;stroke-width&#39;] = this.options.note_stroke_width;</p></div></div><div class="code"><div class="wrapper">      note_style[<span class="hljs-string">'stroke'</span>] = <span class="hljs-string">"black"</span>;
+    }
 
-    <span class="kd">var</span> <span class="nx">glyph</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">r</span><span class="p">.</span><span class="nx">circle</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">,</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">note_radius</span><span class="p">);</span>
-    <span class="nx">glyph</span><span class="p">.</span><span class="nx">node</span><span class="p">.</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="nx">class_str</span><span class="p">);</span>
-    <span class="nx">glyph</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="nx">note_style</span><span class="p">);</span>
+    <span class="hljs-keyword">var</span> class_str = <span class="hljs-string">"chord-note"</span>;
+    <span class="hljs-keyword">if</span> (note.class) { class_str = class_str + <span class="hljs-string">" "</span> + note.class; }
 
-    <span class="k">this</span><span class="p">.</span><span class="nx">noteGlyphs</span><span class="p">[</span><span class="nx">note</span><span class="p">.</span><span class="nx">getKey</span><span class="p">()][</span><span class="s1">&#39;fret-marker&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">glyph</span><span class="p">;</span>
-    <span class="k">return</span> <span class="nx">glyph</span><span class="p">;</span>
-  <span class="p">},</span>
+    <span class="hljs-keyword">var</span> glyph = <span class="hljs-keyword">this</span>.r.circle(x, y, <span class="hljs-keyword">this</span>.options.note_radius);
+    glyph.node.setAttribute(<span class="hljs-string">"class"</span>, class_str);
+    glyph.attr(note_style);
 
-  <span class="nx">_drawMuteStringAnnotatation</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">note</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">note</span><span class="p">.</span><span class="nx">string</span><span class="p">))</span> <span class="p">{</span> <span class="k">return</span><span class="p">;</span> <span class="p">}</span>
-    <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_x</span> <span class="o">+</span> <span class="p">(</span><span class="nx">note</span><span class="p">.</span><span class="nx">string</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">string_gap</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_y</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">finger_anno_y</span><span class="p">;</span>
+    <span class="hljs-keyword">this</span>.noteGlyphs[note.getKey()][<span class="hljs-string">'fret-marker'</span>] = glyph;
+    <span class="hljs-keyword">return</span> glyph;
+  },
 
-    <span class="kd">var</span> <span class="nx">glyph</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">r</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">).</span><span class="nx">attr</span><span class="p">({</span> <span class="s1">&#39;font-size&#39;</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">anno_font_size</span> <span class="p">});</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">noteGlyphs</span><span class="p">[</span><span class="nx">note</span><span class="p">.</span><span class="nx">getKey</span><span class="p">()][</span><span class="s1">&#39;finger-annotation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">glyph</span><span class="p">;</span>
-    <span class="k">return</span> <span class="nx">glyph</span><span class="p">;</span>
-  <span class="p">},</span>
+  _drawMuteStringAnnotatation: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(note)</span> {</span>
+    <span class="hljs-keyword">if</span> (_.isUndefined(note.string)) { <span class="hljs-keyword">return</span>; }
+    <span class="hljs-keyword">var</span> x = <span class="hljs-keyword">this</span>.options.grid_x + (note.string * <span class="hljs-keyword">this</span>.options.string_gap);
+    <span class="hljs-keyword">var</span> y = <span class="hljs-keyword">this</span>.options.grid_y - <span class="hljs-keyword">this</span>.options.finger_anno_y;
 
-  <span class="nx">_drawOpenStringAnnotatation</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">note</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">note</span><span class="p">.</span><span class="nx">string</span><span class="p">))</span> <span class="p">{</span> <span class="k">return</span><span class="p">;</span> <span class="p">}</span>
-    <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_x</span> <span class="o">+</span> <span class="p">(</span><span class="nx">note</span><span class="p">.</span><span class="nx">string</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">string_gap</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_y</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">finger_anno_y</span><span class="p">;</span>
+    <span class="hljs-keyword">var</span> glyph = <span class="hljs-keyword">this</span>.r.text(x, y, <span class="hljs-string">"X"</span>).attr({ <span class="hljs-string">'font-size'</span>: <span class="hljs-keyword">this</span>.options.anno_font_size });
+    <span class="hljs-keyword">this</span>.noteGlyphs[note.getKey()][<span class="hljs-string">'finger-annotation'</span>] = glyph;
+    <span class="hljs-keyword">return</span> glyph;
+  },
 
-    <span class="kd">var</span> <span class="nx">glyph</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">r</span><span class="p">.</span><span class="nx">circle</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">open_note_radius</span><span class="p">).</span><span class="nx">attr</span><span class="p">({</span>
-      <span class="nx">stroke</span><span class="o">:</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span>
-      <span class="nx">fill</span><span class="o">:</span> <span class="s2">&quot;white&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;stroke-width&quot;</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">note_stroke_width</span>
-    <span class="p">});</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">noteGlyphs</span><span class="p">[</span><span class="nx">note</span><span class="p">.</span><span class="nx">getKey</span><span class="p">()][</span><span class="s1">&#39;finger-annotation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">glyph</span><span class="p">;</span>
-    <span class="k">return</span> <span class="nx">glyph</span><span class="p">;</span>
-  <span class="p">},</span>
+  _drawOpenStringAnnotatation: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(note)</span> {</span>
+    <span class="hljs-keyword">if</span> (_.isUndefined(note.string)) { <span class="hljs-keyword">return</span>; }
+    <span class="hljs-keyword">var</span> x = <span class="hljs-keyword">this</span>.options.grid_x + (note.string * <span class="hljs-keyword">this</span>.options.string_gap);
+    <span class="hljs-keyword">var</span> y = <span class="hljs-keyword">this</span>.options.grid_y - <span class="hljs-keyword">this</span>.options.finger_anno_y;
 
-  <span class="nx">_drawFingerAnnotation</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">note</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">note</span><span class="p">.</span><span class="nx">string</span><span class="p">)</span> <span class="o">||</span> <span class="nx">_</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">note</span><span class="p">.</span><span class="nx">finger</span><span class="p">))</span> <span class="p">{</span> <span class="k">return</span><span class="p">;</span> <span class="p">}</span>
+    <span class="hljs-keyword">var</span> glyph = <span class="hljs-keyword">this</span>.r.circle(x, y, <span class="hljs-keyword">this</span>.options.open_note_radius).attr({
+      stroke: <span class="hljs-string">"black"</span>,
+      fill: <span class="hljs-string">"white"</span>,
+      <span class="hljs-string">"stroke-width"</span>: <span class="hljs-keyword">this</span>.options.note_stroke_width
+    });
+    <span class="hljs-keyword">this</span>.noteGlyphs[note.getKey()][<span class="hljs-string">'finger-annotation'</span>] = glyph;
+    <span class="hljs-keyword">return</span> glyph;
+  },
 
-    <span class="kd">var</span> <span class="nx">x</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">y</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">annotation_style</span> <span class="o">=</span> <span class="p">{</span>
-      <span class="nx">fill</span><span class="o">:</span> <span class="s2">&quot;black&quot;</span>
-    <span class="p">};</span>
-    <span class="kd">var</span> <span class="nx">font_style</span> <span class="o">=</span> <span class="p">{</span>
-      <span class="s1">&#39;font-size&#39;</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">anno_font_size</span>
-    <span class="p">};</span>
+  _drawFingerAnnotation: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(note)</span> {</span>
+    <span class="hljs-keyword">if</span> (_.isUndefined(note.string) || _.isUndefined(note.finger)) { <span class="hljs-keyword">return</span>; }
 
-    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">finger_position</span> <span class="o">===</span> <span class="nx">ChordView</span><span class="p">.</span><span class="nx">FINGER_TOP</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">x</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_x</span> <span class="o">+</span> <span class="p">(</span><span class="nx">note</span><span class="p">.</span><span class="nx">string</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">string_gap</span><span class="p">);</span>
-      <span class="nx">y</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_y</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">finger_anno_y</span><span class="p">;</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">finger_position</span> <span class="o">===</span> <span class="nx">ChordView</span><span class="p">.</span><span class="nx">FINGER_LEFT</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">x</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_x</span> <span class="o">+</span> <span class="p">(</span><span class="nx">note</span><span class="p">.</span><span class="nx">string</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">string_gap</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">note_radius</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">;</span>
-      <span class="nx">y</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_y</span> <span class="o">+</span> <span class="p">((</span><span class="nx">note</span><span class="p">.</span><span class="nx">fret</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">base_fret</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">fret_gap</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">fret_gap</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">;</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">finger_position</span> <span class="o">===</span> <span class="nx">ChordView</span><span class="p">.</span><span class="nx">FINGER_ONNOTE</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">x</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_x</span> <span class="o">+</span> <span class="p">(</span><span class="nx">note</span><span class="p">.</span><span class="nx">string</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">string_gap</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">;</span>
-      <span class="nx">y</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_y</span> <span class="o">+</span> <span class="p">((</span><span class="nx">note</span><span class="p">.</span><span class="nx">fret</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">base_fret</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">fret_gap</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">fret_gap</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">;</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-      <span class="k">throw</span> <span class="nx">TypeError</span><span class="p">(</span><span class="s2">&quot;Invalid finger_position: &quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">finger_position</span><span class="p">);</span>
-    <span class="p">}</span>
+    <span class="hljs-keyword">var</span> x;
+    <span class="hljs-keyword">var</span> y;
+    <span class="hljs-keyword">var</span> annotation_style = {
+      fill: <span class="hljs-string">"black"</span>
+    };
+    <span class="hljs-keyword">var</span> font_style = {
+      <span class="hljs-string">'font-size'</span>: <span class="hljs-keyword">this</span>.options.anno_font_size
+    };
 
-    <span class="kd">var</span> <span class="nx">glyph</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">r</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="o">+</span><span class="nx">note</span><span class="p">.</span><span class="nx">finger</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="nx">font_style</span><span class="p">);</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">noteGlyphs</span><span class="p">[</span><span class="nx">note</span><span class="p">.</span><span class="nx">getKey</span><span class="p">()][</span><span class="s1">&#39;finger-annotation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">glyph</span><span class="p">;</span>
-    <span class="k">return</span> <span class="nx">glyph</span><span class="p">;</span>
-  <span class="p">},</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.options.finger_position === ChordView.FINGER_TOP) {
+      x = <span class="hljs-keyword">this</span>.options.grid_x + (note.string * <span class="hljs-keyword">this</span>.options.string_gap);
+      y = <span class="hljs-keyword">this</span>.options.grid_y - <span class="hljs-keyword">this</span>.options.finger_anno_y;
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.options.finger_position === ChordView.FINGER_LEFT) {
+      x = <span class="hljs-keyword">this</span>.options.grid_x + (note.string * <span class="hljs-keyword">this</span>.options.string_gap) - (<span class="hljs-keyword">this</span>.options.note_radius * <span class="hljs-number">2</span>) + <span class="hljs-number">0.5</span>;
+      y = <span class="hljs-keyword">this</span>.options.grid_y + ((note.fret - <span class="hljs-keyword">this</span>.options.base_fret + <span class="hljs-number">1</span>) * <span class="hljs-keyword">this</span>.options.fret_gap) - (<span class="hljs-keyword">this</span>.options.fret_gap / <span class="hljs-number">2</span>) + <span class="hljs-number">0.5</span>;
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.options.finger_position === ChordView.FINGER_ONNOTE) {
+      x = <span class="hljs-keyword">this</span>.options.grid_x + (note.string * <span class="hljs-keyword">this</span>.options.string_gap) + <span class="hljs-number">0.5</span>;
+      y = <span class="hljs-keyword">this</span>.options.grid_y + ((note.fret - <span class="hljs-keyword">this</span>.options.base_fret + <span class="hljs-number">1</span>) * <span class="hljs-keyword">this</span>.options.fret_gap) - (<span class="hljs-keyword">this</span>.options.fret_gap / <span class="hljs-number">2</span>) + <span class="hljs-number">0.5</span>;
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"Invalid finger_position: "</span> + <span class="hljs-keyword">this</span>.options.finger_position);
+    }
 
-  <span class="nx">_drawLabel</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">grid_x</span> <span class="o">+</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">neck</span><span class="p">.</span><span class="nx">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">label_y_offset</span><span class="p">;</span>
-    <span class="kd">var</span> <span class="nx">fancy_label</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">getLabel</span><span class="p">()</span>
-      <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/b/g</span><span class="p">,</span> <span class="s2">&quot;♭&quot;</span><span class="p">)</span>
-      <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\#/g</span><span class="p">,</span> <span class="s2">&quot;♯&quot;</span><span class="p">)</span>
-      <span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\*/g</span><span class="p">,</span> <span class="s2">&quot;￮&quot;</span><span class="p">);</span>
-    <span class="k">this</span><span class="p">.</span><span class="nx">r</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">,</span><span class="nx">fancy_label</span><span class="p">).</span><span class="nx">attr</span><span class="p">({</span> <span class="s2">&quot;text-anchor&quot;</span><span class="o">:</span> <span class="s2">&quot;middle&quot;</span><span class="p">,</span> <span class="s2">&quot;font-size&quot;</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">label_font_size</span> <span class="p">});</span>
-  <span class="p">},</span>
+    <span class="hljs-keyword">var</span> glyph = <span class="hljs-keyword">this</span>.r.text(x, y, <span class="hljs-string">""</span> + note.finger).attr(font_style);
+    <span class="hljs-keyword">this</span>.noteGlyphs[note.getKey()][<span class="hljs-string">'finger-annotation'</span>] = glyph;
+    <span class="hljs-keyword">return</span> glyph;
+  },
 
-  <span class="nx">_colorValueForName</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">colorName</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">note_gradient</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="nx">ChordView</span><span class="p">.</span><span class="nx">NOTE_GRADIENTS</span><span class="p">[</span><span class="nx">colorName</span><span class="p">];</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="nx">ChordView</span><span class="p">.</span><span class="nx">NOTE_COLORS</span><span class="p">[</span><span class="nx">colorName</span><span class="p">];</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-<span class="p">};</span></div></div></div></div></body></html>
+  _drawLabel: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> x = <span class="hljs-keyword">this</span>.options.grid_x + (<span class="hljs-keyword">this</span>.neck.width / <span class="hljs-number">2</span>);
+    <span class="hljs-keyword">var</span> y = <span class="hljs-keyword">this</span>.options.label_y_offset;
+    <span class="hljs-keyword">var</span> fancy_label = <span class="hljs-keyword">this</span>.model.getLabel()
+      .replace(<span class="hljs-regexp">/b/g</span>, <span class="hljs-string">"♭"</span>)
+      .replace(<span class="hljs-regexp">/\#/g</span>, <span class="hljs-string">"♯"</span>)
+      .replace(<span class="hljs-regexp">/\*/g</span>, <span class="hljs-string">"￮"</span>);
+    <span class="hljs-keyword">this</span>.r.text(x, y, fancy_label).attr({ <span class="hljs-string">"text-anchor"</span>: <span class="hljs-string">"middle"</span>, <span class="hljs-string">"font-size"</span>: <span class="hljs-keyword">this</span>.options.label_font_size });
+  },
+
+  _colorValueForName: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(colorName)</span> {</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.options.note_gradient) {
+      <span class="hljs-keyword">return</span> ChordView.NOTE_GRADIENTS[colorName];
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">return</span> ChordView.NOTE_COLORS[colorName];
+    }
+  }
+};</div></div></div></div></body></html>

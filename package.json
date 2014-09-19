@@ -12,7 +12,8 @@
     "tests": "./src/test",
     "build": "./build",
     "dist": "./build/dist",
-    "dev": "./build/dev"
+    "dev": "./build/dev",
+    "docs": "./docs"
   },
   "repository": {
     "type": "git",

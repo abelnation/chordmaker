@@ -53,10 +53,12 @@ module.exports = function(grunt) {
 
         create_versioned_file: {
             command: [
-                'cp GGCookieUtil.js ./release/GGCookieUtil.`git describe --abbrev=0 --tags`.js',
-                'cp GGCookieUtil-min.js ./release/GGCookieUtil-min.`git describe --abbrev=0 --tags`.js',
-                'git add ./release/GGCookieUtil.`git describe --abbrev=0 --tags`.js',
-                'git add ./release/GGCookieUtil-min.`git describe --abbrev=0 --tags`.js',
+                'cp <%= paths.build %>/dist/js/<%= pkg.name %>.<%= pkg.version %>.js ./release/<%= pkg.name %>.<%= pkg.version %>.js',
+                // TODO: (aallison) minified version
+                // 'cp GGCookieUtil-min.js ./release/GGCookieUtil-min.`git describe --abbrev=0 --tags`.js',
+                'git add ./release/<%= pkg.name %>.<%= pkg.version %>.js',
+                // TODO: (aallison) minified version
+                // 'git add ./release/GGCookieUtil-min.`git describe --abbrev=0 --tags`.js',
                 'git commit -m "Adding v`git describe --abbrev=0 --tags` release files"',
                 'git push'
             ].join('&&')

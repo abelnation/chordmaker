@@ -898,11 +898,11 @@ ChordView.prototype = {
     this._render();
     this._setOrientation(this.options.orientation);
 
-    var svgWidth = $("#"+this.containerId).width();
-    var parentWidth = $("#"+this.containerId).parent().width();
+    var svgWidth = $("#" + this.containerId).width();
+    var parentWidth = $("#" + this.containerId).parent().width();
     if (svgWidth > parentWidth) {
       0;
-      $("#"+this.containerId).css("width", "" + parentWidth + "px");
+      $("#" + this.containerId).css("width", "" + parentWidth + "px");
     }
 
   },
@@ -1004,7 +1004,7 @@ ChordView.prototype = {
       // TODO: explain this transformation
       // don't include right padding for sideways layouts
       // TODO: position base fret label differently depending on orientation
-      this.transform_str = "r-90,0,0" + "t-"+(this.width - (this.options.base_fret_label_width + this.options.grid_padding_right)) + ",0";
+      this.transform_str = "r-90,0,0" + "t-" + (this.width - (this.options.base_fret_label_width + this.options.grid_padding_right)) + ",0";
 
       this.height = this.options.grid_x + this.model.getNumStrings() * this.options.string_gap;
       this.width = this.options.grid_y + this.options.num_frets * this.options.fret_gap + this.options.tuning_label_font_size + this.options.grid_padding_bottom;
@@ -1058,7 +1058,7 @@ ChordView.prototype = {
     for (var i = 0; i < ChordView.NECK_MARKERS.length; i++) {
       var marker = ChordView.NECK_MARKERS[i];
       if (marker[0] > this.options.base_fret &&
-         marker[0] < this.options.base_fret+this.options.num_frets) {
+         marker[0] < this.options.base_fret + this.options.num_frets) {
         this._drawNeckMarker(marker);
       }
     }
@@ -1076,7 +1076,7 @@ ChordView.prototype = {
     if (neck_marker[1] == 1) {
       var x = this.options.grid_x + this.neck.width / 2;
 
-      var glyph = this.r.circle(x,y,this.options.neck_marker_radius);
+      var glyph = this.r.circle(x, y, this.options.neck_marker_radius);
       glyph.attr(marker_style);
       this.neck.glyphs['neck-markers'].push(glyph);
 
@@ -1084,11 +1084,11 @@ ChordView.prototype = {
       var x1 = this.options.grid_x + (1.2 * this.options.string_gap);
       var x2 = this.options.grid_x + (3.8 * this.options.string_gap);
 
-      var glyph1 = this.r.circle(x1,y,this.options.neck_marker_radius);
+      var glyph1 = this.r.circle(x1, y, this.options.neck_marker_radius);
       glyph1.attr(marker_style);
       this.neck.glyphs['neck-markers'].push(glyph1);
 
-      var glyph2 = this.r.circle(x2,y,this.options.neck_marker_radius);
+      var glyph2 = this.r.circle(x2, y, this.options.neck_marker_radius);
       glyph2.attr(marker_style);
       this.neck.glyphs['neck-markers'].push(glyph2);
     }
@@ -1096,7 +1096,7 @@ ChordView.prototype = {
 
   _drawNut: function() {
     var glyph = this.r.rect(
-      this.options.grid_x,this.options.grid_y,
+      this.options.grid_x, this.options.grid_y,
       (this.model.getNumStrings() - 1) * this.options.string_gap,
       this.options.nut_height).attr({ fill: "black" }
     );
@@ -1117,7 +1117,7 @@ ChordView.prototype = {
 
       var x = this.options.grid_x + (i * this.options.string_gap);
       var y = this.options.grid_y + this.neck.height + this.options.tuning_label_offset;
-      
+
       var glyph = this.r.text(x, y, "" + note).attr(font_attr);
       this.neck.glyphs['tuning-labels'].push(glyph);
     }
@@ -1127,7 +1127,7 @@ ChordView.prototype = {
     var x = this.options.grid_x + this.neck.width + this.options.base_fret_offset;
     var y = this.options.grid_y + this.options.fret_gap / 2;
 
-    this.r.text(x,y, "" + base_fret + "fr.").attr({
+    this.r.text(x, y, "" + base_fret + "fr.").attr({
       'text-anchor': 'start',
       'font-size': this.options.base_fret_font_size
     });
@@ -1187,7 +1187,7 @@ ChordView.prototype = {
     var class_str = "chord-note";
     if (note.class) { class_str = class_str + " " + note.class; }
 
-    var glyph = this.r.circle(x,y,this.options.note_radius);
+    var glyph = this.r.circle(x, y, this.options.note_radius);
     glyph.node.setAttribute("class", class_str);
     glyph.attr(note_style);
 
@@ -1236,15 +1236,15 @@ ChordView.prototype = {
       y = this.options.grid_y - this.options.finger_anno_y;
     } else if (this.options.finger_position === ChordView.FINGER_LEFT) {
       x = this.options.grid_x + (note.string * this.options.string_gap) - (this.options.note_radius * 2) + 0.5;
-      y = this.options.grid_y + ((note.fret - this.options.base_fret+1) * this.options.fret_gap) - (this.options.fret_gap / 2) + 0.5;
+      y = this.options.grid_y + ((note.fret - this.options.base_fret + 1) * this.options.fret_gap) - (this.options.fret_gap / 2) + 0.5;
     } else if (this.options.finger_position === ChordView.FINGER_ONNOTE) {
       x = this.options.grid_x + (note.string * this.options.string_gap) + 0.5;
-      y = this.options.grid_y + ((note.fret - this.options.base_fret+1) * this.options.fret_gap) - (this.options.fret_gap / 2) + 0.5;
+      y = this.options.grid_y + ((note.fret - this.options.base_fret + 1) * this.options.fret_gap) - (this.options.fret_gap / 2) + 0.5;
     } else {
       throw TypeError("Invalid finger_position: " + this.options.finger_position);
     }
 
-    var glyph = this.r.text(x, y, ""+note.finger).attr(font_style);
+    var glyph = this.r.text(x, y, "" + note.finger).attr(font_style);
     this.noteGlyphs[note.getKey()]['finger-annotation'] = glyph;
     return glyph;
   },
@@ -1256,7 +1256,7 @@ ChordView.prototype = {
       .replace(/b/g, "♭")
       .replace(/\#/g, "♯")
       .replace(/\*/g, "￮");
-    this.r.text(x,y,fancy_label).attr({ "text-anchor": "middle", "font-size": this.options.label_font_size });
+    this.r.text(x, y, fancy_label).attr({ "text-anchor": "middle", "font-size": this.options.label_font_size });
   },
 
   _colorValueForName: function(colorName) {

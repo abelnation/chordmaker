@@ -42,5 +42,5 @@ module.exports = function (grunt) {
     grunt.util._.extend(config, loadConfig(grunt, './grunt/options/'));
     grunt.initConfig(config);
 
-    grunt.registerTask('default', [ 'build' ]);
+    grunt.registerTask('default', [ 'build:dev', 'test' ]);
 };
