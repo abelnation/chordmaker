@@ -1,0 +1,4 @@
+
+    // Return our module as the result of the UMD wrapper factory method
+    return Chords;
+}));

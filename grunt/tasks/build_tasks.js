@@ -17,10 +17,13 @@ module.exports = function(grunt) {
                 'clean:devjscompiled',
                 'copy:dev',
                 'preprocess:dev',
-                /* 'sass:dev',
-                */ 'concat:dev',
+                /* 'sass:dev',*/
+
+                'concat:dev',
+                'indent:dev',
+                'wrap:dev',
+
                 /*'uglify:dev',*/
-                'groc'
             ]);
         } else if (target === "dist") {
             grunt.task.run([
@@ -31,9 +34,14 @@ module.exports = function(grunt) {
                 'preprocess:dist',
                 'strip:dist',
                 /* 'sass:dist',*/
+
                 'concat:dist',
+                'indent:dist',
+                'wrap:dist',
+
                 'uglify:dist',
                 // 'clean:scrub_dist',
+
                 'groc',
             ]);
         } else {

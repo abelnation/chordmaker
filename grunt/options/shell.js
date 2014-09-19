@@ -53,7 +53,7 @@ module.exports = function(grunt) {
 
         create_versioned_file: {
             command: [
-                'cp <%= paths.build %>/dist/js/<%= pkg.name %>.<%= pkg.version %>.js ./release/<%= pkg.name %>.<%= pkg.version %>.js',
+                'cp <%= paths.build %>/dist/js/<%= pkg.name %>.js ./release/<%= pkg.name %>.<%= pkg.version %>.js',
                 // TODO: (aallison) minified version
                 // 'cp GGCookieUtil-min.js ./release/GGCookieUtil-min.`git describe --abbrev=0 --tags`.js',
                 'git add ./release/<%= pkg.name %>.<%= pkg.version %>.js',

@@ -120,14 +120,6 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                     "slug": "options"
                   },
                   "depth": 2
-                }, {
-                  "type": "heading",
-                  "data": {
-                    "level": 2,
-                    "title": "ChordFactory Class",
-                    "slug": "chordfactory-class"
-                  },
-                  "depth": 2
                 }
               ]
             }, {
@@ -280,6 +272,26 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                   "foldPrefix": "^",
                   "name": "JavaScript"
                 },
+                "sourcePath": "/Users/aallison/Workspace/chordmaker/src/js/Chords.js",
+                "projectPath": "src/js/Chords.js",
+                "targetPath": "src/js/Chords",
+                "pageTitle": "src/js/Chords",
+                "title": "Chords"
+              },
+              "depth": 3,
+              "outline": []
+            }, {
+              "type": "file",
+              "data": {
+                "language": {
+                  "nameMatchers": [".js"],
+                  "pygmentsLexer": "javascript",
+                  "multiLineComment": ["/*", "*", "*/"],
+                  "singleLineComment": ["//"],
+                  "ignorePrefix": "}",
+                  "foldPrefix": "^",
+                  "name": "JavaScript"
+                },
                 "sourcePath": "/Users/aallison/Workspace/chordmaker/src/js/GuitarNote.js",
                 "projectPath": "src/js/GuitarNote.js",
                 "targetPath": "src/js/GuitarNote",
@@ -308,6 +320,52 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               },
               "depth": 3,
               "outline": []
+            }, {
+              "type": "file",
+              "data": {
+                "language": {
+                  "nameMatchers": [".js"],
+                  "pygmentsLexer": "javascript",
+                  "multiLineComment": ["/*", "*", "*/"],
+                  "singleLineComment": ["//"],
+                  "ignorePrefix": "}",
+                  "foldPrefix": "^",
+                  "name": "JavaScript"
+                },
+                "sourcePath": "/Users/aallison/Workspace/chordmaker/src/js/Theory.js",
+                "projectPath": "src/js/Theory.js",
+                "targetPath": "src/js/Theory",
+                "pageTitle": "src/js/Theory",
+                "title": "Theory"
+              },
+              "depth": 3,
+              "outline": [
+                {
+                  "type": "heading",
+                  "data": {
+                    "level": 2,
+                    "title": "Theory",
+                    "slug": "theory"
+                  },
+                  "depth": 2
+                }, {
+                  "type": "heading",
+                  "data": {
+                    "level": 2,
+                    "title": "Music Theory Data",
+                    "slug": "music-theory-data"
+                  },
+                  "depth": 2
+                }, {
+                  "type": "heading",
+                  "data": {
+                    "level": 2,
+                    "title": "Convenience Methods",
+                    "slug": "convenience-methods"
+                  },
+                  "depth": 2
+                }
+              ]
             }, {
               "type": "file",
               "data": {

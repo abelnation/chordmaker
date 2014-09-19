@@ -1,0 +1,53 @@
+/* global require, module, _ */
+
+// Our module bootstrap
+//
+// In the browser context, our module lives in window.YAHOO.Chords
+// In the node context, our module lives in this.YAHOO.Chords
+//
+// All submodules are install inside `this.YAHOO.Chords`
+
+// UMD Bootstrap
+// Boilerplate that allows the library to be loaded as either
+//   1) a global variable
+//   2) via requirejs
+//   3) via node.js's require()
+//
+// See: https://github.com/umdjs/umd/blob/master/returnExportsGlobal.js
+
+// Uses Node, AMD or browser globals to create a module. This example creates
+// a global even when AMD is used. This is useful if you have some scripts
+// that are loaded by an AMD loader, but they still want access to globals.
+// If you do not need to export a global for the AMD case,
+// see returnExports.js.
+
+// If you want something that will work in other stricter CommonJS environments,
+// or if you need to create a circular dependency, see commonJsStrictGlobal.js
+
+// Defines a module "returnExportsGlobal" that depends another module called
+// "b". Note that the name of the module is implied by the file name. It is
+// best if the file name and the exported global have matching names.
+
+// If the 'b' module also uses this type of boilerplate, then
+// in the browser, it will create a global .b that is used below.
+
+// NOTE: (aallison)
+// `this` is either window or the global node context
+(function(root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define([
+            'jquery',
+            'underscore',
+            'Raphael'
+        ], function($, _, Raphael) {
+        // define(['b'], function (b) {
+            return (root.Chords = factory($, _, Raphael));
+        });
+    } else {
+        // TODO: (aallison) can we get underscore in without concatenating it in our code?
+        // Browser globals
+        root.Chords = factory($, _, Raphael);
+    }
+}(this, function($, _, Raphael) {
+
