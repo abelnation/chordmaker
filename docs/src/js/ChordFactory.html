@@ -1,5 +1,8 @@
-<!DOCTYPE html><html lang="en"><head><title>src/js/ChordFactory</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="src/js/ChordFactory"><meta name="groc-project-path" content="src/js/ChordFactory.js"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/js/ChordFactory.js</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><p>global _, Chords, ChordParserPEG, ChordModel, GuitarNote, Tuning, ChordView </p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="chordfactory">ChordFactory</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper">(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(exports)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Dependencies</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">var</span> ChordView = exports.ChordView;
-  <span class="hljs-keyword">var</span> ChordModel = exports.ChordModel;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Class Definition</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">var</span> ChordFactory = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options)</span> {</span>
+<!DOCTYPE html><html lang="en"><head><title>src/js/ChordFactory</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="src/js/ChordFactory"><meta name="groc-project-path" content="src/js/ChordFactory.js"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/js/ChordFactory.js</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><p>global _, Chords </p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="chordfactory">ChordFactory</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper">(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(exports)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Dependencies</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">var</span> ChordView = exports.ChordView;
+  <span class="hljs-keyword">var</span> ChordModel = exports.ChordModel;
+  <span class="hljs-keyword">var</span> GuitarNote = exports.GuitarNote;
+  <span class="hljs-keyword">var</span> Tuning = exports.Tuning;
+  <span class="hljs-keyword">var</span> ChordParserPEG = exports.ChordParserPEG;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Class Definition</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">var</span> ChordFactory = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options)</span> {</span>
     <span class="hljs-keyword">this</span>._init(options || {});
   };
 
@@ -11,10 +14,8 @@
 
   _.extend(ChordFactory.prototype, {
 
-    _init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create config dict, filling in defaults where not provided</p></div></div><div class="code"><div class="wrapper">      _.defaults(options, ChordFactory.DEFAULT_OPTIONS);
-
-      <span class="hljs-keyword">this</span>.parser = ChordParserPEG;
-    },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>parseChord</strong> parses a chord string and returns a ChordView</p></div></div><div class="code"><div class="wrapper">    chordFromDiv: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(element)</span> {</span>
+    _init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create config dict, filling in defaults where not provided</p></div></div><div class="code"><div class="wrapper">      _.defaults(options, ChordFactory.DEFAULT_OPTIONS);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: (aallison) uncomment to re-enable parser
+this.parser = ChordParserPEG;</p></div></div><div class="code"><div class="wrapper">    },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>parseChord</strong> parses a chord string and returns a ChordView</p></div></div><div class="code"><div class="wrapper">    chordFromDiv: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(element)</span> {</span>
       <span class="hljs-keyword">var</span> elem = $(element);
       <span class="hljs-keyword">if</span> (elem.length === <span class="hljs-number">0</span>) { <span class="hljs-keyword">return</span>; }
       <span class="hljs-keyword">var</span> chordStr = elem.html();
@@ -24,49 +25,46 @@
         elem.attr(<span class="hljs-string">"id"</span>, chordId);
       }
       <span class="hljs-keyword">this</span>.chordFromString(elem, chordStr);
-    },
-
-    chordFromString: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(element, chordStr)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
-<li>element : string or DOM element to insert chord into</li>
-<li>chordStr : string, of the format</li>
-</ul></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code>[&lt;config_str&gt;, ... ]
-&lt;string_str&gt;
-...</code></pre></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>where:</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code>config_str: &lt;config_key&gt;: &lt;config_value&gt;
-config_key: any key in ChordView.options
-config_value: any valid value for ChordView.options
-string_str: &lt;string_num&gt;: &lt;fret_marker&gt;[, &lt;fret_marker&gt; ...]
-chord_num: int
-fret_marker: {&lt;fret_num&gt; &lt;finger_num&gt;} | &lt;fret_num&gt;
-fret_num: int
-finger_num: [1,2,3,4] | &quot;T&quot; | &quot;x&quot;</code></pre></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>e.g.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code> [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
- 0: 10
- 1: 10(color:black;),14
- 2: 9,12
- 3: 12(color:black;)
- 4: 12
- 5: 10,15(color:black;)</code></pre></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> (!element || (_.isString(element) &amp;&amp; element === <span class="hljs-string">""</span>)) {
-        <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"Must provide a valid DOM element or id string: "</span> + element);
-      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (_.isUndefined(chordStr)) {
-        <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"chordStr not provided: "</span> + chordStr);
-      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>._trim(chordStr) === <span class="hljs-string">""</span>) {
-        <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"empty chordStr provided"</span>);
-      }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>console.log(chordStr);</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">var</span> parseResult;
-      <span class="hljs-keyword">try</span> {
-        parseResult = <span class="hljs-keyword">this</span>.parser.parse(chordStr);
-      } <span class="hljs-keyword">catch</span>(e) {
-        console.log(chordStr);
-        console.log(e);
-        <span class="hljs-keyword">throw</span> e;
-      }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Pre-fab styles get over-ridden by options specified in chord string</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">var</span> style_val = $(element).attr(<span class="hljs-string">"data-style"</span>);
-      <span class="hljs-keyword">if</span> (_.has(ChordView.OPTIONS, style_val)) {
-        _.defaults(parseResult.config, ChordView.OPTIONS[style_val]);
-        console.log(parseResult.config);
-      }
-
-      <span class="hljs-keyword">var</span> model = <span class="hljs-keyword">this</span>._chordModelFromParseResult(parseResult);
-      <span class="hljs-keyword">var</span> view = <span class="hljs-keyword">this</span>._chordViewFromParseResultAndModel(element, model, parseResult);
-      <span class="hljs-keyword">return</span> view;
-    },
+    },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: (aallison) uncomment to re-enable parser
+chordFromString: function(element, chordStr) {
+  // - element : string or DOM element to insert chord into
+  // - chordStr : string, of the format</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>  //     [<config_str>, ... ]
+  //     <string_str>
+  //     ...</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>  // where:</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>  //     config_str: <config_key>: <config_value>
+  //     config_key: any key in ChordView.options
+  //     config_value: any valid value for ChordView.options
+  //     string_str: <string_num>: <fret_marker>[, <fret_marker> ...]
+  //     chord_num: int
+  //     fret_marker: {<fret_num> <finger_num>} | <fret_num>
+  //     fret_num: int
+  //     finger_num: [1,2,3,4] | &quot;T&quot; | &quot;x&quot;</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>  // e.g.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>  //      [orientation=left,num_frets=17,scale=0.8,fret_gap=50]
+  //      0: 10
+  //      1: 10(color:black;),14
+  //      2: 9,12
+  //      3: 12(color:black;)
+  //      4: 12
+  //      5: 10,15(color:black;)</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>  if (!element || (<em>.isString(element) &amp;&amp; element === &quot;&quot;)) {
+    throw TypeError(&quot;Must provide a valid DOM element or id string: &quot; + element);
+  } else if (</em>.isUndefined(chordStr)) {
+    throw TypeError(&quot;chordStr not provided: &quot; + chordStr);
+  } else if (this._trim(chordStr) === &quot;&quot;) {
+    throw TypeError(&quot;empty chordStr provided&quot;);
+  }</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>  // console.log(chordStr);
+  var parseResult;
+  try {
+    parseResult = this.parser.parse(chordStr);
+  } catch(e) {
+    console.log(chordStr);
+    console.log(e);
+    throw e;
+  }</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>  // Pre-fab styles get over-ridden by options specified in chord string
+  var style<em>val = $(element).attr(&quot;data-style&quot;);
+  if (</em>.has(ChordView.OPTIONS, style<em>val)) {
+    </em>.defaults(parseResult.config, ChordView.OPTIONS[style_val]);
+    console.log(parseResult.config);
+  }</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>  var model = this._chordModelFromParseResult(parseResult);
+  var view = this._chordViewFromParseResultAndModel(element, model, parseResult);
+  return view;</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-comment">// ,</span>
 
     _trim: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(str)</span> {</span>
       <span class="hljs-keyword">if</span> (str.trim) {

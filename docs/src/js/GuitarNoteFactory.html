@@ -1,146 +1,151 @@
-<!DOCTYPE html><html lang="en"><head><title>src/js/GuitarNoteFactory</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="src/js/GuitarNoteFactory"><meta name="groc-project-path" content="src/js/GuitarNoteFactory.js"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/js/GuitarNoteFactory.js</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><p>global GuitarNote, Tuning, Aex </p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">GuitarNoteFactory</span><span class="hljs-params">(options)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>This first guard ensures that the callee has invoked our Class&#39; constructor function
+<!DOCTYPE html><html lang="en"><head><title>src/js/GuitarNoteFactory</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="src/js/GuitarNoteFactory"><meta name="groc-project-path" content="src/js/GuitarNoteFactory.js"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/js/GuitarNoteFactory.js</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><p>global _, Chords </p></div></div><div class="code"><div class="wrapper">(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(exports)</span> {</span>
+  <span class="hljs-keyword">var</span> GuitarNote = exports.GuitarNote;
+  <span class="hljs-keyword">var</span> Theory = exports.Theory;
+  <span class="hljs-keyword">var</span> Tuning = exports.Tuning;
+  <span class="hljs-keyword">var</span> theoryObj = <span class="hljs-keyword">new</span> Theory();
+
+  <span class="hljs-keyword">var</span> GuitarNoteFactory = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">GuitarNoteFactory</span><span class="hljs-params">(options)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>This first guard ensures that the callee has invoked our Class&#39; constructor function
 with the <code>new</code> keyword - failure to do this will result in the <code>this</code> keyword referring
 to the callee&#39;s scope (typically the window global) which will result in the following fields
-(name and _age) leaking into the global namespace and not being set on this ob ect.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> (!(<span class="hljs-keyword">this</span> <span class="hljs-keyword">instanceof</span> GuitarNoteFactory)) {
-    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"GuitarNoteFactory constructor cannot be called as a function."</span>);
-  }
-  <span class="hljs-keyword">if</span> (!options) { options = {}; }
+(name and _age) leaking into the global namespace and not being set on this ob ect.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> (!(<span class="hljs-keyword">this</span> <span class="hljs-keyword">instanceof</span> GuitarNoteFactory)) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"GuitarNoteFactory constructor cannot be called as a function."</span>);
+    }
 
-  <span class="hljs-keyword">this</span>._init(options);
-}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>CONSTANTS</p></div></div><div class="code"><div class="wrapper">GuitarNoteFactory.DEFAULT_OPTIONS = {
-  tuning: <span class="hljs-string">"EADGBe"</span>,
-  numFrets: <span class="hljs-number">20</span>,
-  minFret: <span class="hljs-number">0</span>,
-  maxFret: <span class="hljs-number">20</span>,
-};</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: (aallison) chord voicing library
-GuitarNoteFactory.openChordVoicings = {
-  &quot;guitar&quot;: {
-    &quot;a&quot;: [0,0,2,2,2,0],
-    &quot;am&quot;: [0,0,2,2,1,0],
-    &quot;a7&quot;: [
-      [0,0,2,2,2,3],
-      [0,0,2,0,2,3],
-    ],
-    &quot;b&quot;: []
-  }</p></div></div><div class="code"><div class="wrapper"><span class="hljs-comment">// </span>
+    <span class="hljs-keyword">this</span>._init(options || {});
+  };
 
-GuitarNoteFactory.prototype = {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Whenever you replace an Object&#39;s Prototype, you need to repoint
+  _.extend(GuitarNoteFactory, {
+    DEFAULT_OPTIONS: {
+      tuning: <span class="hljs-string">"EADGBe"</span>,
+      numFrets: <span class="hljs-number">20</span>,
+      minFret: <span class="hljs-number">0</span>,
+      maxFret: <span class="hljs-number">20</span>,
+    },
+  });
+
+  _.extend(GuitarNoteFactory.prototype, {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Whenever you replace an Object&#39;s Prototype, you need to repoint
 the base Constructor back at the original constructor Function,
-otherwise <code>instanceof</code> calls will fail.</p></div></div><div class="code"><div class="wrapper">  constructor: GuitarNoteFactory,
+otherwise <code>instanceof</code> calls will fail.</p></div></div><div class="code"><div class="wrapper">    constructor: GuitarNoteFactory,
 
-  _init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create config dict, filling in defaults where not provided</p></div></div><div class="code"><div class="wrapper">    _.defaults(options, GuitarNoteFactory.DEFAULT_OPTIONS);
+    _init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create config dict, filling in defaults where not provided</p></div></div><div class="code"><div class="wrapper">      _.defaults(options, GuitarNoteFactory.DEFAULT_OPTIONS);
 
-    <span class="hljs-keyword">if</span> (!options.numFrets || !_.isNumber(options.numFrets) || options.numFrets &lt; <span class="hljs-number">0</span>) {
-      <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"numFrets must be valid number &gt;= 0"</span>);
-    }
-
-    <span class="hljs-keyword">this</span>.tuning = <span class="hljs-keyword">new</span> Tuning(options.tuning);
-    <span class="hljs-keyword">this</span>.numFrets = options.numFrets;
-    <span class="hljs-keyword">this</span>.minFret = options.minFret;
-    <span class="hljs-keyword">this</span>.maxFret = options.maxFret;
-
-    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.numFrets &lt; <span class="hljs-keyword">this</span>.maxFret) { <span class="hljs-keyword">this</span>.maxFret = <span class="hljs-keyword">this</span>.numFrets; }
-
-    <span class="hljs-keyword">this</span>.music = <span class="hljs-keyword">new</span> Aex.Flow.Music();
-  },
-
-  notesForNotesValues: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(notesValues)</span> {</span>
-    <span class="hljs-keyword">if</span> (!notesValues || !_.isArray(notesValues)) {
-      <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"notesValues must be an array"</span>);
-    }
-
-    <span class="hljs-keyword">var</span> notes = [];
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; notesValues.length; i++) {
-      <span class="hljs-keyword">var</span> noteVal = notesValues[i];
-
-      <span class="hljs-keyword">if</span> (!_.isNumber(noteVal)) {
-        <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"noteValue must be a number: "</span> + noteVal);
-      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (noteVal &lt; <span class="hljs-number">0</span> || noteVal &gt;= Aex.Flow.Music.NUM_TONES) {
-        <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"noteValue must be 0 &lt;= noteVal &lt; 12: "</span> + noteVal);
+      <span class="hljs-keyword">if</span> (!options.numFrets || !_.isNumber(options.numFrets) || options.numFrets &lt; <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"numFrets must be valid number &gt;= 0"</span>);
       }
 
-      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> string_num = <span class="hljs-number">0</span>; string_num &lt; <span class="hljs-keyword">this</span>.tuning.getNumStrings(); string_num++) {
-        <span class="hljs-keyword">var</span> tuningNote = <span class="hljs-keyword">this</span>.tuning.notes[string_num].toLowerCase();
-        <span class="hljs-keyword">var</span> string_base_value = <span class="hljs-keyword">this</span>.music.getNoteValue(tuningNote);
+      <span class="hljs-keyword">this</span>.tuning = <span class="hljs-keyword">new</span> Tuning(options.tuning);
+      <span class="hljs-keyword">this</span>.numFrets = options.numFrets;
+      <span class="hljs-keyword">this</span>.minFret = options.minFret;
+      <span class="hljs-keyword">this</span>.maxFret = options.maxFret;
 
-        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> fret_num = <span class="hljs-keyword">this</span>.minFret; fret_num &lt; <span class="hljs-keyword">this</span>.maxFret; fret_num++) {
-          <span class="hljs-keyword">var</span> fret_value = (string_base_value + fret_num) % <span class="hljs-number">12</span>;
-          <span class="hljs-keyword">if</span> (noteVal === fret_value) {
-            <span class="hljs-keyword">var</span> note = <span class="hljs-keyword">new</span> GuitarNote(string_num, fret_num);
-            notes.push(note);
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.numFrets &lt; <span class="hljs-keyword">this</span>.maxFret) { <span class="hljs-keyword">this</span>.maxFret = <span class="hljs-keyword">this</span>.numFrets; }
+
+      <span class="hljs-keyword">this</span>.music = <span class="hljs-keyword">new</span> Theory();
+    },
+
+    notesForNotesValues: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(notesValues)</span> {</span>
+      <span class="hljs-keyword">if</span> (!notesValues || !_.isArray(notesValues)) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"notesValues must be an array"</span>);
+      }
+
+      <span class="hljs-keyword">var</span> notes = [];
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; notesValues.length; i++) {
+        <span class="hljs-keyword">var</span> noteVal = notesValues[i];
+
+        <span class="hljs-keyword">if</span> (!_.isNumber(noteVal)) {
+          <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"noteValue must be a number: "</span> + noteVal);
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (noteVal &lt; <span class="hljs-number">0</span> || noteVal &gt;= Theory.NUM_TONES) {
+          <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"noteValue must be 0 &lt;= noteVal &lt; 12: "</span> + noteVal);
+        }
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> string_num = <span class="hljs-number">0</span>; string_num &lt; <span class="hljs-keyword">this</span>.tuning.getNumStrings(); string_num++) {
+          <span class="hljs-keyword">var</span> tuningNote = <span class="hljs-keyword">this</span>.tuning.notes[string_num].toLowerCase();
+          <span class="hljs-keyword">var</span> string_base_value = theoryObj.getNoteValue(tuningNote);
+
+          <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> fret_num = <span class="hljs-keyword">this</span>.minFret; fret_num &lt; <span class="hljs-keyword">this</span>.maxFret; fret_num++) {
+            <span class="hljs-keyword">var</span> fret_value = (string_base_value + fret_num) % <span class="hljs-number">12</span>;
+            <span class="hljs-keyword">if</span> (noteVal === fret_value) {
+              <span class="hljs-keyword">var</span> note = <span class="hljs-keyword">new</span> GuitarNote(string_num, fret_num);
+              notes.push(note);
+            }
           }
         }
       }
-    }
-    <span class="hljs-keyword">return</span> notes;
-  },
+      <span class="hljs-keyword">return</span> notes;
+    },
 
-  notesForNotesStr: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(notesStr)</span> {</span>
-    <span class="hljs-keyword">var</span> noteTokens = notesStr.split(<span class="hljs-string">" "</span>);
-    <span class="hljs-keyword">var</span> notesValues = [];
+    notesForNotesStr: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(notesStr)</span> {</span>
+      <span class="hljs-keyword">var</span> noteTokens = notesStr.split(<span class="hljs-string">" "</span>);
+      <span class="hljs-keyword">var</span> notesValues = [];
 
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; noteTokens.length; i++) {
-      <span class="hljs-keyword">var</span> noteStr = noteTokens[i].toLowerCase();
-      <span class="hljs-keyword">if</span> (noteStr === <span class="hljs-string">""</span>) { <span class="hljs-keyword">continue</span>; }
-      <span class="hljs-keyword">if</span> (!_.has(Aex.Flow.Music.noteValues, noteStr)) {
-        <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"Invalid noteStr in notesStr: "</span> + noteStr + <span class="hljs-string">" in "</span> + notesStr);
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; noteTokens.length; i++) {
+        <span class="hljs-keyword">var</span> noteStr = noteTokens[i].toLowerCase();
+        <span class="hljs-keyword">if</span> (noteStr === <span class="hljs-string">""</span>) { <span class="hljs-keyword">continue</span>; }
+        <span class="hljs-keyword">if</span> (!_.has(Theory.noteValues, noteStr)) {
+          <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"Invalid noteStr in notesStr: "</span> + noteStr + <span class="hljs-string">" in "</span> + notesStr);
+        }
+
+        <span class="hljs-keyword">var</span> note_value = theoryObj.getNoteValue(noteStr);
+        notesValues.push(note_value);
+      }
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.notesForNotesValues(notesValues);
+    },
+
+    notesForScale: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(key, scale)</span> {</span>
+      <span class="hljs-keyword">if</span> (_.isUndefined(key) || _.isNull(key) || !_.isString(key) || key === <span class="hljs-string">""</span>) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"Key is required."</span>);
+      }
+      <span class="hljs-keyword">if</span> (!key || !_.has(Theory.noteValues, key)) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"Invalid key: "</span> + key);
+      }
+      <span class="hljs-keyword">if</span> (!scale || !_.isString(scale) || !_.has(Theory.scales, scale)) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"Invalid scale: "</span> + scale);
       }
 
-      <span class="hljs-keyword">var</span> note_value = <span class="hljs-keyword">this</span>.music.getNoteValue(noteStr);
-      notesValues.push(note_value);
-    }
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.notesForNotesValues(notesValues);
-  },
+      <span class="hljs-keyword">var</span> keyStr = key.toLowerCase();
+      <span class="hljs-keyword">var</span> keyVal = theoryObj.getNoteValue(keyStr);
+      <span class="hljs-keyword">var</span> scaleIntervals = Theory.scales[scale];
 
-  notesForScale: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(key, scale)</span> {</span>
-    <span class="hljs-keyword">if</span> (_.isUndefined(key) || _.isNull(key) || !_.isString(key) || key === <span class="hljs-string">""</span>) {
-      <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"Key is required."</span>);
-    }
-    <span class="hljs-keyword">if</span> (!key || !_.has(Aex.Flow.Music.noteValues, key)) {
-      <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"Invalid key: "</span> + key);
-    }
-    <span class="hljs-keyword">if</span> (!scale || !_.isString(scale) || !_.has(Aex.Flow.Music.scales, scale)) {
-      <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"Invalid scale: "</span> + scale);
-    }
+      <span class="hljs-keyword">var</span> noteValues = [];
+      <span class="hljs-keyword">var</span> curValue = keyVal;
+      noteValues.push(keyVal);
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; scaleIntervals.length; i++) {
+        <span class="hljs-keyword">var</span> noteValue = (curValue + scaleIntervals[i]) % <span class="hljs-number">12</span>;
+        noteValues.push(noteValue);
+        curValue = noteValue;
+      }
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.notesForNotesValues(noteValues);
+    },
 
-    <span class="hljs-keyword">var</span> keyStr = key.toLowerCase();
-    <span class="hljs-keyword">var</span> keyVal = <span class="hljs-keyword">this</span>.music.getNoteValue(keyStr);
-    <span class="hljs-keyword">var</span> scaleIntervals = Aex.Flow.Music.scales[scale];
+    notesForArpeggio: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(key, arpeggio)</span> {</span>
+      <span class="hljs-keyword">if</span> (_.isUndefined(key) || _.isNull(key) || !_.isString(key) || key === <span class="hljs-string">""</span>) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"Key is required."</span>);
+      }
+      <span class="hljs-keyword">if</span> (!key || !_.has(Theory.noteValues, key)) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"Invalid key: "</span> + key);
+      }
+      <span class="hljs-keyword">if</span> (!arpeggio || !_.isString(arpeggio) || !_.has(Theory.arpeggios, arpeggio)) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"Invalid scale: "</span> + arpeggio);
+      }
 
-    <span class="hljs-keyword">var</span> noteValues = [];
-    <span class="hljs-keyword">var</span> curValue = keyVal;
-    noteValues.push(keyVal);
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; scaleIntervals.length; i++) {
-      <span class="hljs-keyword">var</span> noteValue = (curValue + scaleIntervals[i]) % <span class="hljs-number">12</span>;
-      noteValues.push(noteValue);
-      curValue = noteValue;
-    }
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.notesForNotesValues(noteValues);
-  },
+      <span class="hljs-keyword">var</span> keyStr = key.toLowerCase();
+      <span class="hljs-keyword">var</span> keyVal = theoryObj.getNoteValue(keyStr);
+      <span class="hljs-keyword">var</span> arpeggioIntervals = Theory.arpeggios[arpeggio];
 
-  notesForArpeggio: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(key, arpeggio)</span> {</span>
-    <span class="hljs-keyword">if</span> (_.isUndefined(key) || _.isNull(key) || !_.isString(key) || key === <span class="hljs-string">""</span>) {
-      <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"Key is required."</span>);
-    }
-    <span class="hljs-keyword">if</span> (!key || !_.has(Aex.Flow.Music.noteValues, key)) {
-      <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"Invalid key: "</span> + key);
-    }
-    <span class="hljs-keyword">if</span> (!arpeggio || !_.isString(arpeggio) || !_.has(Aex.Flow.Music.arpeggios, arpeggio)) {
-      <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"Invalid scale: "</span> + arpeggio);
-    }
+      <span class="hljs-keyword">var</span> noteValues = [];
+      <span class="hljs-keyword">var</span> curValue = keyVal;
+      noteValues.push(keyVal);
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; arpeggioIntervals.length; i++) {
+        <span class="hljs-keyword">var</span> noteValue = (curValue + arpeggioIntervals[i]) % <span class="hljs-number">12</span>;
+        noteValues.push(noteValue);
+        curValue = noteValue;
+      }
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.notesForNotesValues(noteValues);
+    },
+  });
 
-    <span class="hljs-keyword">var</span> keyStr = key.toLowerCase();
-    <span class="hljs-keyword">var</span> keyVal = <span class="hljs-keyword">this</span>.music.getNoteValue(keyStr);
-    <span class="hljs-keyword">var</span> arpeggioIntervals = Aex.Flow.Music.arpeggios[arpeggio];
+  _.extend(exports, {
+    GuitarNoteFactory: GuitarNoteFactory
+  });
 
-    <span class="hljs-keyword">var</span> noteValues = [];
-    <span class="hljs-keyword">var</span> curValue = keyVal;
-    noteValues.push(keyVal);
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; arpeggioIntervals.length; i++) {
-      <span class="hljs-keyword">var</span> noteValue = (curValue + arpeggioIntervals[i]) % <span class="hljs-number">12</span>;
-      noteValues.push(noteValue);
-      curValue = noteValue;
-    }
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.notesForNotesValues(noteValues);
-  },
-};</div></div></div></div></body></html>
+})(Chords);</div></div></div></div></body></html>

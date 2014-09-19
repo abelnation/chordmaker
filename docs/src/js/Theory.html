@@ -1,304 +1,320 @@
-<!DOCTYPE html><html lang="en"><head><title>src/js/Theory</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="src/js/Theory"><meta name="groc-project-path" content="src/js/Theory.js"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/js/Theory.js</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h2 id="theory">Theory</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>AexFlow - Music Engraving for HTML5
+<!DOCTYPE html><html lang="en"><head><title>src/js/Theory</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="src/js/Theory"><meta name="groc-project-path" content="src/js/Theory.js"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/js/Theory.js</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><p>global _, Chords </p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="theory">Theory</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>AexFlow - Music Engraving for HTML5
 Copyright Mohit Muthanna 2010
-This class implements some standard music theory routines.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Aex</span><span class="hljs-params">()</span> {</span>}
-Aex.Flow = {};
-Aex.Flow.Music = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>};</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="music-theory-data">Music Theory Data</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper">Aex.Flow.Music.NUM_TONES = <span class="hljs-number">12</span>;
-Aex.Flow.Music.roots = [ <span class="hljs-string">"c"</span>, <span class="hljs-string">"d"</span>, <span class="hljs-string">"e"</span>, <span class="hljs-string">"f"</span>, <span class="hljs-string">"g"</span>, <span class="hljs-string">"a"</span>, <span class="hljs-string">"b"</span> ];
-Aex.Flow.Music.root_values = [ <span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">9</span>, <span class="hljs-number">11</span> ];</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Valid note symbols</p></div></div><div class="code"><div class="wrapper">Aex.Flow.Music.root_indices = {
-  <span class="hljs-string">"c"</span>: <span class="hljs-number">0</span>,
-  <span class="hljs-string">"d"</span>: <span class="hljs-number">1</span>,
-  <span class="hljs-string">"e"</span>: <span class="hljs-number">2</span>,
-  <span class="hljs-string">"f"</span>: <span class="hljs-number">3</span>,
-  <span class="hljs-string">"g"</span>: <span class="hljs-number">4</span>,
-  <span class="hljs-string">"a"</span>: <span class="hljs-number">5</span>,
-  <span class="hljs-string">"b"</span>: <span class="hljs-number">6</span>
-};</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Valid accidental symbols</p></div></div><div class="code"><div class="wrapper">Aex.Flow.Music.accidentals = [ <span class="hljs-string">"bb"</span>, <span class="hljs-string">"b"</span>, <span class="hljs-string">"n"</span>, <span class="hljs-string">"#"</span>, <span class="hljs-string">"##"</span> ];</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>A mapping of integers to note names</p></div></div><div class="code"><div class="wrapper">Aex.Flow.Music.canonical_notes = [
-  <span class="hljs-string">"c"</span>, <span class="hljs-string">"c#"</span>, <span class="hljs-string">"d"</span>, <span class="hljs-string">"d#"</span>,
-  <span class="hljs-string">"e"</span>, <span class="hljs-string">"f"</span>, <span class="hljs-string">"f#"</span>, <span class="hljs-string">"g"</span>,
-  <span class="hljs-string">"g#"</span>, <span class="hljs-string">"a"</span>, <span class="hljs-string">"a#"</span>, <span class="hljs-string">"b"</span>
-];</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Valid note names mapped to root and note values</p></div></div><div class="code"><div class="wrapper">Aex.Flow.Music.noteValues = {
-  <span class="hljs-string">'c'</span>:   { root_index: <span class="hljs-number">0</span>, int_val: <span class="hljs-number">0</span> },
-  <span class="hljs-string">'cn'</span>:  { root_index: <span class="hljs-number">0</span>, int_val: <span class="hljs-number">0</span> },
-  <span class="hljs-string">'c#'</span>:  { root_index: <span class="hljs-number">0</span>, int_val: <span class="hljs-number">1</span> },
-  <span class="hljs-string">'c##'</span>: { root_index: <span class="hljs-number">0</span>, int_val: <span class="hljs-number">2</span> },
-  <span class="hljs-string">'cb'</span>:  { root_index: <span class="hljs-number">0</span>, int_val: <span class="hljs-number">11</span> },
-  <span class="hljs-string">'cbb'</span>: { root_index: <span class="hljs-number">0</span>, int_val: <span class="hljs-number">10</span> },
-  <span class="hljs-string">'d'</span>:   { root_index: <span class="hljs-number">1</span>, int_val: <span class="hljs-number">2</span> },
-  <span class="hljs-string">'dn'</span>:  { root_index: <span class="hljs-number">1</span>, int_val: <span class="hljs-number">2</span> },
-  <span class="hljs-string">'d#'</span>:  { root_index: <span class="hljs-number">1</span>, int_val: <span class="hljs-number">3</span> },
-  <span class="hljs-string">'d##'</span>: { root_index: <span class="hljs-number">1</span>, int_val: <span class="hljs-number">4</span> },
-  <span class="hljs-string">'db'</span>:  { root_index: <span class="hljs-number">1</span>, int_val: <span class="hljs-number">1</span> },
-  <span class="hljs-string">'dbb'</span>: { root_index: <span class="hljs-number">1</span>, int_val: <span class="hljs-number">0</span> },
-  <span class="hljs-string">'e'</span>:   { root_index: <span class="hljs-number">2</span>, int_val: <span class="hljs-number">4</span> },
-  <span class="hljs-string">'en'</span>:  { root_index: <span class="hljs-number">2</span>, int_val: <span class="hljs-number">4</span> },
-  <span class="hljs-string">'e#'</span>:  { root_index: <span class="hljs-number">2</span>, int_val: <span class="hljs-number">5</span> },
-  <span class="hljs-string">'e##'</span>: { root_index: <span class="hljs-number">2</span>, int_val: <span class="hljs-number">6</span> },
-  <span class="hljs-string">'eb'</span>:  { root_index: <span class="hljs-number">2</span>, int_val: <span class="hljs-number">3</span> },
-  <span class="hljs-string">'ebb'</span>: { root_index: <span class="hljs-number">2</span>, int_val: <span class="hljs-number">2</span> },
-  <span class="hljs-string">'f'</span>:   { root_index: <span class="hljs-number">3</span>, int_val: <span class="hljs-number">5</span> },
-  <span class="hljs-string">'fn'</span>:  { root_index: <span class="hljs-number">3</span>, int_val: <span class="hljs-number">5</span> },
-  <span class="hljs-string">'f#'</span>:  { root_index: <span class="hljs-number">3</span>, int_val: <span class="hljs-number">6</span> },
-  <span class="hljs-string">'f##'</span>: { root_index: <span class="hljs-number">3</span>, int_val: <span class="hljs-number">7</span> },
-  <span class="hljs-string">'fb'</span>:  { root_index: <span class="hljs-number">3</span>, int_val: <span class="hljs-number">4</span> },
-  <span class="hljs-string">'fbb'</span>: { root_index: <span class="hljs-number">3</span>, int_val: <span class="hljs-number">3</span> },
-  <span class="hljs-string">'g'</span>:   { root_index: <span class="hljs-number">4</span>, int_val: <span class="hljs-number">7</span> },
-  <span class="hljs-string">'gn'</span>:  { root_index: <span class="hljs-number">4</span>, int_val: <span class="hljs-number">7</span> },
-  <span class="hljs-string">'g#'</span>:  { root_index: <span class="hljs-number">4</span>, int_val: <span class="hljs-number">8</span> },
-  <span class="hljs-string">'g##'</span>: { root_index: <span class="hljs-number">4</span>, int_val: <span class="hljs-number">9</span> },
-  <span class="hljs-string">'gb'</span>:  { root_index: <span class="hljs-number">4</span>, int_val: <span class="hljs-number">6</span> },
-  <span class="hljs-string">'gbb'</span>: { root_index: <span class="hljs-number">4</span>, int_val: <span class="hljs-number">5</span> },
-  <span class="hljs-string">'a'</span>:   { root_index: <span class="hljs-number">5</span>, int_val: <span class="hljs-number">9</span> },
-  <span class="hljs-string">'an'</span>:  { root_index: <span class="hljs-number">5</span>, int_val: <span class="hljs-number">9</span> },
-  <span class="hljs-string">'a#'</span>:  { root_index: <span class="hljs-number">5</span>, int_val: <span class="hljs-number">10</span> },
-  <span class="hljs-string">'a##'</span>: { root_index: <span class="hljs-number">5</span>, int_val: <span class="hljs-number">11</span> },
-  <span class="hljs-string">'ab'</span>:  { root_index: <span class="hljs-number">5</span>, int_val: <span class="hljs-number">8</span> },
-  <span class="hljs-string">'abb'</span>: { root_index: <span class="hljs-number">5</span>, int_val: <span class="hljs-number">7</span> },
-  <span class="hljs-string">'b'</span>:   { root_index: <span class="hljs-number">6</span>, int_val: <span class="hljs-number">11</span> },
-  <span class="hljs-string">'bn'</span>:  { root_index: <span class="hljs-number">6</span>, int_val: <span class="hljs-number">11</span> },
-  <span class="hljs-string">'b#'</span>:  { root_index: <span class="hljs-number">6</span>, int_val: <span class="hljs-number">0</span> },
-  <span class="hljs-string">'b##'</span>: { root_index: <span class="hljs-number">6</span>, int_val: <span class="hljs-number">1</span> },
-  <span class="hljs-string">'bb'</span>:  { root_index: <span class="hljs-number">6</span>, int_val: <span class="hljs-number">10</span> },
-  <span class="hljs-string">'bbb'</span>: { root_index: <span class="hljs-number">6</span>, int_val: <span class="hljs-number">9</span> }
-};
+This class implements some standard music theory routines.</p></div></div><div class="code"><div class="wrapper">(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(exports)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: (aallison) get rid of RERR</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">var</span> Aex = {
+    RERR: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(type, msg)</span> {</span>
+      <span class="hljs-keyword">this</span>.type = type;
+      <span class="hljs-keyword">this</span>.msg = msg;
+    }
+  };
 
-Aex.Flow.Music.diatonic_intervals = [
-  <span class="hljs-string">"unison"</span>, <span class="hljs-string">"m2"</span>, <span class="hljs-string">"M2"</span>, <span class="hljs-string">"m3"</span>, <span class="hljs-string">"M3"</span>,
-  <span class="hljs-string">"p4"</span>, <span class="hljs-string">"dim5"</span>, <span class="hljs-string">"p5"</span>, <span class="hljs-string">"m6"</span>, <span class="hljs-string">"M6"</span>,
-  <span class="hljs-string">"b7"</span>, <span class="hljs-string">"M7"</span>, <span class="hljs-string">"octave"</span>
-];
+  <span class="hljs-keyword">var</span> Theory = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>};
 
-Aex.Flow.Music.diatonic_accidentals = {
-  <span class="hljs-string">"unison"</span>: { note: <span class="hljs-number">0</span>, accidental: <span class="hljs-number">0</span> },
-  <span class="hljs-string">"m2"</span>:     { note: <span class="hljs-number">1</span>, accidental: -<span class="hljs-number">1</span> },
-  <span class="hljs-string">"M2"</span>:     { note: <span class="hljs-number">1</span>, accidental: <span class="hljs-number">0</span> },
-  <span class="hljs-string">"m3"</span>:     { note: <span class="hljs-number">2</span>, accidental: -<span class="hljs-number">1</span> },
-  <span class="hljs-string">"M3"</span>:     { note: <span class="hljs-number">2</span>, accidental: <span class="hljs-number">0</span> },
-  <span class="hljs-string">"p4"</span>:     { note: <span class="hljs-number">3</span>, accidental: <span class="hljs-number">0</span> },
-  <span class="hljs-string">"dim5"</span>:   { note: <span class="hljs-number">4</span>, accidental: -<span class="hljs-number">1</span> },
-  <span class="hljs-string">"p5"</span>:     { note: <span class="hljs-number">4</span>, accidental: <span class="hljs-number">0</span> },
-  <span class="hljs-string">"m6"</span>:     { note: <span class="hljs-number">5</span>, accidental: -<span class="hljs-number">1</span> },
-  <span class="hljs-string">"M6"</span>:     { note: <span class="hljs-number">5</span>, accidental: <span class="hljs-number">0</span> },
-  <span class="hljs-string">"b7"</span>:     { note: <span class="hljs-number">6</span>, accidental: -<span class="hljs-number">1</span> },
-  <span class="hljs-string">"M7"</span>:     { note: <span class="hljs-number">6</span>, accidental: <span class="hljs-number">0</span> },
-  <span class="hljs-string">"octave"</span>: { note: <span class="hljs-number">7</span>, accidental: <span class="hljs-number">0</span> }
-};
+  _.extend(Theory, {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="music-theory-data">Music Theory Data</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper">    NUM_TONES: <span class="hljs-number">12</span>,
+    roots: [ <span class="hljs-string">"c"</span>, <span class="hljs-string">"d"</span>, <span class="hljs-string">"e"</span>, <span class="hljs-string">"f"</span>, <span class="hljs-string">"g"</span>, <span class="hljs-string">"a"</span>, <span class="hljs-string">"b"</span> ],
+    root_values: [ <span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">9</span>, <span class="hljs-number">11</span> ],</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Valid note symbols</p></div></div><div class="code"><div class="wrapper">    root_indices: {
+      <span class="hljs-string">"c"</span>: <span class="hljs-number">0</span>,
+      <span class="hljs-string">"d"</span>: <span class="hljs-number">1</span>,
+      <span class="hljs-string">"e"</span>: <span class="hljs-number">2</span>,
+      <span class="hljs-string">"f"</span>: <span class="hljs-number">3</span>,
+      <span class="hljs-string">"g"</span>: <span class="hljs-number">4</span>,
+      <span class="hljs-string">"a"</span>: <span class="hljs-number">5</span>,
+      <span class="hljs-string">"b"</span>: <span class="hljs-number">6</span>
+    },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Valid accidental symbols</p></div></div><div class="code"><div class="wrapper">    accidentals: [ <span class="hljs-string">"bb"</span>, <span class="hljs-string">"b"</span>, <span class="hljs-string">"n"</span>, <span class="hljs-string">"#"</span>, <span class="hljs-string">"##"</span> ],</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>A mapping of integers to note names</p></div></div><div class="code"><div class="wrapper">    canonical_notes: [
+      <span class="hljs-string">"c"</span>, <span class="hljs-string">"c#"</span>, <span class="hljs-string">"d"</span>, <span class="hljs-string">"d#"</span>,
+      <span class="hljs-string">"e"</span>, <span class="hljs-string">"f"</span>, <span class="hljs-string">"f#"</span>, <span class="hljs-string">"g"</span>,
+      <span class="hljs-string">"g#"</span>, <span class="hljs-string">"a"</span>, <span class="hljs-string">"a#"</span>, <span class="hljs-string">"b"</span>
+    ],</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Valid note names mapped to root and note values</p></div></div><div class="code"><div class="wrapper">    noteValues: {
+      <span class="hljs-string">'c'</span>:   { root_index: <span class="hljs-number">0</span>, int_val: <span class="hljs-number">0</span> },
+      <span class="hljs-string">'cn'</span>:  { root_index: <span class="hljs-number">0</span>, int_val: <span class="hljs-number">0</span> },
+      <span class="hljs-string">'c#'</span>:  { root_index: <span class="hljs-number">0</span>, int_val: <span class="hljs-number">1</span> },
+      <span class="hljs-string">'c##'</span>: { root_index: <span class="hljs-number">0</span>, int_val: <span class="hljs-number">2</span> },
+      <span class="hljs-string">'cb'</span>:  { root_index: <span class="hljs-number">0</span>, int_val: <span class="hljs-number">11</span> },
+      <span class="hljs-string">'cbb'</span>: { root_index: <span class="hljs-number">0</span>, int_val: <span class="hljs-number">10</span> },
+      <span class="hljs-string">'d'</span>:   { root_index: <span class="hljs-number">1</span>, int_val: <span class="hljs-number">2</span> },
+      <span class="hljs-string">'dn'</span>:  { root_index: <span class="hljs-number">1</span>, int_val: <span class="hljs-number">2</span> },
+      <span class="hljs-string">'d#'</span>:  { root_index: <span class="hljs-number">1</span>, int_val: <span class="hljs-number">3</span> },
+      <span class="hljs-string">'d##'</span>: { root_index: <span class="hljs-number">1</span>, int_val: <span class="hljs-number">4</span> },
+      <span class="hljs-string">'db'</span>:  { root_index: <span class="hljs-number">1</span>, int_val: <span class="hljs-number">1</span> },
+      <span class="hljs-string">'dbb'</span>: { root_index: <span class="hljs-number">1</span>, int_val: <span class="hljs-number">0</span> },
+      <span class="hljs-string">'e'</span>:   { root_index: <span class="hljs-number">2</span>, int_val: <span class="hljs-number">4</span> },
+      <span class="hljs-string">'en'</span>:  { root_index: <span class="hljs-number">2</span>, int_val: <span class="hljs-number">4</span> },
+      <span class="hljs-string">'e#'</span>:  { root_index: <span class="hljs-number">2</span>, int_val: <span class="hljs-number">5</span> },
+      <span class="hljs-string">'e##'</span>: { root_index: <span class="hljs-number">2</span>, int_val: <span class="hljs-number">6</span> },
+      <span class="hljs-string">'eb'</span>:  { root_index: <span class="hljs-number">2</span>, int_val: <span class="hljs-number">3</span> },
+      <span class="hljs-string">'ebb'</span>: { root_index: <span class="hljs-number">2</span>, int_val: <span class="hljs-number">2</span> },
+      <span class="hljs-string">'f'</span>:   { root_index: <span class="hljs-number">3</span>, int_val: <span class="hljs-number">5</span> },
+      <span class="hljs-string">'fn'</span>:  { root_index: <span class="hljs-number">3</span>, int_val: <span class="hljs-number">5</span> },
+      <span class="hljs-string">'f#'</span>:  { root_index: <span class="hljs-number">3</span>, int_val: <span class="hljs-number">6</span> },
+      <span class="hljs-string">'f##'</span>: { root_index: <span class="hljs-number">3</span>, int_val: <span class="hljs-number">7</span> },
+      <span class="hljs-string">'fb'</span>:  { root_index: <span class="hljs-number">3</span>, int_val: <span class="hljs-number">4</span> },
+      <span class="hljs-string">'fbb'</span>: { root_index: <span class="hljs-number">3</span>, int_val: <span class="hljs-number">3</span> },
+      <span class="hljs-string">'g'</span>:   { root_index: <span class="hljs-number">4</span>, int_val: <span class="hljs-number">7</span> },
+      <span class="hljs-string">'gn'</span>:  { root_index: <span class="hljs-number">4</span>, int_val: <span class="hljs-number">7</span> },
+      <span class="hljs-string">'g#'</span>:  { root_index: <span class="hljs-number">4</span>, int_val: <span class="hljs-number">8</span> },
+      <span class="hljs-string">'g##'</span>: { root_index: <span class="hljs-number">4</span>, int_val: <span class="hljs-number">9</span> },
+      <span class="hljs-string">'gb'</span>:  { root_index: <span class="hljs-number">4</span>, int_val: <span class="hljs-number">6</span> },
+      <span class="hljs-string">'gbb'</span>: { root_index: <span class="hljs-number">4</span>, int_val: <span class="hljs-number">5</span> },
+      <span class="hljs-string">'a'</span>:   { root_index: <span class="hljs-number">5</span>, int_val: <span class="hljs-number">9</span> },
+      <span class="hljs-string">'an'</span>:  { root_index: <span class="hljs-number">5</span>, int_val: <span class="hljs-number">9</span> },
+      <span class="hljs-string">'a#'</span>:  { root_index: <span class="hljs-number">5</span>, int_val: <span class="hljs-number">10</span> },
+      <span class="hljs-string">'a##'</span>: { root_index: <span class="hljs-number">5</span>, int_val: <span class="hljs-number">11</span> },
+      <span class="hljs-string">'ab'</span>:  { root_index: <span class="hljs-number">5</span>, int_val: <span class="hljs-number">8</span> },
+      <span class="hljs-string">'abb'</span>: { root_index: <span class="hljs-number">5</span>, int_val: <span class="hljs-number">7</span> },
+      <span class="hljs-string">'b'</span>:   { root_index: <span class="hljs-number">6</span>, int_val: <span class="hljs-number">11</span> },
+      <span class="hljs-string">'bn'</span>:  { root_index: <span class="hljs-number">6</span>, int_val: <span class="hljs-number">11</span> },
+      <span class="hljs-string">'b#'</span>:  { root_index: <span class="hljs-number">6</span>, int_val: <span class="hljs-number">0</span> },
+      <span class="hljs-string">'b##'</span>: { root_index: <span class="hljs-number">6</span>, int_val: <span class="hljs-number">1</span> },
+      <span class="hljs-string">'bb'</span>:  { root_index: <span class="hljs-number">6</span>, int_val: <span class="hljs-number">10</span> },
+      <span class="hljs-string">'bbb'</span>: { root_index: <span class="hljs-number">6</span>, int_val: <span class="hljs-number">9</span> }
+    },
 
-Aex.Flow.Music.intervals = {
-  <span class="hljs-string">"u"</span>:  <span class="hljs-number">0</span>,
-  <span class="hljs-string">"unison"</span>: <span class="hljs-number">0</span>,
-  <span class="hljs-string">"m2"</span>: <span class="hljs-number">1</span>,
-  <span class="hljs-string">"b2"</span>: <span class="hljs-number">1</span>,
-  <span class="hljs-string">"min2"</span>: <span class="hljs-number">1</span>,
-  <span class="hljs-string">"S"</span>: <span class="hljs-number">1</span>,
-  <span class="hljs-string">"H"</span>: <span class="hljs-number">1</span>,
-  <span class="hljs-string">"2"</span>: <span class="hljs-number">2</span>,
-  <span class="hljs-string">"M2"</span>: <span class="hljs-number">2</span>,
-  <span class="hljs-string">"maj2"</span>: <span class="hljs-number">2</span>,
-  <span class="hljs-string">"T"</span>: <span class="hljs-number">2</span>,
-  <span class="hljs-string">"W"</span>: <span class="hljs-number">2</span>,
-  <span class="hljs-string">"m3"</span>: <span class="hljs-number">3</span>,
-  <span class="hljs-string">"b3"</span>: <span class="hljs-number">3</span>,
-  <span class="hljs-string">"min3"</span>: <span class="hljs-number">3</span>,
-  <span class="hljs-string">"M3"</span>: <span class="hljs-number">4</span>,
-  <span class="hljs-string">"3"</span>: <span class="hljs-number">4</span>,
-  <span class="hljs-string">"maj3"</span>: <span class="hljs-number">4</span>,
-  <span class="hljs-string">"4"</span>:  <span class="hljs-number">5</span>,
-  <span class="hljs-string">"p4"</span>:  <span class="hljs-number">5</span>,
-  <span class="hljs-string">"#4"</span>: <span class="hljs-number">6</span>,
-  <span class="hljs-string">"b5"</span>: <span class="hljs-number">6</span>,
-  <span class="hljs-string">"aug4"</span>: <span class="hljs-number">6</span>,
-  <span class="hljs-string">"dim5"</span>: <span class="hljs-number">6</span>,
-  <span class="hljs-string">"5"</span>:  <span class="hljs-number">7</span>,
-  <span class="hljs-string">"p5"</span>:  <span class="hljs-number">7</span>,
-  <span class="hljs-string">"#5"</span>: <span class="hljs-number">8</span>,
-  <span class="hljs-string">"b6"</span>: <span class="hljs-number">8</span>,
-  <span class="hljs-string">"aug5"</span>: <span class="hljs-number">8</span>,
-  <span class="hljs-string">"6"</span>:  <span class="hljs-number">9</span>,
-  <span class="hljs-string">"M6"</span>:  <span class="hljs-number">9</span>,
-  <span class="hljs-string">"maj6"</span>: <span class="hljs-number">9</span>,
-  <span class="hljs-string">"b7"</span>: <span class="hljs-number">10</span>,
-  <span class="hljs-string">"m7"</span>: <span class="hljs-number">10</span>,
-  <span class="hljs-string">"min7"</span>: <span class="hljs-number">10</span>,
-  <span class="hljs-string">"dom7"</span>: <span class="hljs-number">10</span>,
-  <span class="hljs-string">"M7"</span>: <span class="hljs-number">11</span>,
-  <span class="hljs-string">"maj7"</span>: <span class="hljs-number">11</span>,
-  <span class="hljs-string">"8"</span>: <span class="hljs-number">12</span>,
-  <span class="hljs-string">"octave"</span>: <span class="hljs-number">12</span>
-};</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Scales specified as sequence of intervals</p></div></div><div class="code"><div class="wrapper">Aex.Flow.Music.scales = {
-  <span class="hljs-string">'major'</span>:         [ <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span> ],
-  <span class="hljs-string">'dorian'</span>:        [ <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span> ],
-  <span class="hljs-string">'phrygian'</span>:      [ <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span> ],
-  <span class="hljs-string">'lydian'</span>:        [ <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span> ],
-  <span class="hljs-string">'mixolydian'</span>:    [ <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span> ],
-  <span class="hljs-string">'minor'</span>:         [ <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span> ],
-  <span class="hljs-string">'locrian'</span>:       [ <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span> ],
-  <span class="hljs-string">'minpent'</span>:       [ <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span> ],
-  <span class="hljs-string">'majpent'</span>:       [ <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span> ],
-  <span class="hljs-string">'blues'</span>:         [ <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span> ],
-  <span class="hljs-string">'harmonicminor'</span>: [ <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span> ],
-  <span class="hljs-string">'wholetone'</span>:     [ <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span> ],
-};</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Arpeggios specified as sequence of intervals</p></div></div><div class="code"><div class="wrapper">Aex.Flow.Music.arpeggios = {
-  <span class="hljs-string">'maj'</span>:     [ <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span> ],
-  <span class="hljs-string">'maj7'</span>:    [ <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">1</span> ],
-  <span class="hljs-string">'maj6'</span>:    [ <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span> ],
-  <span class="hljs-string">'maj9'</span>:    [ <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">1</span> ],
-  <span class="hljs-string">'min'</span>:     [ <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span> ],
-  <span class="hljs-string">'minmaj7'</span>: [ <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">4</span>, <span class="hljs-number">1</span> ],
-  <span class="hljs-string">'m7'</span>:      [ <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span> ],
-  <span class="hljs-string">'m6'</span>:      [ <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span> ],
-  <span class="hljs-string">'m69'</span>:     [ <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">4</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span> ],
-  <span class="hljs-string">'m7b5'</span>:    [ <span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">2</span> ],
-  <span class="hljs-string">'7'</span>:       [ <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span> ],
-  <span class="hljs-string">'9'</span>:       [ <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span> ],
-  <span class="hljs-string">'13'</span>:      [ <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span> ],
-  <span class="hljs-string">'13(9)'</span>:   [ <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span> ],
-  <span class="hljs-string">'7b9'</span>:     [ <span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span> ],
-  <span class="hljs-string">'13b9'</span>:    [ ],
-  <span class="hljs-string">'b13b9'</span>:   [ ],
-  <span class="hljs-string">'dim'</span>:     [ <span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span> ]
-};</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="convenience-methods">Convenience Methods</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>isValidNoteValue</strong> Validates integer note value</p></div></div><div class="code"><div class="wrapper">Aex.Flow.Music.prototype.isValidNoteValue = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(note)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
+    diatonic_intervals: [
+      <span class="hljs-string">"unison"</span>, <span class="hljs-string">"m2"</span>, <span class="hljs-string">"M2"</span>, <span class="hljs-string">"m3"</span>, <span class="hljs-string">"M3"</span>,
+      <span class="hljs-string">"p4"</span>, <span class="hljs-string">"dim5"</span>, <span class="hljs-string">"p5"</span>, <span class="hljs-string">"m6"</span>, <span class="hljs-string">"M6"</span>,
+      <span class="hljs-string">"b7"</span>, <span class="hljs-string">"M7"</span>, <span class="hljs-string">"octave"</span>
+    ],
+
+    diatonic_accidentals: {
+      <span class="hljs-string">"unison"</span>: { note: <span class="hljs-number">0</span>, accidental: <span class="hljs-number">0</span> },
+      <span class="hljs-string">"m2"</span>:     { note: <span class="hljs-number">1</span>, accidental: -<span class="hljs-number">1</span> },
+      <span class="hljs-string">"M2"</span>:     { note: <span class="hljs-number">1</span>, accidental: <span class="hljs-number">0</span> },
+      <span class="hljs-string">"m3"</span>:     { note: <span class="hljs-number">2</span>, accidental: -<span class="hljs-number">1</span> },
+      <span class="hljs-string">"M3"</span>:     { note: <span class="hljs-number">2</span>, accidental: <span class="hljs-number">0</span> },
+      <span class="hljs-string">"p4"</span>:     { note: <span class="hljs-number">3</span>, accidental: <span class="hljs-number">0</span> },
+      <span class="hljs-string">"dim5"</span>:   { note: <span class="hljs-number">4</span>, accidental: -<span class="hljs-number">1</span> },
+      <span class="hljs-string">"p5"</span>:     { note: <span class="hljs-number">4</span>, accidental: <span class="hljs-number">0</span> },
+      <span class="hljs-string">"m6"</span>:     { note: <span class="hljs-number">5</span>, accidental: -<span class="hljs-number">1</span> },
+      <span class="hljs-string">"M6"</span>:     { note: <span class="hljs-number">5</span>, accidental: <span class="hljs-number">0</span> },
+      <span class="hljs-string">"b7"</span>:     { note: <span class="hljs-number">6</span>, accidental: -<span class="hljs-number">1</span> },
+      <span class="hljs-string">"M7"</span>:     { note: <span class="hljs-number">6</span>, accidental: <span class="hljs-number">0</span> },
+      <span class="hljs-string">"octave"</span>: { note: <span class="hljs-number">7</span>, accidental: <span class="hljs-number">0</span> }
+    },
+
+    intervals: {
+      <span class="hljs-string">"u"</span>:  <span class="hljs-number">0</span>,
+      <span class="hljs-string">"unison"</span>: <span class="hljs-number">0</span>,
+      <span class="hljs-string">"m2"</span>: <span class="hljs-number">1</span>,
+      <span class="hljs-string">"b2"</span>: <span class="hljs-number">1</span>,
+      <span class="hljs-string">"min2"</span>: <span class="hljs-number">1</span>,
+      <span class="hljs-string">"S"</span>: <span class="hljs-number">1</span>,
+      <span class="hljs-string">"H"</span>: <span class="hljs-number">1</span>,
+      <span class="hljs-string">"2"</span>: <span class="hljs-number">2</span>,
+      <span class="hljs-string">"M2"</span>: <span class="hljs-number">2</span>,
+      <span class="hljs-string">"maj2"</span>: <span class="hljs-number">2</span>,
+      <span class="hljs-string">"T"</span>: <span class="hljs-number">2</span>,
+      <span class="hljs-string">"W"</span>: <span class="hljs-number">2</span>,
+      <span class="hljs-string">"m3"</span>: <span class="hljs-number">3</span>,
+      <span class="hljs-string">"b3"</span>: <span class="hljs-number">3</span>,
+      <span class="hljs-string">"min3"</span>: <span class="hljs-number">3</span>,
+      <span class="hljs-string">"M3"</span>: <span class="hljs-number">4</span>,
+      <span class="hljs-string">"3"</span>: <span class="hljs-number">4</span>,
+      <span class="hljs-string">"maj3"</span>: <span class="hljs-number">4</span>,
+      <span class="hljs-string">"4"</span>:  <span class="hljs-number">5</span>,
+      <span class="hljs-string">"p4"</span>:  <span class="hljs-number">5</span>,
+      <span class="hljs-string">"#4"</span>: <span class="hljs-number">6</span>,
+      <span class="hljs-string">"b5"</span>: <span class="hljs-number">6</span>,
+      <span class="hljs-string">"aug4"</span>: <span class="hljs-number">6</span>,
+      <span class="hljs-string">"dim5"</span>: <span class="hljs-number">6</span>,
+      <span class="hljs-string">"5"</span>:  <span class="hljs-number">7</span>,
+      <span class="hljs-string">"p5"</span>:  <span class="hljs-number">7</span>,
+      <span class="hljs-string">"#5"</span>: <span class="hljs-number">8</span>,
+      <span class="hljs-string">"b6"</span>: <span class="hljs-number">8</span>,
+      <span class="hljs-string">"aug5"</span>: <span class="hljs-number">8</span>,
+      <span class="hljs-string">"6"</span>:  <span class="hljs-number">9</span>,
+      <span class="hljs-string">"M6"</span>:  <span class="hljs-number">9</span>,
+      <span class="hljs-string">"maj6"</span>: <span class="hljs-number">9</span>,
+      <span class="hljs-string">"b7"</span>: <span class="hljs-number">10</span>,
+      <span class="hljs-string">"m7"</span>: <span class="hljs-number">10</span>,
+      <span class="hljs-string">"min7"</span>: <span class="hljs-number">10</span>,
+      <span class="hljs-string">"dom7"</span>: <span class="hljs-number">10</span>,
+      <span class="hljs-string">"M7"</span>: <span class="hljs-number">11</span>,
+      <span class="hljs-string">"maj7"</span>: <span class="hljs-number">11</span>,
+      <span class="hljs-string">"8"</span>: <span class="hljs-number">12</span>,
+      <span class="hljs-string">"octave"</span>: <span class="hljs-number">12</span>
+    },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Scales specified as sequence of intervals</p></div></div><div class="code"><div class="wrapper">    scales: {
+      <span class="hljs-string">'major'</span>:         [ <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span> ],
+      <span class="hljs-string">'dorian'</span>:        [ <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span> ],
+      <span class="hljs-string">'phrygian'</span>:      [ <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span> ],
+      <span class="hljs-string">'lydian'</span>:        [ <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span> ],
+      <span class="hljs-string">'mixolydian'</span>:    [ <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span> ],
+      <span class="hljs-string">'minor'</span>:         [ <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span> ],
+      <span class="hljs-string">'locrian'</span>:       [ <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span> ],
+      <span class="hljs-string">'minpent'</span>:       [ <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span> ],
+      <span class="hljs-string">'majpent'</span>:       [ <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span> ],
+      <span class="hljs-string">'blues'</span>:         [ <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span> ],
+      <span class="hljs-string">'harmonicminor'</span>: [ <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span> ],
+      <span class="hljs-string">'wholetone'</span>:     [ <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span> ],
+    },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Arpeggios specified as sequence of intervals</p></div></div><div class="code"><div class="wrapper">    arpeggios: {
+      <span class="hljs-string">'maj'</span>:     [ <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span> ],
+      <span class="hljs-string">'maj7'</span>:    [ <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">1</span> ],
+      <span class="hljs-string">'maj6'</span>:    [ <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span> ],
+      <span class="hljs-string">'maj9'</span>:    [ <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">1</span> ],
+      <span class="hljs-string">'min'</span>:     [ <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span> ],
+      <span class="hljs-string">'minmaj7'</span>: [ <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">4</span>, <span class="hljs-number">1</span> ],
+      <span class="hljs-string">'m7'</span>:      [ <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span> ],
+      <span class="hljs-string">'m6'</span>:      [ <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span> ],
+      <span class="hljs-string">'m69'</span>:     [ <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">4</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span> ],
+      <span class="hljs-string">'m7b5'</span>:    [ <span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">2</span> ],
+      <span class="hljs-string">'7'</span>:       [ <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span> ],
+      <span class="hljs-string">'9'</span>:       [ <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span> ],
+      <span class="hljs-string">'13'</span>:      [ <span class="hljs-number">4</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span> ],
+      <span class="hljs-string">'13(9)'</span>:   [ <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span> ],
+      <span class="hljs-string">'7b9'</span>:     [ <span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span> ],
+      <span class="hljs-string">'13b9'</span>:    [ ],
+      <span class="hljs-string">'b13b9'</span>:   [ ],
+      <span class="hljs-string">'dim'</span>:     [ <span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span> ]
+    },
+
+  });
+
+  _.extend(Theory.prototype, {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="convenience-methods">Convenience Methods</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>isValidNoteValue</strong> Validates integer note value</p></div></div><div class="code"><div class="wrapper">    isValidNoteValue: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(note)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
 <li><code>note</code> : integer</li>
-</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> (note == <span class="hljs-literal">null</span> || note &lt; <span class="hljs-number">0</span> || note &gt;= Aex.Flow.Music.NUM_TONES) {
-    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
-  }
-  <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
-};</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>isValidIntervalValue</strong> Validates interval value</p></div></div><div class="code"><div class="wrapper">Aex.Flow.Music.prototype.isValidIntervalValue = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(interval)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
+</ul></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> (note == <span class="hljs-literal">null</span> || note &lt; <span class="hljs-number">0</span> || note &gt;= Theory.NUM_TONES) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+      }
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>isValidIntervalValue</strong> Validates interval value</p></div></div><div class="code"><div class="wrapper">    isValidIntervalValue: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(interval)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
 <li><code>interval</code> : integer</li>
-</ul></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: (aallison) Support Intervals greater than an octave</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.isValidNoteValue(interval);
-};</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>getNoteParts</strong> Splits note string into root and accidental</p></div></div><div class="code"><div class="wrapper">Aex.Flow.Music.prototype.getNoteParts = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(noteString)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
+</ul></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: (aallison) Support Intervals greater than an octave</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.isValidNoteValue(interval);
+    },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>getNoteParts</strong> Splits note string into root and accidental</p></div></div><div class="code"><div class="wrapper">    getNoteParts: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(noteString)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
 <li><code>noteString</code> : string</li>
-</ul></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code>music.getNoteParts(&quot;c#&quot;) -&gt; { root: &quot;c&quot;, accidental: &quot;#&quot; }</code></pre></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> (!noteString || noteString.length &lt; <span class="hljs-number">1</span>) {
-    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Aex.RERR(<span class="hljs-string">"BadArguments"</span>, <span class="hljs-string">"Invalid note name: "</span> + noteString);
-  }
-  <span class="hljs-keyword">if</span> (noteString.length &gt; <span class="hljs-number">3</span>) {
-    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Aex.RERR(<span class="hljs-string">"BadArguments"</span>, <span class="hljs-string">"Invalid note name: "</span> + noteString);
-  }
+</ul></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code>music.getNoteParts(&quot;c#&quot;) -&gt; { root: &quot;c&quot;, accidental: &quot;#&quot; }</code></pre></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> (!noteString || noteString.length &lt; <span class="hljs-number">1</span>) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Aex.RERR(<span class="hljs-string">"BadArguments"</span>, <span class="hljs-string">"Invalid note name: "</span> + noteString);
+      }
+      <span class="hljs-keyword">if</span> (noteString.length &gt; <span class="hljs-number">3</span>) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Aex.RERR(<span class="hljs-string">"BadArguments"</span>, <span class="hljs-string">"Invalid note name: "</span> + noteString);
+      }
 
-  <span class="hljs-keyword">var</span> note = noteString.toLowerCase();
+      <span class="hljs-keyword">var</span> note = noteString.toLowerCase();
 
-  <span class="hljs-keyword">var</span> regex = <span class="hljs-regexp">/^([cdefgab])(b|bb|n|#|##)?$/</span>;
-  <span class="hljs-keyword">var</span> match = regex.exec(note);
+      <span class="hljs-keyword">var</span> regex = <span class="hljs-regexp">/^([cdefgab])(b|bb|n|#|##)?$/</span>;
+      <span class="hljs-keyword">var</span> match = regex.exec(note);
 
-  <span class="hljs-keyword">if</span> (match != <span class="hljs-literal">null</span>) {
-    <span class="hljs-keyword">var</span> root = match[<span class="hljs-number">1</span>];
-    <span class="hljs-keyword">var</span> accidental = match[<span class="hljs-number">2</span>];
+      <span class="hljs-keyword">if</span> (match != <span class="hljs-literal">null</span>) {
+        <span class="hljs-keyword">var</span> root = match[<span class="hljs-number">1</span>];
+        <span class="hljs-keyword">var</span> accidental = match[<span class="hljs-number">2</span>];
 
-    <span class="hljs-keyword">return</span> {
-      <span class="hljs-string">'root'</span>: root,
-      <span class="hljs-string">'accidental'</span>: accidental
-    };
-  } <span class="hljs-keyword">else</span> {
-    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Aex.RERR(<span class="hljs-string">"BadArguments"</span>, <span class="hljs-string">"Invalid note name: "</span> + noteString);
-  }
-};</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>getKeyParts</strong> Splits key string into root, accidental, and scale type</p></div></div><div class="code"><div class="wrapper">Aex.Flow.Music.prototype.getKeyParts = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(keyString)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
+        <span class="hljs-keyword">return</span> {
+          <span class="hljs-string">'root'</span>: root,
+          <span class="hljs-string">'accidental'</span>: accidental
+        };
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Aex.RERR(<span class="hljs-string">"BadArguments"</span>, <span class="hljs-string">"Invalid note name: "</span> + noteString);
+      }
+    },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>getKeyParts</strong> Splits key string into root, accidental, and scale type</p></div></div><div class="code"><div class="wrapper">    getKeyParts: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(keyString)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
 <li><code>keyString</code> : string</li>
-</ul></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code>music.getKeyParts(&quot;c#m&quot;) -&gt; { root: &quot;c&quot;, accidental: &quot;#&quot;, type: &quot;m&quot; }</code></pre></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> (!keyString || keyString.length &lt; <span class="hljs-number">1</span>) {
-    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Aex.RERR(<span class="hljs-string">"BadArguments"</span>, <span class="hljs-string">"Invalid key: "</span> + keyString);
-  }
+</ul></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code>music.getKeyParts(&quot;c#m&quot;) -&gt; { root: &quot;c&quot;, accidental: &quot;#&quot;, type: &quot;m&quot; }</code></pre></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> (!keyString || keyString.length &lt; <span class="hljs-number">1</span>) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Aex.RERR(<span class="hljs-string">"BadArguments"</span>, <span class="hljs-string">"Invalid key: "</span> + keyString);
+      }
 
-  <span class="hljs-keyword">var</span> key = keyString.toLowerCase();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Support Major, Minor, Melodic Minor, and Harmonic Minor key types.
-TODO: (aallison) Integrate with scale dicts</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">var</span> regex = <span class="hljs-regexp">/^([cdefgab])(b|#)?(mel|harm|m|M)?$/</span>;
-  <span class="hljs-keyword">var</span> match = regex.exec(key);
+      <span class="hljs-keyword">var</span> key = keyString.toLowerCase();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Support Major, Minor, Melodic Minor, and Harmonic Minor key types.
+TODO: (aallison) Integrate with scale dicts</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">var</span> regex = <span class="hljs-regexp">/^([cdefgab])(b|#)?(mel|harm|m|M)?$/</span>;
+      <span class="hljs-keyword">var</span> match = regex.exec(key);
 
-  <span class="hljs-keyword">if</span> (match != <span class="hljs-literal">null</span>) {
-    <span class="hljs-keyword">var</span> root = match[<span class="hljs-number">1</span>];
-    <span class="hljs-keyword">var</span> accidental = match[<span class="hljs-number">2</span>];
-    <span class="hljs-keyword">var</span> type = match[<span class="hljs-number">3</span>];</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Unspecified type implies major</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> (!type) { type = <span class="hljs-string">"M"</span>; }
+      <span class="hljs-keyword">if</span> (match != <span class="hljs-literal">null</span>) {
+        <span class="hljs-keyword">var</span> root = match[<span class="hljs-number">1</span>];
+        <span class="hljs-keyword">var</span> accidental = match[<span class="hljs-number">2</span>];
+        <span class="hljs-keyword">var</span> type = match[<span class="hljs-number">3</span>];</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Unspecified type implies major</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">if</span> (!type) { type = <span class="hljs-string">"M"</span>; }
 
-    <span class="hljs-keyword">return</span> {
-      <span class="hljs-string">'root'</span>: root,
-      <span class="hljs-string">'accidental'</span>: accidental,
-      <span class="hljs-string">'type'</span>: type
-    };
-  } <span class="hljs-keyword">else</span> {
-    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Aex.RERR(<span class="hljs-string">"BadArguments"</span>, <span class="hljs-string">"Invalid key: "</span> + keyString);
-  }
-};</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>getNoteValue</strong> Returns integer note value for a note string (including accidentals)</p></div></div><div class="code"><div class="wrapper">Aex.Flow.Music.prototype.getNoteValue = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(noteString)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
+        <span class="hljs-keyword">return</span> {
+          <span class="hljs-string">'root'</span>: root,
+          <span class="hljs-string">'accidental'</span>: accidental,
+          <span class="hljs-string">'type'</span>: type
+        };
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Aex.RERR(<span class="hljs-string">"BadArguments"</span>, <span class="hljs-string">"Invalid key: "</span> + keyString);
+      }
+    },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>getNoteValue</strong> Returns integer note value for a note string (including accidentals)</p></div></div><div class="code"><div class="wrapper">    getNoteValue: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(noteString)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
 <li><code>noteString</code> : string</li>
-</ul></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code>music.getNoteValue(&quot;c#&quot;) -&gt; 1</code></pre></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">var</span> value = Aex.Flow.Music.noteValues[noteString.toLowerCase()];
-  <span class="hljs-keyword">if</span> (value == <span class="hljs-literal">null</span>) {
-    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Aex.RERR(<span class="hljs-string">"BadArguments"</span>, <span class="hljs-string">"Invalid note name: "</span> + noteString);
-  }
+</ul></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code>music.getNoteValue(&quot;c#&quot;) -&gt; 1</code></pre></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">var</span> value = Theory.noteValues[noteString.toLowerCase()];
+      <span class="hljs-keyword">if</span> (value == <span class="hljs-literal">null</span>) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Aex.RERR(<span class="hljs-string">"BadArguments"</span>, <span class="hljs-string">"Invalid note name: "</span> + noteString);
+      }
 
-  <span class="hljs-keyword">return</span> value.int_val;
-};</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>getIntervalValue</strong> Returns integer value representing distance of an interval</p></div></div><div class="code"><div class="wrapper">Aex.Flow.Music.prototype.getIntervalValue = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(intervalString)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
+      <span class="hljs-keyword">return</span> value.int_val;
+    },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>getIntervalValue</strong> Returns integer value representing distance of an interval</p></div></div><div class="code"><div class="wrapper">    getIntervalValue: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(intervalString)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
 <li><code>intervalString</code> : string</li>
-</ul></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code>music.getIntervalValue(&quot;m3&quot;) -&gt; 3</code></pre></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">var</span> value = Aex.Flow.Music.intervals[intervalString];
-  <span class="hljs-keyword">if</span> (value == <span class="hljs-literal">null</span>) {
-    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Aex.RERR(<span class="hljs-string">"BadArguments"</span>,
-                       <span class="hljs-string">"Invalid interval name: "</span> + intervalString);
-  }
+</ul></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code>music.getIntervalValue(&quot;m3&quot;) -&gt; 3</code></pre></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">var</span> value = Theory.intervals[intervalString];
+      <span class="hljs-keyword">if</span> (value == <span class="hljs-literal">null</span>) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Aex.RERR(<span class="hljs-string">"BadArguments"</span>,
+                           <span class="hljs-string">"Invalid interval name: "</span> + intervalString);
+      }
 
-  <span class="hljs-keyword">return</span> value;
-};</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>getCanonicalNoteName</strong> Returns a note name for a given note value</p></div></div><div class="code"><div class="wrapper">Aex.Flow.Music.prototype.getCanonicalNoteName = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(noteValue)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
+      <span class="hljs-keyword">return</span> value;
+    },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>getCanonicalNoteName</strong> Returns a note name for a given note value</p></div></div><div class="code"><div class="wrapper">    getCanonicalNoteName: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(noteValue)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
 <li><code>noteValue</code> : integer</li>
-</ul></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code>music.getCanonicalNoteName(6) -&gt; &quot;f#&quot;</code></pre></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.isValidNoteValue(noteValue)) {
-    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Aex.RERR(<span class="hljs-string">"BadArguments"</span>,
-                       <span class="hljs-string">"Invalid note value: "</span> + noteValue);
-  }
+</ul></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code>music.getCanonicalNoteName(6) -&gt; &quot;f#&quot;</code></pre></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.isValidNoteValue(noteValue)) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Aex.RERR(<span class="hljs-string">"BadArguments"</span>,
+                           <span class="hljs-string">"Invalid note value: "</span> + noteValue);
+      }
 
-  <span class="hljs-keyword">return</span> Aex.Flow.Music.canonical_notes[noteValue];
-};</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>getCanonicalIntervalName</strong> Returns an interval name for a given interval value</p></div></div><div class="code"><div class="wrapper">Aex.Flow.Music.prototype.getCanonicalIntervalName = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(intervalValue)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
+      <span class="hljs-keyword">return</span> Theory.canonical_notes[noteValue];
+    },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>getCanonicalIntervalName</strong> Returns an interval name for a given interval value</p></div></div><div class="code"><div class="wrapper">    getCanonicalIntervalName: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(intervalValue)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
 <li><code>intervalValue</code> : integer</li>
-</ul></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code>music.getCanonicalIntervalName(6) -&gt; &quot;dim5&quot;</code></pre></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.isValidIntervalValue(intervalValue)) {
-    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Aex.RERR(<span class="hljs-string">"BadArguments"</span>,
-                       <span class="hljs-string">"Invalid interval value: "</span> + intervalValue);
-  }
+</ul></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code>music.getCanonicalIntervalName(6) -&gt; &quot;dim5&quot;</code></pre></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.isValidIntervalValue(intervalValue)) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Aex.RERR(<span class="hljs-string">"BadArguments"</span>,
+                           <span class="hljs-string">"Invalid interval value: "</span> + intervalValue);
+      }
 
-  <span class="hljs-keyword">return</span> Aex.Flow.Music.diatonic_intervals[intervalValue];
-};</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>getRelativeNoteValue</strong> Calculates noteValue of an intervale based a a note</p></div></div><div class="code"><div class="wrapper">Aex.Flow.Music.prototype.getRelativeNoteValue = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(noteValue, intervalValue, direction)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
+      <span class="hljs-keyword">return</span> Theory.diatonic_intervals[intervalValue];
+    },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>getRelativeNoteValue</strong> Calculates noteValue of an intervale based a a note</p></div></div><div class="code"><div class="wrapper">    getRelativeNoteValue: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(noteValue, intervalValue, direction)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
 <li><code>noteValue</code> : integer</li>
 <li><code>intervalValue</code> : integer</li>
 <li><code>direction</code> : <code>1</code> or <code>-1</code></li>
 </ul></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code>music.getRelativeNoteValue(0, 3, 1) -&gt; 3
-music.getRelativeNoteValue(2, 3, -1) -&gt; 11</code></pre></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> (direction == <span class="hljs-literal">null</span>) { direction = <span class="hljs-number">1</span>; }
-  <span class="hljs-keyword">if</span> (direction != <span class="hljs-number">1</span> &amp;&amp; direction != -<span class="hljs-number">1</span>) {
-    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Aex.RERR(<span class="hljs-string">"BadArguments"</span>, <span class="hljs-string">"Invalid direction: "</span> + direction);
-  }
+music.getRelativeNoteValue(2, 3, -1) -&gt; 11</code></pre></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> (direction == <span class="hljs-literal">null</span>) { direction = <span class="hljs-number">1</span>; }
+      <span class="hljs-keyword">if</span> (direction != <span class="hljs-number">1</span> &amp;&amp; direction != -<span class="hljs-number">1</span>) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Aex.RERR(<span class="hljs-string">"BadArguments"</span>, <span class="hljs-string">"Invalid direction: "</span> + direction);
+      }
 
-  <span class="hljs-keyword">var</span> sum = (noteValue + (direction * intervalValue)) %
-    Aex.Flow.Music.NUM_TONES;
-  <span class="hljs-keyword">if</span> (sum &lt; <span class="hljs-number">0</span>) { sum += Aex.Flow.Music.NUM_TONES; }
+      <span class="hljs-keyword">var</span> sum = (noteValue + (direction * intervalValue)) % Theory.NUM_TONES;
+      <span class="hljs-keyword">if</span> (sum &lt; <span class="hljs-number">0</span>) { sum += Theory.NUM_TONES; }
 
-  <span class="hljs-keyword">return</span> sum;
-};</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>getScaleTones</strong> Returns scale tones, given intervals. Each successive interval is
+      <span class="hljs-keyword">return</span> sum;
+    },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>getScaleTones</strong> Returns scale tones, given intervals. Each successive interval is
 relative to the previous one, e.g., Major Scale:
 TTSTTTS = <code>[2,2,1,2,2,2,1]</code>
 When used with key = 0, returns C scale (which is isomorphic to
-interval list).</p></div></div><div class="code"><div class="wrapper">Aex.Flow.Music.prototype.getScaleTones = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(keyValue, intervals)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
+interval list).</p></div></div><div class="code"><div class="wrapper">    getScaleTones: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(keyValue, intervals)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
 <li><code>key</code> : integer</li>
 <li><code>intervals</code> : array (e.g. <code>[ 2, 2, 1, 2, 2, 2, 1 ]</code>)</li>
-</ul></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code>music.getScaleTones(2, [2,2,1]) -&gt; [2,4,6,7]</code></pre></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">var</span> tones = [];
-  tones.push(keyValue);
+</ul></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code>music.getScaleTones(2, [2,2,1]) -&gt; [2,4,6,7]</code></pre></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">var</span> tones = [];
+      tones.push(keyValue);
 
-  <span class="hljs-keyword">var</span> nextNote = keyValue;
-  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; intervals.length; ++i) {
-    nextNote = <span class="hljs-keyword">this</span>.getRelativeNoteValue(nextNote,
-                                         intervals[i]);
-    <span class="hljs-keyword">if</span> (nextNote != keyValue) { tones.push(nextNote); }
-  }
+      <span class="hljs-keyword">var</span> nextNote = keyValue;
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; intervals.length; ++i) {
+        nextNote = <span class="hljs-keyword">this</span>.getRelativeNoteValue(nextNote, intervals[i]);
+        <span class="hljs-keyword">if</span> (nextNote != keyValue) { tones.push(nextNote); }
+      }
 
-  <span class="hljs-keyword">return</span> tones;
-};</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>getIntervalBetween</strong> Distance between two notes</p></div></div><div class="code"><div class="wrapper">Aex.Flow.Music.prototype.getIntervalBetween = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(note1, note2, direction)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
+      <span class="hljs-keyword">return</span> tones;
+    },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>getIntervalBetween</strong> Distance between two notes</p></div></div><div class="code"><div class="wrapper">    getIntervalBetween: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(note1, note2, direction)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
 <li><code>note1</code> : integer</li>
 <li><code>note2</code> : integer</li>
 <li><code>direction</code> : -1 or 1</li>
-</ul></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code>music.getIntervalBetween(2, 4, -1) -&gt; 10</code></pre></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> (direction == <span class="hljs-literal">null</span>) { direction = <span class="hljs-number">1</span>; }
-  <span class="hljs-keyword">if</span> (direction != <span class="hljs-number">1</span> &amp;&amp; direction != -<span class="hljs-number">1</span>) {
-    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Aex.RERR(<span class="hljs-string">"BadArguments"</span>, <span class="hljs-string">"Invalid direction: "</span> + direction);
-  }
-  <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.isValidNoteValue(note1) || !<span class="hljs-keyword">this</span>.isValidNoteValue(note2)) {
-    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Aex.RERR(<span class="hljs-string">"BadArguments"</span>,
-                       <span class="hljs-string">"Invalid notes: "</span> + note1 + <span class="hljs-string">", "</span> + note2);
-  }
+</ul></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code>music.getIntervalBetween(2, 4, -1) -&gt; 10</code></pre></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> (direction == <span class="hljs-literal">null</span>) { direction = <span class="hljs-number">1</span>; }
+      <span class="hljs-keyword">if</span> (direction != <span class="hljs-number">1</span> &amp;&amp; direction != -<span class="hljs-number">1</span>) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Aex.RERR(<span class="hljs-string">"BadArguments"</span>, <span class="hljs-string">"Invalid direction: "</span> + direction);
+      }
+      <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.isValidNoteValue(note1) || !<span class="hljs-keyword">this</span>.isValidNoteValue(note2)) {
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> Aex.RERR(<span class="hljs-string">"BadArguments"</span>,
+                           <span class="hljs-string">"Invalid notes: "</span> + note1 + <span class="hljs-string">", "</span> + note2);
+      }
 
-  <span class="hljs-keyword">var</span> difference;
-  <span class="hljs-keyword">if</span> (direction == <span class="hljs-number">1</span>) {
-    difference = note2 - note1;
-  } <span class="hljs-keyword">else</span> {
-    difference = note1 - note2;
-  }
+      <span class="hljs-keyword">var</span> difference;
+      <span class="hljs-keyword">if</span> (direction == <span class="hljs-number">1</span>) {
+        difference = note2 - note1;
+      } <span class="hljs-keyword">else</span> {
+        difference = note1 - note2;
+      }
 
-  <span class="hljs-keyword">if</span> (difference &lt; <span class="hljs-number">0</span>) { difference += Aex.Flow.Music.NUM_TONES; }
-  <span class="hljs-keyword">return</span> difference;
-};</div></div></div></div></body></html>
+      <span class="hljs-keyword">if</span> (difference &lt; <span class="hljs-number">0</span>) { difference += Theory.NUM_TONES; }
+      <span class="hljs-keyword">return</span> difference;
+    },
+  });
+
+  _.extend(exports, {
+    Theory: Theory
+  });
+
+})(Chords);</div></div></div></div></body></html>

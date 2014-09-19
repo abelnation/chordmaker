@@ -158,14 +158,6 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                     "slug": "options"
                   },
                   "depth": 2
-                }, {
-                  "type": "heading",
-                  "data": {
-                    "level": 2,
-                    "title": "ChordModel Class",
-                    "slug": "chordmodel-class"
-                  },
-                  "depth": 2
                 }
               ]
             }, {
@@ -204,14 +196,6 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                     "slug": "options"
                   },
                   "depth": 2
-                }, {
-                  "type": "heading",
-                  "data": {
-                    "level": 2,
-                    "title": "ChordParser Class",
-                    "slug": "chordparser-class"
-                  },
-                  "depth": 2
                 }
               ]
             }, {
@@ -238,6 +222,14 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                   "type": "heading",
                   "data": {
                     "level": 2,
+                    "title": "ChordView Class",
+                    "slug": "chordview-class"
+                  },
+                  "depth": 2
+                }, {
+                  "type": "heading",
+                  "data": {
+                    "level": 2,
                     "title": "CONSTANTS",
                     "slug": "constants"
                   },
@@ -248,14 +240,6 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                     "level": 2,
                     "title": "Render Options",
                     "slug": "render-options"
-                  },
-                  "depth": 2
-                }, {
-                  "type": "heading",
-                  "data": {
-                    "level": 2,
-                    "title": "ChordView Class",
-                    "slug": "chordview-class"
                   },
                   "depth": 2
                 }
@@ -450,52 +434,6 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                     "level": 2,
                     "title": "Chord Data",
                     "slug": "chord-data"
-                  },
-                  "depth": 2
-                }
-              ]
-            }, {
-              "type": "file",
-              "data": {
-                "language": {
-                  "nameMatchers": [".js"],
-                  "pygmentsLexer": "javascript",
-                  "multiLineComment": ["/*", "*", "*/"],
-                  "singleLineComment": ["//"],
-                  "ignorePrefix": "}",
-                  "foldPrefix": "^",
-                  "name": "JavaScript"
-                },
-                "sourcePath": "/Users/aallison/Workspace/chordmaker/src/js/music.js",
-                "projectPath": "src/js/music.js",
-                "targetPath": "src/js/music",
-                "pageTitle": "src/js/music",
-                "title": "music"
-              },
-              "depth": 3,
-              "outline": [
-                {
-                  "type": "heading",
-                  "data": {
-                    "level": 2,
-                    "title": "music",
-                    "slug": "music"
-                  },
-                  "depth": 2
-                }, {
-                  "type": "heading",
-                  "data": {
-                    "level": 2,
-                    "title": "Music Theory Data",
-                    "slug": "music-theory-data"
-                  },
-                  "depth": 2
-                }, {
-                  "type": "heading",
-                  "data": {
-                    "level": 2,
-                    "title": "Convenience Methods",
-                    "slug": "convenience-methods"
                   },
                   "depth": 2
                 }

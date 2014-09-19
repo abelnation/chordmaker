@@ -1,22 +1,28 @@
-<!DOCTYPE html><html lang="en"><head><title>src/js/ChordParser</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="src/js/ChordParser"><meta name="groc-project-path" content="src/js/ChordParser.js"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/js/ChordParser.js</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h2 id="chordparser">ChordParser</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>global _, GuitarNote, ChordModel, ChordView </p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>ChordParser</strong> Parses chord strings into ChordView/ChordModel objects</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ChordParser</span><span class="hljs-params">(options)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
+<!DOCTYPE html><html lang="en"><head><title>src/js/ChordParser</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="src/js/ChordParser"><meta name="groc-project-path" content="src/js/ChordParser.js"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/js/ChordParser.js</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><p>global _, Chords </p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="chordparser">ChordParser</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper">(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(exports)</span> {</span>
+
+  <span class="hljs-keyword">var</span> GuitarNote = exports.GuitarNote;
+  <span class="hljs-keyword">var</span> ChordModel = exports.ChordModel;
+  <span class="hljs-keyword">var</span> ChordView = exports.ChordView;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>ChordParser</strong> Parses chord strings into ChordView/ChordModel objects</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">var</span> ChordParser = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ChordParser</span><span class="hljs-params">(options)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
 <li><code>options</code> : config object</li>
 </ul></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>This first guard ensures that the callee has invoked our Class&#39; constructor function
 with the <code>new</code> keyword - failure to do this will result in the <code>this</code> keyword referring
 to the callee&#39;s scope (typically the window global) which will result in the following fields
-(name and _age) leaking into the global namespace and not being set on this object.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> (!(<span class="hljs-keyword">this</span> <span class="hljs-keyword">instanceof</span> ChordParser)) {
-    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"ChordParser cannot be called as a function."</span>);
-  }
+(name and _age) leaking into the global namespace and not being set on this object.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> (!(<span class="hljs-keyword">this</span> <span class="hljs-keyword">instanceof</span> ChordParser)) {
+      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"ChordParser cannot be called as a function."</span>);
+    }
 
-  <span class="hljs-keyword">if</span> (!options) { options = {}; }
-  <span class="hljs-keyword">this</span>._init(options);
-}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="options">Options</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper">ChordParser.DEFAULT_OPTIONS = {
-  version: <span class="hljs-string">"0.1.0"</span>
-};</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="chordparser-class">ChordParser Class</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper">ChordParser.prototype = {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Whenever you replace an Object&#39;s Prototype, you need to repoint
-the base Constructor back at the original constructor Function,
-otherwise <code>instanceof</code> calls will fail.</p></div></div><div class="code"><div class="wrapper">  constructor: ChordParser,
+    <span class="hljs-keyword">this</span>._init(options || {});
+  };
 
-  _init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create config dict, filling in defaults where not provided</p></div></div><div class="code"><div class="wrapper">    _.defaults(options, ChordParser.DEFAULT_OPTIONS);
-  },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>parseChord</strong> parses a chord string</p></div></div><div class="code"><div class="wrapper">  parseChord: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(element, chordStr)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
+  _.extend(ChordParser, {</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="options">Options</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper">    DEFAULT_OPTIONS: {
+      version: <span class="hljs-string">"0.1.0"</span>
+    }
+  });
+
+  _.extend(exports, {
+
+    _init: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(options)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create config dict, filling in defaults where not provided</p></div></div><div class="code"><div class="wrapper">      _.defaults(options, ChordParser.DEFAULT_OPTIONS);
+    },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>parseChord</strong> parses a chord string</p></div></div><div class="code"><div class="wrapper">    parseChord: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(element, chordStr)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
 <li>element : string or DOM element to insert chord into</li>
 <li>chordStr : string, of the format</li>
 </ul></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code>[&lt;config_str&gt;, ... ]
@@ -34,85 +40,91 @@ finger_num: [1,2,3,4] | &quot;T&quot; | &quot;x&quot;</code></pre></div></div></
  2: 9,12
  3: 12(color:black;)
  4: 12
- 5: 10,15(color:black;)</code></pre></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>strip whitespace and return if result is empty</p></div></div><div class="code"><div class="wrapper">    chordStr = chordStr.replace(<span class="hljs-regexp">/^\s+|\s+$/g</span>, <span class="hljs-string">''</span>);
-    <span class="hljs-keyword">if</span> (chordStr === <span class="hljs-string">""</span>) { <span class="hljs-keyword">return</span>; }
+ 5: 10,15(color:black;)</code></pre></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>strip whitespace and return if result is empty</p></div></div><div class="code"><div class="wrapper">      chordStr = chordStr.replace(<span class="hljs-regexp">/^\s+|\s+$/g</span>, <span class="hljs-string">''</span>);
+      <span class="hljs-keyword">if</span> (chordStr === <span class="hljs-string">""</span>) { <span class="hljs-keyword">return</span>; }
 
-    <span class="hljs-keyword">var</span> chordConfig = {};
-    <span class="hljs-keyword">var</span> chordStrings = [];</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: (aallison) handle default color for parser</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">var</span> color = <span class="hljs-string">"white"</span>;
+      <span class="hljs-keyword">var</span> chordConfig = {};
+      <span class="hljs-keyword">var</span> chordStrings = [];</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: (aallison) handle default color for parser</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">var</span> color = <span class="hljs-string">"white"</span>;
 
-    <span class="hljs-keyword">var</span> lines = chordStr.split(<span class="hljs-string">"\n"</span>);
-    _.each(lines, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(line)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>ignore empty lines</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> (line === <span class="hljs-string">""</span>) { <span class="hljs-keyword">return</span>; }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Deal with chord config string.</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> (line.indexOf(<span class="hljs-string">"["</span>) != -<span class="hljs-number">1</span>) {
-        chordConfig = <span class="hljs-keyword">this</span>._parseConfigString(line);
-        <span class="hljs-keyword">return</span>;
-      }
+      <span class="hljs-keyword">var</span> lines = chordStr.split(<span class="hljs-string">"\n"</span>);
+      _.each(lines, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(line)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>ignore empty lines</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">if</span> (line === <span class="hljs-string">""</span>) { <span class="hljs-keyword">return</span>; }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Deal with chord config string.</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">if</span> (line.indexOf(<span class="hljs-string">"["</span>) != -<span class="hljs-number">1</span>) {
+          chordConfig = <span class="hljs-keyword">this</span>._parseConfigString(line);
+          <span class="hljs-keyword">return</span>;
+        }
 
-      <span class="hljs-keyword">var</span> strObj = <span class="hljs-keyword">this</span>._parseStringString(line);
-      chordStrings.push(strObj);
+        <span class="hljs-keyword">var</span> strObj = <span class="hljs-keyword">this</span>._parseStringString(line);
+        chordStrings.push(strObj);
 
-    }, <span class="hljs-keyword">this</span>);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: (aallison) create ChordModel</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">var</span> model = <span class="hljs-keyword">new</span> ChordModel();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: (aallison) add notes to model</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">var</span> result = <span class="hljs-keyword">new</span> ChordView(element, chordConfig, model);
-    <span class="hljs-keyword">return</span> result;
-  },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>_parseConfigString</strong> parses config string and returns a config object</p></div></div><div class="code"><div class="wrapper">  _parseConfigString: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(configStr)</span> {</span>
-    <span class="hljs-keyword">var</span> config = {};</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Get rid of surrounding brackets and tokenize</p></div></div><div class="code"><div class="wrapper">    configStr = configStr.replace(<span class="hljs-regexp">/^\[|\]$/g</span>, <span class="hljs-string">''</span>);
-    <span class="hljs-keyword">var</span> params = configStr.split(<span class="hljs-string">","</span>);
+      }, <span class="hljs-keyword">this</span>);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: (aallison) create ChordModel</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">var</span> model = <span class="hljs-keyword">new</span> ChordModel();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: (aallison) add notes to model</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">var</span> result = <span class="hljs-keyword">new</span> ChordView(element, chordConfig, model);
+      <span class="hljs-keyword">return</span> result;
+    },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>_parseConfigString</strong> parses config string and returns a config object</p></div></div><div class="code"><div class="wrapper">    _parseConfigString: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(configStr)</span> {</span>
+      <span class="hljs-keyword">var</span> config = {};</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Get rid of surrounding brackets and tokenize</p></div></div><div class="code"><div class="wrapper">      configStr = configStr.replace(<span class="hljs-regexp">/^\[|\]$/g</span>, <span class="hljs-string">''</span>);
+      <span class="hljs-keyword">var</span> params = configStr.split(<span class="hljs-string">","</span>);
 
-    _.each(params, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(param)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>strip whitespace and split into key/value</p></div></div><div class="code"><div class="wrapper">      param = param.replace(<span class="hljs-regexp">/^\s+|\s+$/g</span>, <span class="hljs-string">''</span>);
-      <span class="hljs-keyword">var</span> tokens = param.split(<span class="hljs-string">"="</span>);
-      <span class="hljs-keyword">var</span> key = tokens[<span class="hljs-number">0</span>];
-      <span class="hljs-keyword">var</span> val = tokens[<span class="hljs-number">1</span>];
+      _.each(params, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(param)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>strip whitespace and split into key/value</p></div></div><div class="code"><div class="wrapper">        param = param.replace(<span class="hljs-regexp">/^\s+|\s+$/g</span>, <span class="hljs-string">''</span>);
+        <span class="hljs-keyword">var</span> tokens = param.split(<span class="hljs-string">"="</span>);
+        <span class="hljs-keyword">var</span> key = tokens[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">var</span> val = tokens[<span class="hljs-number">1</span>];
 
-      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>._isNumber(val) &amp;&amp; <span class="hljs-keyword">this</span>._isFloat(val)) {
-        config[key] = <span class="hljs-built_in">parseFloat</span>(val);
-      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>._isNumber(val)) {
-        config[key] = <span class="hljs-built_in">parseInt</span>(val, <span class="hljs-number">10</span>);
-      } <span class="hljs-keyword">else</span> {
-        config[key] = val;
-      }
-    });
-
-    <span class="hljs-keyword">return</span> config;
-  },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>_parseStringString</strong> parses a string line into string num and sequence of notes</p></div></div><div class="code"><div class="wrapper">  _parseStringString: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(stringStr)</span> {</span>
-    <span class="hljs-keyword">var</span> stringObj = {
-      notes: []
-    };</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Extract string number (1-2 digits followed by colon)</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">var</span> string_regex = <span class="hljs-regexp">/\s*(\d{1,2}):/</span>;
-    <span class="hljs-keyword">var</span> string_num = <span class="hljs-built_in">parseInt</span>(stringStr.match(string_regex)[<span class="hljs-number">1</span>].replace(<span class="hljs-regexp">/^\s+|\s+$/g</span>, <span class="hljs-string">''</span>), <span class="hljs-number">10</span>);
-    stringObj[<span class="hljs-string">'stringNum'</span>] = string_num;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Remove string num part for subsequent processing</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">var</span> notes_part = stringStr.replace(string_regex, <span class="hljs-string">""</span>);
-
-    <span class="hljs-keyword">var</span> notes = notes_part.split(<span class="hljs-string">','</span>);
-    _.each(notes, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(note)</span> {</span>
-      <span class="hljs-keyword">var</span> noteObj = <span class="hljs-keyword">this</span>._parseNoteString(note);
-      stringObj[<span class="hljs-string">'notes'</span>].push(_.clone(noteObj));
-    });
-  },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>_parseNoteString</strong> parses a note string into a fret, finger (if present), and color</p></div></div><div class="code"><div class="wrapper">  _parseNoteString: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(noteStr)</span> {</span>
-    <span class="hljs-keyword">var</span> noteObj = {};
-    <span class="hljs-keyword">var</span> color;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Deal with config string</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">var</span> config_regex = <span class="hljs-regexp">/\(.*\)/g</span>;
-    <span class="hljs-keyword">var</span> config_str_match = noteStr.match(config_regex);
-    <span class="hljs-keyword">if</span> (config_str_match) {
-      <span class="hljs-keyword">var</span> config_str = config_str_match[<span class="hljs-number">0</span>];</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>remove config str for subsequent processing</p></div></div><div class="code"><div class="wrapper">      noteStr = noteStr.replace(config_str, <span class="hljs-string">""</span>);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>clean config str and tokenize</p></div></div><div class="code"><div class="wrapper">      config_str = config_str.replace(<span class="hljs-regexp">/^\(|\)$/g</span>, <span class="hljs-string">''</span>);
-      <span class="hljs-keyword">var</span> params = config_str.split(<span class="hljs-string">";"</span>);
-      _.each(params, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(param)</span> {</span>
-        <span class="hljs-keyword">if</span> (param === <span class="hljs-string">""</span>) { <span class="hljs-keyword">return</span>; }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>parse config param string</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">var</span> tokens = param.split(<span class="hljs-string">":"</span>);
-        <span class="hljs-keyword">var</span> key = tokens[<span class="hljs-number">0</span>].replace(<span class="hljs-regexp">/^\s+|\s+$/g</span>, <span class="hljs-string">''</span>);
-        <span class="hljs-keyword">var</span> val = tokens[<span class="hljs-number">1</span>].replace(<span class="hljs-regexp">/^\s+|\s+$/g</span>, <span class="hljs-string">''</span>);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: (aallison) you can only config color right now</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">if</span> (key == <span class="hljs-string">"color"</span>) {
-          color = val;
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>._isNumber(val) &amp;&amp; <span class="hljs-keyword">this</span>._isFloat(val)) {
+          config[key] = <span class="hljs-built_in">parseFloat</span>(val);
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>._isNumber(val)) {
+          config[key] = <span class="hljs-built_in">parseInt</span>(val, <span class="hljs-number">10</span>);
+        } <span class="hljs-keyword">else</span> {
+          config[key] = val;
         }
       });
-    }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Deal with curly-bracketed note syntax (e.g. &#39;{5 4}&#39;)</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> (noteStr.indexOf(<span class="hljs-string">"{"</span>) != -<span class="hljs-number">1</span>) {
-      noteStr = noteStr.replace(<span class="hljs-regexp">/[{|}]/g</span>, <span class="hljs-string">""</span>);
-      <span class="hljs-keyword">var</span> tokens = noteStr.split(<span class="hljs-string">" "</span>);
-      noteObj.fret = tokens[<span class="hljs-number">0</span>].replace(<span class="hljs-regexp">/^\s+|\s+$/g</span>, <span class="hljs-string">''</span>);
-      <span class="hljs-keyword">if</span> (tokens[<span class="hljs-number">1</span>]) { noteObj.finger = tokens[<span class="hljs-number">1</span>]; }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Deal with non-curly-bracketed note syntax (e.g. &#39;6&#39;)</p></div></div><div class="code"><div class="wrapper">    } <span class="hljs-keyword">else</span> {
-      noteObj.fret = noteStr.replace(<span class="hljs-regexp">/^\s+|\s+$/g</span>, <span class="hljs-string">''</span>);
-    }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Check if fret is &#39;open&#39;</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> (noteObj.fret.match(<span class="hljs-regexp">/^[oO0]$/</span>)) {
-      noteObj.fret = <span class="hljs-number">0</span>;
-      noteObj.open = <span class="hljs-literal">true</span>;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Check if fret is &#39;muted&#39;</p></div></div><div class="code"><div class="wrapper">    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (noteObj.fret.match(<span class="hljs-regexp">/[mMxX]/</span>)) {
-      noteObj.muted = <span class="hljs-literal">true</span>;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Otherwise, is a fret number</p></div></div><div class="code"><div class="wrapper">    } <span class="hljs-keyword">else</span> {
-      noteObj.fret = <span class="hljs-built_in">parseInt</span>(noteObj.fret, <span class="hljs-number">10</span>);
-    }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Set color</p></div></div><div class="code"><div class="wrapper">    noteObj.color = color;
 
-    <span class="hljs-keyword">return</span> noteObj;
-  },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>_isNumber</strong> detects if string <code>n</code> is a number</p></div></div><div class="code"><div class="wrapper">  _isNumber: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(n)</span> {</span>
-    <span class="hljs-keyword">return</span> !<span class="hljs-built_in">isNaN</span>(<span class="hljs-built_in">parseFloat</span>(n)) &amp;&amp; <span class="hljs-built_in">isFinite</span>(n);
-  },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>_isFloat</strong> detects if string <code>n</code> is a float</p></div></div><div class="code"><div class="wrapper">  _isFloat: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(n)</span> {</span>
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._isNumber(n) &amp;&amp; (n.indexOf(<span class="hljs-string">"."</span>) != -<span class="hljs-number">1</span>);
-  },
-};</div></div></div></div></body></html>
+      <span class="hljs-keyword">return</span> config;
+    },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>_parseStringString</strong> parses a string line into string num and sequence of notes</p></div></div><div class="code"><div class="wrapper">    _parseStringString: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(stringStr)</span> {</span>
+      <span class="hljs-keyword">var</span> stringObj = {
+        notes: []
+      };</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Extract string number (1-2 digits followed by colon)</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">var</span> string_regex = <span class="hljs-regexp">/\s*(\d{1,2}):/</span>;
+      <span class="hljs-keyword">var</span> string_num = <span class="hljs-built_in">parseInt</span>(stringStr.match(string_regex)[<span class="hljs-number">1</span>].replace(<span class="hljs-regexp">/^\s+|\s+$/g</span>, <span class="hljs-string">''</span>), <span class="hljs-number">10</span>);
+      stringObj[<span class="hljs-string">'stringNum'</span>] = string_num;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Remove string num part for subsequent processing</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">var</span> notes_part = stringStr.replace(string_regex, <span class="hljs-string">""</span>);
+
+      <span class="hljs-keyword">var</span> notes = notes_part.split(<span class="hljs-string">','</span>);
+      _.each(notes, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(note)</span> {</span>
+        <span class="hljs-keyword">var</span> noteObj = <span class="hljs-keyword">this</span>._parseNoteString(note);
+        stringObj[<span class="hljs-string">'notes'</span>].push(_.clone(noteObj));
+      });
+    },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>_parseNoteString</strong> parses a note string into a fret, finger (if present), and color</p></div></div><div class="code"><div class="wrapper">    _parseNoteString: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(noteStr)</span> {</span>
+      <span class="hljs-keyword">var</span> noteObj = {};
+      <span class="hljs-keyword">var</span> color;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Deal with config string</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">var</span> config_regex = <span class="hljs-regexp">/\(.*\)/g</span>;
+      <span class="hljs-keyword">var</span> config_str_match = noteStr.match(config_regex);
+      <span class="hljs-keyword">if</span> (config_str_match) {
+        <span class="hljs-keyword">var</span> config_str = config_str_match[<span class="hljs-number">0</span>];</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>remove config str for subsequent processing</p></div></div><div class="code"><div class="wrapper">        noteStr = noteStr.replace(config_str, <span class="hljs-string">""</span>);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>clean config str and tokenize</p></div></div><div class="code"><div class="wrapper">        config_str = config_str.replace(<span class="hljs-regexp">/^\(|\)$/g</span>, <span class="hljs-string">''</span>);
+        <span class="hljs-keyword">var</span> params = config_str.split(<span class="hljs-string">";"</span>);
+        _.each(params, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(param)</span> {</span>
+          <span class="hljs-keyword">if</span> (param === <span class="hljs-string">""</span>) { <span class="hljs-keyword">return</span>; }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>parse config param string</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-keyword">var</span> tokens = param.split(<span class="hljs-string">":"</span>);
+          <span class="hljs-keyword">var</span> key = tokens[<span class="hljs-number">0</span>].replace(<span class="hljs-regexp">/^\s+|\s+$/g</span>, <span class="hljs-string">''</span>);
+          <span class="hljs-keyword">var</span> val = tokens[<span class="hljs-number">1</span>].replace(<span class="hljs-regexp">/^\s+|\s+$/g</span>, <span class="hljs-string">''</span>);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO: (aallison) you can only config color right now</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-keyword">if</span> (key == <span class="hljs-string">"color"</span>) {
+            color = val;
+          }
+        });
+      }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Deal with curly-bracketed note syntax (e.g. &#39;{5 4}&#39;)</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> (noteStr.indexOf(<span class="hljs-string">"{"</span>) != -<span class="hljs-number">1</span>) {
+        noteStr = noteStr.replace(<span class="hljs-regexp">/[{|}]/g</span>, <span class="hljs-string">""</span>);
+        <span class="hljs-keyword">var</span> tokens = noteStr.split(<span class="hljs-string">" "</span>);
+        noteObj.fret = tokens[<span class="hljs-number">0</span>].replace(<span class="hljs-regexp">/^\s+|\s+$/g</span>, <span class="hljs-string">''</span>);
+        <span class="hljs-keyword">if</span> (tokens[<span class="hljs-number">1</span>]) { noteObj.finger = tokens[<span class="hljs-number">1</span>]; }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Deal with non-curly-bracketed note syntax (e.g. &#39;6&#39;)</p></div></div><div class="code"><div class="wrapper">      } <span class="hljs-keyword">else</span> {
+        noteObj.fret = noteStr.replace(<span class="hljs-regexp">/^\s+|\s+$/g</span>, <span class="hljs-string">''</span>);
+      }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Check if fret is &#39;open&#39;</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> (noteObj.fret.match(<span class="hljs-regexp">/^[oO0]$/</span>)) {
+        noteObj.fret = <span class="hljs-number">0</span>;
+        noteObj.open = <span class="hljs-literal">true</span>;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Check if fret is &#39;muted&#39;</p></div></div><div class="code"><div class="wrapper">      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (noteObj.fret.match(<span class="hljs-regexp">/[mMxX]/</span>)) {
+        noteObj.muted = <span class="hljs-literal">true</span>;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Otherwise, is a fret number</p></div></div><div class="code"><div class="wrapper">      } <span class="hljs-keyword">else</span> {
+        noteObj.fret = <span class="hljs-built_in">parseInt</span>(noteObj.fret, <span class="hljs-number">10</span>);
+      }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Set color</p></div></div><div class="code"><div class="wrapper">      noteObj.color = color;
+
+      <span class="hljs-keyword">return</span> noteObj;
+    },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>_isNumber</strong> detects if string <code>n</code> is a number</p></div></div><div class="code"><div class="wrapper">    _isNumber: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(n)</span> {</span>
+      <span class="hljs-keyword">return</span> !<span class="hljs-built_in">isNaN</span>(<span class="hljs-built_in">parseFloat</span>(n)) &amp;&amp; <span class="hljs-built_in">isFinite</span>(n);
+    },</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>_isFloat</strong> detects if string <code>n</code> is a float</p></div></div><div class="code"><div class="wrapper">    _isFloat: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(n)</span> {</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>._isNumber(n) &amp;&amp; (n.indexOf(<span class="hljs-string">"."</span>) != -<span class="hljs-number">1</span>);
+    },
+  });
+
+  _.extend(exports, {
+    ChordParser: ChordParser
+  });
+
+})(Chords);</div></div></div></div></body></html>
