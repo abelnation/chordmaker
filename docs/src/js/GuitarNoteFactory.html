@@ -2,7 +2,6 @@
   <span class="hljs-keyword">var</span> GuitarNote = exports.GuitarNote;
   <span class="hljs-keyword">var</span> Theory = exports.Theory;
   <span class="hljs-keyword">var</span> Tuning = exports.Tuning;
-  <span class="hljs-keyword">var</span> theoryObj = <span class="hljs-keyword">new</span> Theory();
 
   <span class="hljs-keyword">var</span> GuitarNoteFactory = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">GuitarNoteFactory</span><span class="hljs-params">(options)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>This first guard ensures that the callee has invoked our Class&#39; constructor function
 with the <code>new</code> keyword - failure to do this will result in the <code>this</code> keyword referring
@@ -60,7 +59,7 @@ otherwise <code>instanceof</code> calls will fail.</p></div></div><div class="co
 
         <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> string_num = <span class="hljs-number">0</span>; string_num &lt; <span class="hljs-keyword">this</span>.tuning.getNumStrings(); string_num++) {
           <span class="hljs-keyword">var</span> tuningNote = <span class="hljs-keyword">this</span>.tuning.notes[string_num].toLowerCase();
-          <span class="hljs-keyword">var</span> string_base_value = theoryObj.getNoteValue(tuningNote);
+          <span class="hljs-keyword">var</span> string_base_value = Theory.getNoteValue(tuningNote);
 
           <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> fret_num = <span class="hljs-keyword">this</span>.minFret; fret_num &lt; <span class="hljs-keyword">this</span>.maxFret; fret_num++) {
             <span class="hljs-keyword">var</span> fret_value = (string_base_value + fret_num) % <span class="hljs-number">12</span>;
@@ -85,7 +84,7 @@ otherwise <code>instanceof</code> calls will fail.</p></div></div><div class="co
           <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TypeError</span>(<span class="hljs-string">"Invalid noteStr in notesStr: "</span> + noteStr + <span class="hljs-string">" in "</span> + notesStr);
         }
 
-        <span class="hljs-keyword">var</span> note_value = theoryObj.getNoteValue(noteStr);
+        <span class="hljs-keyword">var</span> note_value = Theory.getNoteValue(noteStr);
         notesValues.push(note_value);
       }
       <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.notesForNotesValues(notesValues);
@@ -103,7 +102,7 @@ otherwise <code>instanceof</code> calls will fail.</p></div></div><div class="co
       }
 
       <span class="hljs-keyword">var</span> keyStr = key.toLowerCase();
-      <span class="hljs-keyword">var</span> keyVal = theoryObj.getNoteValue(keyStr);
+      <span class="hljs-keyword">var</span> keyVal = Theory.getNoteValue(keyStr);
       <span class="hljs-keyword">var</span> scaleIntervals = Theory.scales[scale];
 
       <span class="hljs-keyword">var</span> noteValues = [];
@@ -129,7 +128,7 @@ otherwise <code>instanceof</code> calls will fail.</p></div></div><div class="co
       }
 
       <span class="hljs-keyword">var</span> keyStr = key.toLowerCase();
-      <span class="hljs-keyword">var</span> keyVal = theoryObj.getNoteValue(keyStr);
+      <span class="hljs-keyword">var</span> keyVal = Theory.getNoteValue(keyStr);
       <span class="hljs-keyword">var</span> arpeggioIntervals = Theory.arpeggios[arpeggio];
 
       <span class="hljs-keyword">var</span> noteValues = [];

@@ -4,7 +4,6 @@ instruments.</p></div></div><div class="code"><div class="wrapper">(<span class=
   <span class="hljs-keyword">var</span> Tuning = exports.Tuning;
   <span class="hljs-keyword">var</span> ChordModel = exports.ChordModel;
   <span class="hljs-keyword">var</span> Theory = exports.Theory;
-  <span class="hljs-keyword">var</span> theoryObj = <span class="hljs-keyword">new</span> Theory();
 
   <span class="hljs-keyword">var</span> Voicings = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Voicings</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"Voicings is a singleton. Do not call the constructor"</span>);
@@ -150,8 +149,8 @@ if <code>matchExact</code> set to false)</li>
       <span class="hljs-keyword">if</span> (matchExact === <span class="hljs-literal">undefined</span>) { matchExact = <span class="hljs-literal">true</span>; }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Get voicing data</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">var</span> chordData = Voicings._getChordVoicingData(instrument, tuning, chord, variation, matchExact);
       <span class="hljs-keyword">if</span> (!chordData) { <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>; }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Get key note values</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> (!key) { key = chordData.key; }
       key = key.toLowerCase();
-      <span class="hljs-keyword">var</span> key_value = theoryObj.getNoteValue(key);
-      <span class="hljs-keyword">var</span> chord_key_value = theoryObj.getNoteValue(chordData.key);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Calc bass note for inversions</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">var</span> bassNote = Voicings._bassNoteForKeyAndOffset(key, chordData.bass);
+      <span class="hljs-keyword">var</span> key_value = Theory.getNoteValue(key);
+      <span class="hljs-keyword">var</span> chord_key_value = Theory.getNoteValue(chordData.key);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Calc bass note for inversions</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">var</span> bassNote = Voicings._bassNoteForKeyAndOffset(key, chordData.bass);
       <span class="hljs-keyword">var</span> chordLabel = key.toUpperCase() + chordData.label;
       <span class="hljs-keyword">if</span> (bassNote !== <span class="hljs-string">""</span>) {
         chordLabel += <span class="hljs-string">"/"</span> + bassNote.toUpperCase();
@@ -161,7 +160,7 @@ if <code>matchExact</code> set to false)</li>
         <span class="hljs-keyword">var</span> stringNum = i;
         <span class="hljs-keyword">var</span> fretNum = chordData.notes[i];
         <span class="hljs-keyword">var</span> noteOptions = { finger: chordData.fingers[i] };</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Check for tonic</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">if</span> (_.isNumber(fretNum)) {
-          <span class="hljs-keyword">var</span> noteVal = theoryObj.getRelativeNoteValue(tuningObj.noteValForString(stringNum), fretNum, <span class="hljs-number">1</span>);
+          <span class="hljs-keyword">var</span> noteVal = Theory.getRelativeNoteValue(tuningObj.noteValForString(stringNum), fretNum, <span class="hljs-number">1</span>);
           <span class="hljs-keyword">if</span> (noteVal === chord_key_value) {
             noteOptions.color = <span class="hljs-string">"black"</span>;
           }
@@ -170,8 +169,8 @@ if <code>matchExact</code> set to false)</li>
         <span class="hljs-keyword">var</span> note = <span class="hljs-keyword">new</span> GuitarNote(stringNum, fretNum, noteOptions);
         notes.push(note);
       }
-      <span class="hljs-keyword">var</span> model = <span class="hljs-keyword">new</span> ChordModel({ notes: notes, tuning: tuning, key: key, label: chordLabel });</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Transpose chord</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">var</span> dist_down = theoryObj.getIntervalBetween(chord_key_value, key_value, -<span class="hljs-number">1</span>);
-      <span class="hljs-keyword">var</span> dist_up = theoryObj.getIntervalBetween(chord_key_value, key_value, <span class="hljs-number">1</span>);
+      <span class="hljs-keyword">var</span> model = <span class="hljs-keyword">new</span> ChordModel({ notes: notes, tuning: tuning, key: key, label: chordLabel });</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Transpose chord</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">var</span> dist_down = Theory.getIntervalBetween(chord_key_value, key_value, -<span class="hljs-number">1</span>);
+      <span class="hljs-keyword">var</span> dist_up = Theory.getIntervalBetween(chord_key_value, key_value, <span class="hljs-number">1</span>);
       <span class="hljs-keyword">var</span> min_fret = model.getMinFret();
       <span class="hljs-keyword">if</span>(min_fret - dist_down &gt;= <span class="hljs-number">0</span>) {
         model.transposeByInterval(dist_down, -<span class="hljs-number">1</span>);
@@ -230,9 +229,9 @@ if <code>matchExact</code> set to false)</li>
     _bassNoteForKeyAndOffset: <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(key, offset)</span> {</span>
       <span class="hljs-keyword">if</span>(!offset) { <span class="hljs-keyword">return</span> <span class="hljs-string">""</span>; }
 
-      <span class="hljs-keyword">var</span> keyValue = theoryObj.getNoteValue(key.toLowerCase());
-      <span class="hljs-keyword">var</span> bassValue = theoryObj.getRelativeNoteValue(keyValue, offset, <span class="hljs-number">1</span>);
-      <span class="hljs-keyword">var</span> bassNoteName = theoryObj.getCanonicalNoteName(bassValue);
+      <span class="hljs-keyword">var</span> keyValue = Theory.getNoteValue(key.toLowerCase());
+      <span class="hljs-keyword">var</span> bassValue = Theory.getRelativeNoteValue(keyValue, offset, <span class="hljs-number">1</span>);
+      <span class="hljs-keyword">var</span> bassNoteName = Theory.getCanonicalNoteName(bassValue);
 
       <span class="hljs-keyword">return</span> bassNoteName;
     },
