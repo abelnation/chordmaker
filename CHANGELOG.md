@@ -1,3 +1,10 @@
+## 0.3.0 (2014-09-20)
+
+  - CHANGELOG updated for v0.2.0 release
+  - Adding v0.2.0 release files
+  - Theory is all static methods now
+  - release 0.3.0
+
 ## 0.2.0 (2014-09-19)
 
   - CHANGELOG updated for v0.1.6 release
