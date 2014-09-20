@@ -5,7 +5,7 @@
 
 (function(exports) {
 
-  var theory = new exports.Theory();
+  var Theory = exports.Theory();
   var Tuning = function Tuning(tuningStr) {
     // This first guard ensures that the callee has invoked our Class' constructor function
     // with the `new` keyword - failure to do this will result in the `this` keyword referring
@@ -100,7 +100,7 @@
       return this.notes.length;
     },
     noteValForString: function(stringNum) {
-      return theory.getNoteValue(this.noteNameForString(stringNum));
+      return Theory.getNoteValue(this.noteNameForString(stringNum));
     },
     noteNameForString: function(stringNum) {
       return this.notes[stringNum];

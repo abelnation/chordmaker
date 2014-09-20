@@ -45,6 +45,7 @@ module.exports = function(grunt) {
 
                 'cat CHANGELOG.md >> tmpnotes.txt',
                 'mv tmpnotes.txt CHANGELOG.md',
+                'git add docs',
                 'git add CHANGELOG.md',
                 'git commit -m "CHANGELOG updated for v`git describe --abbrev=0 --tags` release"',
                 'rm PREV_VERSION',

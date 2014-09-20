@@ -198,9 +198,6 @@
       'dim':     [ 3, 3, 3, 3 ]
     },
 
-  });
-
-  _.extend(Theory.prototype, {
     // Convenience Methods
     // -------------------
 
@@ -219,7 +216,7 @@
       // - `interval` : integer
 
       // TODO: (aallison) Support Intervals greater than an octave
-      return this.isValidNoteValue(interval);
+      return Theory.isValidNoteValue(interval);
     },
 
     // **getNoteParts** Splits note string into root and accidental
@@ -323,7 +320,7 @@
 
       //     music.getCanonicalNoteName(6) -> "f#"
 
-      if (!this.isValidNoteValue(noteValue)) {
+      if (!Theory.isValidNoteValue(noteValue)) {
         throw new Aex.RERR("BadArguments",
                            "Invalid note value: " + noteValue);
       }
@@ -337,7 +334,7 @@
 
       //     music.getCanonicalIntervalName(6) -> "dim5"
 
-      if (!this.isValidIntervalValue(intervalValue)) {
+      if (!Theory.isValidIntervalValue(intervalValue)) {
         throw new Aex.RERR("BadArguments",
                            "Invalid interval value: " + intervalValue);
       }
@@ -383,7 +380,7 @@
 
       var nextNote = keyValue;
       for (var i = 0; i < intervals.length; ++i) {
-        nextNote = this.getRelativeNoteValue(nextNote, intervals[i]);
+        nextNote = Theory.getRelativeNoteValue(nextNote, intervals[i]);
         if (nextNote != keyValue) { tones.push(nextNote); }
       }
 
@@ -402,7 +399,7 @@
       if (direction != 1 && direction != -1) {
         throw new Aex.RERR("BadArguments", "Invalid direction: " + direction);
       }
-      if (!this.isValidNoteValue(note1) || !this.isValidNoteValue(note2)) {
+      if (!Theory.isValidNoteValue(note1) || !Theory.isValidNoteValue(note2)) {
         throw new Aex.RERR("BadArguments",
                            "Invalid notes: " + note1 + ", " + note2);
       }

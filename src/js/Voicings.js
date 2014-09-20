@@ -11,7 +11,6 @@
   var Tuning = exports.Tuning;
   var ChordModel = exports.ChordModel;
   var Theory = exports.Theory;
-  var theoryObj = new Theory();
 
   var Voicings = function Voicings() {
     throw new Error("Voicings is a singleton. Do not call the constructor");
@@ -231,8 +230,8 @@
       // Get key note values
       if (!key) { key = chordData.key; }
       key = key.toLowerCase();
-      var key_value = theoryObj.getNoteValue(key);
-      var chord_key_value = theoryObj.getNoteValue(chordData.key);
+      var key_value = Theory.getNoteValue(key);
+      var chord_key_value = Theory.getNoteValue(chordData.key);
 
       // Calc bass note for inversions
       var bassNote = Voicings._bassNoteForKeyAndOffset(key, chordData.bass);
@@ -251,7 +250,7 @@
 
         // Check for tonic
         if (_.isNumber(fretNum)) {
-          var noteVal = theoryObj.getRelativeNoteValue(tuningObj.noteValForString(stringNum), fretNum, 1);
+          var noteVal = Theory.getRelativeNoteValue(tuningObj.noteValForString(stringNum), fretNum, 1);
           if (noteVal === chord_key_value) {
             noteOptions.color = "black";
           }
@@ -263,8 +262,8 @@
       var model = new ChordModel({ notes: notes, tuning: tuning, key: key, label: chordLabel });
 
       // Transpose chord
-      var dist_down = theoryObj.getIntervalBetween(chord_key_value, key_value, -1);
-      var dist_up = theoryObj.getIntervalBetween(chord_key_value, key_value, 1);
+      var dist_down = Theory.getIntervalBetween(chord_key_value, key_value, -1);
+      var dist_up = Theory.getIntervalBetween(chord_key_value, key_value, 1);
       var min_fret = model.getMinFret();
       if(min_fret - dist_down >= 0) {
         model.transposeByInterval(dist_down, -1);
@@ -328,9 +327,9 @@
     _bassNoteForKeyAndOffset: function(key, offset) {
       if(!offset) { return ""; }
 
-      var keyValue = theoryObj.getNoteValue(key.toLowerCase());
-      var bassValue = theoryObj.getRelativeNoteValue(keyValue, offset, 1);
-      var bassNoteName = theoryObj.getCanonicalNoteName(bassValue);
+      var keyValue = Theory.getNoteValue(key.toLowerCase());
+      var bassValue = Theory.getRelativeNoteValue(keyValue, offset, 1);
+      var bassNoteName = Theory.getCanonicalNoteName(bassValue);
 
       return bassNoteName;
     },

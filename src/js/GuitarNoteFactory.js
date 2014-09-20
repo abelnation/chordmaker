@@ -4,7 +4,6 @@
   var GuitarNote = exports.GuitarNote;
   var Theory = exports.Theory;
   var Tuning = exports.Tuning;
-  var theoryObj = new Theory();
 
   var GuitarNoteFactory = function GuitarNoteFactory(options) {
     // This first guard ensures that the callee has invoked our Class' constructor function
@@ -70,7 +69,7 @@
 
         for (var string_num = 0; string_num < this.tuning.getNumStrings(); string_num++) {
           var tuningNote = this.tuning.notes[string_num].toLowerCase();
-          var string_base_value = theoryObj.getNoteValue(tuningNote);
+          var string_base_value = Theory.getNoteValue(tuningNote);
 
           for (var fret_num = this.minFret; fret_num < this.maxFret; fret_num++) {
             var fret_value = (string_base_value + fret_num) % 12;
@@ -95,7 +94,7 @@
           throw TypeError("Invalid noteStr in notesStr: " + noteStr + " in " + notesStr);
         }
 
-        var note_value = theoryObj.getNoteValue(noteStr);
+        var note_value = Theory.getNoteValue(noteStr);
         notesValues.push(note_value);
       }
       return this.notesForNotesValues(notesValues);
@@ -113,7 +112,7 @@
       }
 
       var keyStr = key.toLowerCase();
-      var keyVal = theoryObj.getNoteValue(keyStr);
+      var keyVal = Theory.getNoteValue(keyStr);
       var scaleIntervals = Theory.scales[scale];
 
       var noteValues = [];
@@ -139,7 +138,7 @@
       }
 
       var keyStr = key.toLowerCase();
-      var keyVal = theoryObj.getNoteValue(keyStr);
+      var keyVal = Theory.getNoteValue(keyStr);
       var arpeggioIntervals = Theory.arpeggios[arpeggio];
 
       var noteValues = [];
